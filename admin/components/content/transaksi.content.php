@@ -6,41 +6,11 @@ include '../../../include/format_rupiah.php';
 $kond = $_GET['kond'];
 
 if ($kond=='home' || $kond=='') { ?>
-    <h2 class="text-center mt-5 mb-5">Pilih Jenis Item</h2>
-    <div class="row p-3 row-jenis justify-content-md-center">
-    <?php
-        $n=0;
-        $sql="SELECT * from jenis";
-        $query=mysqli_query($con, $sql);
-        while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
-            
-        ?>
-            <div class="col-3 mb-3">
-                <div class="card custom">
-                    <a class="pilihjenis" data-id="<?php echo $data1['jenis_id']; ?>">
-                        <div class="card-body text-center pt-5 pb-5">
-                            <h4><?php echo $data1['jenis_nama']; ?></h4>
-                        </div>
-                    </a>
-                </div>
-            </div>
-
-        <?php
-        $n++;
-
-        }
-
-    ?>
-
-    </div>
-
-<?php } elseif ($kond=='item') { ?>
 	<div class="classic-tabs">
 		<ul class="nav tabs-white border-bottom" id="myClassicTab" role="tablist">
 			<?php
-                $jenisid = $_GET['jenisid'];
                 $n=0;
-                $sql="SELECT * from kategori WHERE kategori_jenis='$jenisid' ORDER BY kategori_id";
+                $sql="SELECT * from kategori ORDER BY kategori_id";
                 $query=mysqli_query($con, $sql);
                 while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
                     if ($n==0) {
@@ -68,7 +38,7 @@ if ($kond=='home' || $kond=='') { ?>
 		<div class="tab-content" id="myClassicTabContent">
 			<?php
                 $n=0;
-                $sql="SELECT * from kategori WHERE kategori_jenis='$jenisid' ORDER BY kategori_id";
+                $sql="SELECT * from kategori ORDER BY kategori_id";
                 $query=mysqli_query($con, $sql);
                 while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
                     if ($n==0) {
@@ -363,7 +333,7 @@ if ($kond=='home' || $kond=='') { ?>
                         diskon = '';
                         ketdiskon = '';
                     }
-		            var content = '<tr class="'+ketdiskon+'fadeInLeft animated"><td><button type="button" class="btn btn-dark-info waves-effect btn orange-text m-0 p-0 btn-remove" data-id="'+data.item.transaksi_detail_temp_id+'"><i class="fas fa-times"></i></button></td><td>'+data.item.barang_nama+'<br><span>'+data.item.transaksi_detail_temp_keterangan+'</span></td><td><button type="button" class="btn btn-dark-info waves-effect btn btn-outline-white mr-2 mt-0 ml-0 mb-0 p-1 btn-plusminus" data-ket="minus" data-id="'+data.item.transaksi_detail_temp_id+'" data-idbarang="'+data.item.transaksi_detail_temp_barang_id+'" data-jumlah="'+data.item.transaksi_detail_temp_jumlah+'"><i class="fas fa-minus"></i></button><span class="text_jumlah">'+data.item.transaksi_detail_temp_jumlah+'</span><button type="button" class="btn btn-dark-info waves-effect btn-outline-white mr-0 mt-0 ml-2 mb-0 p-1 btn-plusminus" data-ket="plus" data-id="'+data.item.transaksi_detail_temp_id+'" data-idbarang="'+data.item.transaksi_detail_temp_barang_id+'" data-jumlah="'+data.item.transaksi_detail_temp_jumlah+'"><i class="fas fa-plus"></i></button></td><td><span class="text_total">'+formatRupiah(data.item.transaksi_detail_temp_total, 'Rp. ')+'</span></td></tr>'+diskon;
+		            var content = '<tr class="'+ketdiskon+' fadeInLeft animated"><td><button type="button" class="btn btn-dark-info waves-effect btn orange-text m-0 p-0 btn-remove" data-id="'+data.item.transaksi_detail_temp_id+'"><i class="fas fa-times"></i></button></td><td>'+data.item.barang_nama+'<br><span>'+data.item.transaksi_detail_temp_keterangan+'</span></td><td><button type="button" class="btn btn-dark-info waves-effect btn btn-outline-white mr-2 mt-0 ml-0 mb-0 p-1 btn-plusminus" data-ket="minus" data-id="'+data.item.transaksi_detail_temp_id+'" data-idbarang="'+data.item.transaksi_detail_temp_barang_id+'" data-jumlah="'+data.item.transaksi_detail_temp_jumlah+'"><i class="fas fa-minus"></i></button><span class="text_jumlah">'+data.item.transaksi_detail_temp_jumlah+'</span><button type="button" class="btn btn-dark-info waves-effect btn-outline-white mr-0 mt-0 ml-2 mb-0 p-1 btn-plusminus" data-ket="plus" data-id="'+data.item.transaksi_detail_temp_id+'" data-idbarang="'+data.item.transaksi_detail_temp_barang_id+'" data-jumlah="'+data.item.transaksi_detail_temp_jumlah+'"><i class="fas fa-plus"></i></button></td><td><span class="text_total">'+formatRupiah(data.item.transaksi_detail_temp_total, 'Rp. ')+'</span></td></tr>'+diskon;
 		        	$('#subtotal').empty();
 		            $('#subtotal').append(formatRupiah(data.totalordertemp.toString(), 'Rp. '));
 
@@ -404,6 +374,7 @@ if ($kond=='home' || $kond=='') { ?>
                         var id = $(this).data('id');
 
                         var classdiskon = $(this).parent().parent().hasClass("itemdiskon");
+                        console.log(classdiskon+" "+indexitem+" "+$(this).parent().parent())
                         removeItemTemp(id, indexitem, classdiskon);
 					});
 
@@ -477,7 +448,7 @@ if ($kond=='home' || $kond=='') { ?>
                             ketdiskon = '';
                         }
 
-			            var content = '<tr class="'+ketdiskon+'fadeInLeft animated"><td><button type="button" class="btn btn-dark-info waves-effect btn orange-text m-0 p-0 btn-remove" data-id="'+data.item.transaksi_detail_temp_id+'"><i class="fas fa-times"></i></button></td><td>'+data.item.barang_nama+'<br><span>'+data.item.transaksi_detail_temp_keterangan+'</span></td><td><button type="button" class="btn btn-dark-info waves-effect btn btn-outline-white mr-2 mt-0 ml-0 mb-0 p-1 btn-plusminus" data-ket="minus" data-id="'+data.item.transaksi_detail_temp_id+'" data-idbarang="'+data.item.transaksi_detail_temp_barang_id+'" data-jumlah="'+data.item.transaksi_detail_temp_jumlah+'"><i class="fas fa-minus"></i></button><span class="text_jumlah">'+data.item.transaksi_detail_temp_jumlah+'</span><button type="button" class="btn btn-dark-info waves-effect btn-outline-white mr-0 mt-0 ml-2 mb-0 p-1 btn-plusminus" data-ket="plus" data-id="'+data.item.transaksi_detail_temp_id+'" data-idbarang="'+data.item.transaksi_detail_temp_barang_id+'" data-jumlah="'+data.item.transaksi_detail_temp_jumlah+'"><i class="fas fa-plus"></i></button></td><td><span class="text_total">'+formatRupiah(data.item.transaksi_detail_temp_total, 'Rp. ')+'</span></td></tr>'+diskon;
+			            var content = '<tr class="'+ketdiskon+' fadeInLeft animated"><td><button type="button" class="btn btn-dark-info waves-effect btn orange-text m-0 p-0 btn-remove" data-id="'+data.item.transaksi_detail_temp_id+'"><i class="fas fa-times"></i></button></td><td>'+data.item.barang_nama+'<br><span>'+data.item.transaksi_detail_temp_keterangan+'</span></td><td><button type="button" class="btn btn-dark-info waves-effect btn btn-outline-white mr-2 mt-0 ml-0 mb-0 p-1 btn-plusminus" data-ket="minus" data-id="'+data.item.transaksi_detail_temp_id+'" data-idbarang="'+data.item.transaksi_detail_temp_barang_id+'" data-jumlah="'+data.item.transaksi_detail_temp_jumlah+'"><i class="fas fa-minus"></i></button><span class="text_jumlah">'+data.item.transaksi_detail_temp_jumlah+'</span><button type="button" class="btn btn-dark-info waves-effect btn-outline-white mr-0 mt-0 ml-2 mb-0 p-1 btn-plusminus" data-ket="plus" data-id="'+data.item.transaksi_detail_temp_id+'" data-idbarang="'+data.item.transaksi_detail_temp_barang_id+'" data-jumlah="'+data.item.transaksi_detail_temp_jumlah+'"><i class="fas fa-plus"></i></button></td><td><span class="text_total">'+formatRupiah(data.item.transaksi_detail_temp_total, 'Rp. ')+'</span></td></tr>'+diskon;
 
 			        	$('#subtotal').empty();
 			            $('#subtotal').append(formatRupiah(data.totalordertemp.toString(), 'Rp. '));
@@ -651,10 +622,13 @@ if ($kond=='home') { ?>
 		        }
 
             	console.log("remove sukses "+data.totalordertemp);
-				$("#listitem tr").eq(index).remove();
-                if (classdiskon==true) {
-                    $("#listitem tr").eq(index).remove();    
+				if (classdiskon==true) {
+                    $("#listitem tr").eq(index+1).remove();    
+                    console.log("remove diskon sukses ");
                 }
+                $("#listitem tr").eq(index).remove();
+                
+                console.log(index);
 				$('#subtotal').empty();
 	            $('#subtotal').append(formatRupiah(data.totalordertemp.toString(), 'Rp. '));
 

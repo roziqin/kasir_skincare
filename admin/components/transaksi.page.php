@@ -21,6 +21,20 @@
 									    aria-label="Search" id="carimenu">
 									<i class="fas fa-search text-white" aria-hidden="true"></i>
 								</div>
+								<div class="form-inline md-form form-sm mt-2 mb-3 form-search info-color-dark">
+								
+									<select class="mdb-select md-form" searchable="Search here..">
+	 									<option value="" disabled selected>Pilih Member</option>
+	 									<option value="0">Non Member</option>
+					                    <?php
+					                        $sql="SELECT * from member";
+					                        $result=mysqli_query($con,$sql);
+					                        while ($data1=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+					                            echo "<option value='$data1[member_id]'>$data1[member_nama]</option>";
+					                        }
+					                    ?>
+									</select>
+								</div>
 							</div>
 							<div class="col-md-12 text-white mt-3 fadeIn animated" id="listitem">
 								<table class="pt-2 pb-2"></table>
@@ -97,10 +111,11 @@
 
 	<?php include 'partials/footer.php'; ?>
 
-	<?php include 'modals/transaksi.modal.php'; ?>
-	<?php include 'modals/discount.modal.php'; ?>
+	<?php //include 'modals/transaksi.modal.php'; ?>
+	<?php //include 'modals/discount.modal.php'; ?>
 <script type="text/javascript">
 	$(document).ready(function(){
+	    $('.mdb-select').materialSelect();
 
 		var order_type = $('#defaultForm-ordertype').val();
 		if (order_type!='') {
