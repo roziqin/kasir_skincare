@@ -6,13 +6,41 @@ include '../../../include/format_rupiah.php';
 $kond = $_GET['kond'];
 
 if ($kond=='home' || $kond=='') { ?>
+    <h2 class="text-center mt-5 mb-5">Pilih Jenis Item</h2>
+    <div class="row p-3 row-jenis justify-content-md-center">
+    <?php
+        $n=0;
+        $sql="SELECT * from jenis";
+        $query=mysqli_query($con, $sql);
+        while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
+            
+        ?>
+            <div class="col-3 mb-3">
+                <div class="card custom">
+                    <a class="pilihjenis" data-id="<?php echo $data1['jenis_id']; ?>">
+                        <div class="card-body text-center pt-5 pb-5">
+                            <h4><?php echo $data1['jenis_nama']; ?></h4>
+                        </div>
+                    </a>
+                </div>
+            </div>
 
+        <?php
+        $n++;
+
+        }
+
+    ?>
+
+    </div>
+
+<?php } elseif ($kond=='item') { ?>
 	<div class="classic-tabs">
 		<ul class="nav tabs-white border-bottom" id="myClassicTab" role="tablist">
 			<?php
-                //$jenisid = $_GET['jenisid'];
+                $jenisid = $_GET['jenisid'];
                 $n=0;
-                $sql="SELECT * from kategori ORDER BY kategori_id";
+                $sql="SELECT * from kategori WHERE kategori_jenis='$jenisid' ORDER BY kategori_id";
                 $query=mysqli_query($con, $sql);
                 while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
                     if ($n==0) {
@@ -40,7 +68,7 @@ if ($kond=='home' || $kond=='') { ?>
 		<div class="tab-content" id="myClassicTabContent">
 			<?php
                 $n=0;
-                $sql="SELECT * from kategori ORDER BY kategori_id";
+                $sql="SELECT * from kategori WHERE kategori_jenis='$jenisid' ORDER BY kategori_id";
                 $query=mysqli_query($con, $sql);
                 while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
                     if ($n==0) {
@@ -52,7 +80,7 @@ if ($kond=='home' || $kond=='') { ?>
                 ?>
                 	<div class="tab-pane fade <?php echo $ket; ?>" id="<?php echo $data1['kategori_slug']; ?>" role="tabpanel" aria-labelledby="<?php echo $data1['kategori_slug']; ?>-tab">
                         <div class="row">
-                            <table id="example-<?php echo $data1['kategori_id']; ?>" class="table table-striped table-bordered fadeInLeft slow animated" style="width:100%">
+                            <table id="example-<?php echo $data1['kategori_id']; ?>" class="table table-striped table-bordered fadeIn animated" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>nama item</th>
@@ -329,7 +357,7 @@ if ($kond=='home' || $kond=='') { ?>
                     var diskon = '';
                     var ketdiskon = '';
                     if (data.item.transaksi_detail_temp_diskon!=0) {
-                        diskon = '<tr class="fadeInLeft animated diskon"><td></td><td>Diskon</td><td></td><td><span class="text_total">Rp. '+formatRupiah(data.item.transaksi_detail_temp_diskon)+'</span></td></tr>';
+                        diskon = '<tr class="fadeInLeft animated diskon"><td></td><td>Diskon</td><td></td><td><span class="text_total">Rp. '+formatRupiah((data.item.transaksi_detail_temp_jumlah*data.item.transaksi_detail_temp_diskon).toString())+'</span></td></tr>';
                         ketdiskon = 'itemdiskon';
                     } else {
                         diskon = '';
@@ -372,7 +400,11 @@ if ($kond=='home' || $kond=='') { ?>
 					$('.container__load').load('components/content/transaksi.content.php?kond=');
 
 					$('.btn-remove').on('click',function(){
-						console.log($(this).parent().parent().index());
+						var indexitem = $(this).parent().parent().index();
+                        var id = $(this).data('id');
+
+                        var classdiskon = $(this).parent().parent().hasClass("itemdiskon");
+                        removeItemTemp(id, indexitem, classdiskon);
 					});
 
 
@@ -438,7 +470,7 @@ if ($kond=='home' || $kond=='') { ?>
                         var diskon = '';
                         var ketdiskon = '';
                         if (data.item.transaksi_detail_temp_diskon!=0) {
-                            diskon = '<tr class="fadeInLeft animated diskon"><td></td><td>Diskon</td><td></td><td><span class="text_total">Rp. '+formatRupiah(data.item.transaksi_detail_temp_diskon)+'</span></td></tr>';
+                            diskon = '<tr class="fadeInLeft animated diskon"><td></td><td>Diskon</td><td></td><td><span class="text_total">Rp. '+formatRupiah((data.item.transaksi_detail_temp_jumlah*data.item.transaksi_detail_temp_diskon).toString())+'</span></td></tr>';
                             ketdiskon = 'itemdiskon';
                         } else {
                             diskon = '';
@@ -484,7 +516,11 @@ if ($kond=='home' || $kond=='') { ?>
 						$('.container__load').load('components/content/transaksi.content.php?kond=');
 
 						$('.btn-remove').on('click',function(){
-							console.log($(this).parent().parent().index());
+							var indexitem = $(this).parent().parent().index();
+                            var id = $(this).data('id');
+
+                            var classdiskon = $(this).parent().parent().hasClass("itemdiskon");
+                            removeItemTemp(id, indexitem, classdiskon);
 						});
 
 						$('.btn-plusminus').on('click',function(){
@@ -532,7 +568,7 @@ if ($kond=='home') { ?>
 				for (var i in data) {
 
                     if (data[i].transaksi_detail_temp_diskon!=0) {
-                        diskon = '<tr class="fadeInLeft animated diskon"><td></td><td>Diskon</td><td></td><td><span class="text_total">Rp. '+formatRupiah(data[i].transaksi_detail_temp_diskon)+'</span></td></tr>';
+                        diskon = '<tr class="diskon"><td></td><td>Diskon</td><td></td><td><span class="text_total">Rp. '+formatRupiah((data[i].transaksi_detail_temp_jumlah*data[i].transaksi_detail_temp_diskon).toString())+'</span></td></tr>';
                         ketdiskon = 'itemdiskon';
                     } else {
                         diskon = '';
@@ -575,8 +611,9 @@ if ($kond=='home') { ?>
 				$('.btn-remove').on('click',function(){
 					var indexitem = $(this).parent().parent().index();
 					var id = $(this).data('id');
+                    var classdiskon = $(this).parent().parent().hasClass("itemdiskon");
+					removeItemTemp(id, indexitem, classdiskon);
 
-					removeItemTemp(id, indexitem);
 				});
 
 				$('.btn-plusminus').on('click',function(){
@@ -596,7 +633,7 @@ if ($kond=='home') { ?>
 <?php } ?>
 
 <script type="text/javascript">
-	function removeItemTemp(id, index) {
+	function removeItemTemp(id, index, classdiskon) {
 		$.ajax({
 			type:'POST',
 	        url: "controllers/transaksi.ctrl.php?ket=removeitem",
@@ -615,6 +652,9 @@ if ($kond=='home') { ?>
 
             	console.log("remove sukses "+data.totalordertemp);
 				$("#listitem tr").eq(index).remove();
+                if (classdiskon==true) {
+                    $("#listitem tr").eq(index).remove();    
+                }
 				$('#subtotal').empty();
 	            $('#subtotal').append(formatRupiah(data.totalordertemp.toString(), 'Rp. '));
 

@@ -16,30 +16,11 @@
 								<span class="text-white pt-4 float-right" id="datetime"></span>
 								<div class="clear"></div>
 								<!-- Search form -->
-								<div class="form-inline md-form form-sm mt-2 mb-0 form-search info-color-dark">
+								<div class="form-inline md-form form-sm mt-2 mb-3 form-search info-color-dark">
 									<input class="form-control form-control-sm text-white " type="text" placeholder="Cari Menu"
 									    aria-label="Search" id="carimenu">
 									<i class="fas fa-search text-white" aria-hidden="true"></i>
 								</div>
-								<!-- End Search form -->
-								
-								<!-- Search form 
-								<div class="form-inline md-form form-sm mt-0 mb-3 form-member warning-color">
-									<div class="row" style="width: 100%;">
-										<div class="col-md-10">
-											<select class="select2 md-form" id="defaultForm-gender" name="ip-gender" style="display: inherit!important; width: 100%;">
-							                    <option value="" disabled selected>Pilih Gender</option>
-							                    <option value="Perempuan">Perempuan</option>
-							                    <option value="Laki-laki">Laki-laki</option>
-							                </select>
-										</div>
-										<div class="col-md-2">ok</div>
-									</div>
-								</div>
-
-								End Search form -->
-								
-								
 							</div>
 							<div class="col-md-12 text-white mt-3 fadeIn animated" id="listitem">
 								<table class="pt-2 pb-2"></table>
@@ -85,22 +66,24 @@
 							    <input type="hidden" id="defaultForm-jenisdiskon" name="ip-jenisdiskon" value="">
 							    <input type="hidden" id="defaultForm-jumlahdiskon" name="ip-jumlahdiskon" value="0">
 								<div class="row pt-0 pb-2">
-									<div class="col-md-8 btn-bottom">
+									<div class="col-md-6 btn-bottom">
 										<div class="row">
-											<div class="col-md-4 p-0">
-												<button type="button" class="btn btn-white waves-effect text-danger" id="batal"><i class="fas fa-trash d-block mr-2"></i>Batal</button>
+											<div class="col-md-6 p-0">
+												<button type="button" class="btn btn-white waves-effect text-danger" id="batal"><i class="fas fa-trash m-0"></i>Batal</button>
 											</div>
-											<div class="col-md-4 p-0">
-												<a href="print/nota-temp.print.php?ordertype=<?php echo $_SESSION['order_type']; ?>" class="btn btn-white waves-effect text-warning" id="print" target="_blank"><i class="fas fa-print d-block mr-2"></i>Print</a>
+											<div class="col-md-6 p-0">
+												<a href="print/nota-temp.print.php?ordertype=<?php echo $_SESSION['order_type']; ?>" class="btn btn-white waves-effect text-warning" id="print" target="_blank"><i class="fas fa-print m-0"></i>Print</a>
 											</div>
+											<!--
 											<div class="col-md-4 p-0">
-												<button type="button" class="btn btn-white waves-effect text-info" id="discount" data-toggle="modal" data-target="#modaldiscount"><i class="fas fa-tag d-block mr-2"></i>Discount</button>
+												<button type="button" class="btn btn-white waves-effect text-info" id="discount" data-toggle="modal" data-target="#modaldiscount"><i class="fas fa-tag m-0"></i>Discount</button>
 											</div>
+											-->
 										</div>
 
 									</div>
-									<div class="col-md-4 btn-bottom pr-1">
-										<button type="button" class="btn btn-white waves-effect text-info" id="bayar" data-toggle="modal" data-target="#modaltransaksi" disabled><i class="fas fa-money-bill d-block mr-2"></i>Bayar</button>
+									<div class="col-md-6 btn-bottom pr-1">
+										<button type="button" class="btn btn-white waves-effect text-info" id="bayar" data-toggle="modal" data-target="#modaltransaksi"><i class="fas fa-money-bill m-0"></i>Bayar</button>
 									</div>
 								</div>
 								
@@ -116,10 +99,9 @@
 
 	<?php include 'modals/transaksi.modal.php'; ?>
 	<?php include 'modals/discount.modal.php'; ?>
-	<script type="text/javascript" src="../assets/js/select2/select2.full.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		$(".select2").select2();
+
 		var order_type = $('#defaultForm-ordertype').val();
 		if (order_type!='') {
 			$('#'+order_type).attr("disabled","true");
