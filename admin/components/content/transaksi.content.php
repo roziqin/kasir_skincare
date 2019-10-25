@@ -6,41 +6,13 @@ include '../../../include/format_rupiah.php';
 $kond = $_GET['kond'];
 
 if ($kond=='home' || $kond=='') { ?>
-    <h2 class="text-center mt-5 mb-5">Pilih Jenis Item</h2>
-    <div class="row p-3 row-jenis justify-content-md-center">
-    <?php
-        $n=0;
-        $sql="SELECT * from jenis";
-        $query=mysqli_query($con, $sql);
-        while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
-            
-        ?>
-            <div class="col-3 mb-3">
-                <div class="card custom">
-                    <a class="pilihjenis" data-id="<?php echo $data1['jenis_id']; ?>">
-                        <div class="card-body text-center pt-5 pb-5">
-                            <h4><?php echo $data1['jenis_nama']; ?></h4>
-                        </div>
-                    </a>
-                </div>
-            </div>
 
-        <?php
-        $n++;
-
-        }
-
-    ?>
-
-    </div>
-
-<?php } elseif ($kond=='item') { ?>
 	<div class="classic-tabs">
 		<ul class="nav tabs-white border-bottom" id="myClassicTab" role="tablist">
 			<?php
-                $jenisid = $_GET['jenisid'];
+                //$jenisid = $_GET['jenisid'];
                 $n=0;
-                $sql="SELECT * from kategori WHERE kategori_jenis='$jenisid' ORDER BY kategori_id";
+                $sql="SELECT * from kategori ORDER BY kategori_id";
                 $query=mysqli_query($con, $sql);
                 while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
                     if ($n==0) {
@@ -68,7 +40,7 @@ if ($kond=='home' || $kond=='') { ?>
 		<div class="tab-content" id="myClassicTabContent">
 			<?php
                 $n=0;
-                $sql="SELECT * from kategori WHERE kategori_jenis='$jenisid' ORDER BY kategori_id";
+                $sql="SELECT * from kategori ORDER BY kategori_id";
                 $query=mysqli_query($con, $sql);
                 while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
                     if ($n==0) {

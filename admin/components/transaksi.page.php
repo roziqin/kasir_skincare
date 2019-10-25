@@ -16,11 +16,30 @@
 								<span class="text-white pt-4 float-right" id="datetime"></span>
 								<div class="clear"></div>
 								<!-- Search form -->
-								<div class="form-inline md-form form-sm mt-2 mb-3 form-search info-color-dark">
+								<div class="form-inline md-form form-sm mt-2 mb-0 form-search info-color-dark">
 									<input class="form-control form-control-sm text-white " type="text" placeholder="Cari Menu"
 									    aria-label="Search" id="carimenu">
 									<i class="fas fa-search text-white" aria-hidden="true"></i>
 								</div>
+								<!-- End Search form -->
+								
+								<!-- Search form 
+								<div class="form-inline md-form form-sm mt-0 mb-3 form-member warning-color">
+									<div class="row" style="width: 100%;">
+										<div class="col-md-10">
+											<select class="select2 md-form" id="defaultForm-gender" name="ip-gender" style="display: inherit!important; width: 100%;">
+							                    <option value="" disabled selected>Pilih Gender</option>
+							                    <option value="Perempuan">Perempuan</option>
+							                    <option value="Laki-laki">Laki-laki</option>
+							                </select>
+										</div>
+										<div class="col-md-2">ok</div>
+									</div>
+								</div>
+
+								End Search form -->
+								
+								
 							</div>
 							<div class="col-md-12 text-white mt-3 fadeIn animated" id="listitem">
 								<table class="pt-2 pb-2"></table>
@@ -97,9 +116,10 @@
 
 	<?php include 'modals/transaksi.modal.php'; ?>
 	<?php include 'modals/discount.modal.php'; ?>
+	<script type="text/javascript" src="../assets/js/select2/select2.full.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-
+		$(".select2").select2();
 		var order_type = $('#defaultForm-ordertype').val();
 		if (order_type!='') {
 			$('#'+order_type).attr("disabled","true");
