@@ -4,107 +4,119 @@ $con = mysqli_connect("localhost","root","","salon_kecantikan");
 include '../../../include/format_rupiah.php';
 
 $kond = $_GET['kond'];
+$userid = $_SESSION['login_user'];
 
-if ($kond=='home' || $kond=='') { ?>
-	<div class="classic-tabs">
-		<ul class="nav tabs-white border-bottom" id="myClassicTab" role="tablist">
-			<?php
-                $n=0;
-                $sql="SELECT * from kategori ORDER BY kategori_id";
-                $query=mysqli_query($con, $sql);
-                while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
-                    if ($n==0) {
-                        $ket = 'active show';
-                        $ket1 = 'true';
-                        $ket2 = 'ml-0';
-                    } else {
-                        $ket = '';
-                        $ket1 = 'false';
-                        $ket2 = '';
+$q= "SELECT * from member_temp where member_temp_user_id='$userid' ORDER BY member_temp_id DESC LIMIT 1";
+$r=mysqli_query($con, $q);
+$d=mysqli_fetch_assoc($r);
 
-                    }
-                ?>
-					<li class="nav-item <?php echo $ket2; ?>">
-						<a class="nav-link  waves-light <?php echo $ket; ?>" id="profile-tab-classic" data-toggle="tab" href="#<?php echo $data1['kategori_slug']; ?>"
-						role="tab" aria-controls="<?php echo $data1['kategori_slug']; ?>" aria-selected="<?php echo $ket1; ?>"><?php echo $data1['kategori_nama']; ?></a>
-					</li>
+if ($kond=='home' || $kond=='') { 
+    if ($d==null) { ?>
+        <div class="row p-3 row-jumlah justify-content-md-center">
+            <div class="col-md-6 mt-5">
+                <h3 class="text-center mb-5">Pilih Member</h3>
+                <form method="post" class="form-member">
+                    <div class="md-form mb-3">
+                        <select class="mdb-select md-form" id="defaultForm-member" name="ip-member" searchable="Search here..">
+                            <option value="" disabled selected>Pilih Member</option>
+                            <option value="0">Non Member</option>
+                            <?php
+                                $sql="SELECT * from member";
+                                $result=mysqli_query($con,$sql);
+                                while ($data1=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+                                    echo "<option value='$data1[member_id]'>$data1[member_nama]</option>";
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary pilihmember float-right">Proses</button>
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('.mdb-select').materialSelect();
+            });
+        </script>
+    <?php } else { ?>
+        <div class="classic-tabs">
+            <ul class="nav tabs-white border-bottom" id="myClassicTab" role="tablist">
                 <?php
-                $n++;
+                    $n=0;
+                    $sql="SELECT * from kategori ORDER BY kategori_id";
+                    $query=mysqli_query($con, $sql);
+                    while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
+                        if ($n==0) {
+                            $ket = 'active show';
+                            $ket1 = 'true';
+                            $ket2 = 'ml-0';
+                        } else {
+                            $ket = '';
+                            $ket1 = 'false';
+                            $ket2 = '';
 
-                }
-
-            ?>
-		</ul>
-		<div class="tab-content" id="myClassicTabContent">
-			<?php
-                $n=0;
-                $sql="SELECT * from kategori ORDER BY kategori_id";
-                $query=mysqli_query($con, $sql);
-                while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
-                    if ($n==0) {
-                        $ket='show active';
-                    } else {
-                        $ket='';
+                        }
+                    ?>
+                        <li class="nav-item <?php echo $ket2; ?>">
+                            <a class="nav-link  waves-light <?php echo $ket; ?>" id="profile-tab-classic" data-toggle="tab" href="#<?php echo $data1['kategori_slug']; ?>"
+                            role="tab" aria-controls="<?php echo $data1['kategori_slug']; ?>" aria-selected="<?php echo $ket1; ?>"><?php echo $data1['kategori_nama']; ?></a>
+                        </li>
+                    <?php
+                    $n++;
 
                     }
+
                 ?>
-                	<div class="tab-pane fade <?php echo $ket; ?>" id="<?php echo $data1['kategori_slug']; ?>" role="tabpanel" aria-labelledby="<?php echo $data1['kategori_slug']; ?>-tab">
-                        <div class="row">
-                            <table id="example-<?php echo $data1['kategori_id']; ?>" class="table table-striped table-bordered fadeIn animated" style="width:100%">
-                                <thead>
-                                    <tr>
-                                        <th>nama item</th>
-                                        <th>stok</th>
-                                        <th>diskon</th>
-                                        <th>harga</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                <?php
-                                    $sqlbarang="SELECT * from barang where barang_kategori='$data1[kategori_id]'";
-                                    $querybarang=mysqli_query($con, $sqlbarang);
-                                    while ($databarang=mysqli_fetch_array($querybarang, MYSQLI_ASSOC)) {
-                                        if ($databarang['barang_image']=='') {
-                                            $image = 'default.jpg';
-                                        } else {
-                                            $image = $databarang['barang_image'];
-                                        }
+            </ul>
+            <div class="tab-content" id="myClassicTabContent">
+                <?php
+                    $n=0;
+                    $sql="SELECT * from kategori ORDER BY kategori_id";
+                    $query=mysqli_query($con, $sql);
+                    while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
+                        if ($n==0) {
+                            $ket='show active';
+                        } else {
+                            $ket='';
 
-                                        if ($databarang['barang_disable']==1) {
-                                            $disable = 'disable';
-                                        } else {
-                                            $disable = '';
-                                        }
+                        }
+                    ?>
+                        <div class="tab-pane fade <?php echo $ket; ?>" id="<?php echo $data1['kategori_slug']; ?>" role="tabpanel" aria-labelledby="<?php echo $data1['kategori_slug']; ?>-tab">
+                            <div class="row">
+                                <table id="example-<?php echo $data1['kategori_id']; ?>" class="table table-striped table-bordered fadeIn animated" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>nama item</th>
+                                            <th>stok</th>
+                                            <th>diskon</th>
+                                            <th>harga</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php
+                                        $sqlbarang="SELECT * from barang where barang_kategori='$data1[kategori_id]'";
+                                        $querybarang=mysqli_query($con, $sqlbarang);
+                                        while ($databarang=mysqli_fetch_array($querybarang, MYSQLI_ASSOC)) {
+                                            if ($databarang['barang_image']=='') {
+                                                $image = 'default.jpg';
+                                            } else {
+                                                $image = $databarang['barang_image'];
+                                            }
 
-                                        $harga = $databarang['barang_harga_jual'];
+                                            if ($databarang['barang_disable']==1) {
+                                                $disable = 'disable';
+                                            } else {
+                                                $disable = '';
+                                            }
 
-                                        if ($databarang['barang_set_stok']==0 && $harga!=0) {
-                                            ?>
-                                            <tr>
-                                                <td><strong class=""><?php echo $databarang['barang_nama']; ?></strong></td>
-                                                <td> - </td>
-                                                <td><?php echo $databarang['barang_diskon']; ?>%</td>
-                                                <td>Rp. <?php echo format_rupiah($harga); ?></td>
-                                                <td>
-                                                    <button class="btn btn-primary tambahmenu m-0 mr-1" data-id="<?php echo $databarang['barang_id']; ?>"><i class="fas fa-magic mr-1"></i> Tambah</button>
-                                                    <button class="btn btn-default pilihmenu m-0" data-id="<?php echo $databarang['barang_id']; ?>">Pilih <i class="fas fa-magic ml-1"></i></button>
-                                                </td>
-                                            </tr>
-                                            <?php
-                                            
-                                        } elseif ($databarang['barang_set_stok']!=0 && $harga!=0) {
-                                            if ($databarang['barang_stok']!=0) {
-                                                if ($databarang['barang_stok']<$databarang['barang_batas_stok']) {
-                                                    $stok_status="warning";
-                                                } else {
-                                                    $stok_status="";
-                                                }
-                                                
+                                            $harga = $databarang['barang_harga_jual'];
+
+                                            if ($databarang['barang_set_stok']==0 && $harga!=0) {
                                                 ?>
                                                 <tr>
                                                     <td><strong class=""><?php echo $databarang['barang_nama']; ?></strong></td>
-                                                    <td><span class="stok <?php echo $stok_status; ?>"><?php echo $databarang['barang_stok']; ?></span></td>
+                                                    <td> - </td>
                                                     <td><?php echo $databarang['barang_diskon']; ?>%</td>
                                                     <td>Rp. <?php echo format_rupiah($harga); ?></td>
                                                     <td>
@@ -113,35 +125,57 @@ if ($kond=='home' || $kond=='') { ?>
                                                     </td>
                                                 </tr>
                                                 <?php
-                                            } else {
-                                                ?>
-                                                <tr>
-                                                    <td><strong class=""><?php echo $databarang['barang_nama']; ?></strong></td>
-                                                    <td><span class="stok <?php echo $stok_status; ?>">0</span></td>
-                                                    <td><?php echo $databarang['barang_diskon']; ?>%</td>
-                                                    <td>Rp. <?php echo format_rupiah($harga); ?></td>
-                                                    <td></td>
-                                                </tr>
-                                                <?php
-                                            }
-                                            
-                                        }    
-                                    }
-                                ?>
-                                </tbody>
-                            </table>
+                                                
+                                            } elseif ($databarang['barang_set_stok']!=0 && $harga!=0) {
+                                                if ($databarang['barang_stok']!=0) {
+                                                    if ($databarang['barang_stok']<$databarang['barang_batas_stok']) {
+                                                        $stok_status="warning";
+                                                    } else {
+                                                        $stok_status="";
+                                                    }
+                                                    
+                                                    ?>
+                                                    <tr>
+                                                        <td><strong class=""><?php echo $databarang['barang_nama']; ?></strong></td>
+                                                        <td><span class="stok <?php echo $stok_status; ?>"><?php echo $databarang['barang_stok']; ?></span></td>
+                                                        <td><?php echo $databarang['barang_diskon']; ?>%</td>
+                                                        <td>Rp. <?php echo format_rupiah($harga); ?></td>
+                                                        <td>
+                                                            <button class="btn btn-primary tambahmenu m-0 mr-1" data-id="<?php echo $databarang['barang_id']; ?>"><i class="fas fa-magic mr-1"></i> Tambah</button>
+                                                            <button class="btn btn-default pilihmenu m-0" data-id="<?php echo $databarang['barang_id']; ?>">Pilih <i class="fas fa-magic ml-1"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                    <?php
+                                                } else {
+                                                    ?>
+                                                    <tr>
+                                                        <td><strong class=""><?php echo $databarang['barang_nama']; ?></strong></td>
+                                                        <td><span class="stok <?php echo $stok_status; ?>">0</span></td>
+                                                        <td><?php echo $databarang['barang_diskon']; ?>%</td>
+                                                        <td>Rp. <?php echo format_rupiah($harga); ?></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                                
+                                            }    
+                                        }
+                                    ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                    </div>
-                    
-                <?php
-                $n++;
-                }
+                        
+                    <?php
+                    $n++;
+                    }
 
-            ?>
-		</div>
+                ?>
+            </div>
 
-	</div>
-
+        </div>
+    <?php } ?>
+	
 <?php } elseif ($kond=='search') { ?>
 	
     <div class="row p-3">
@@ -233,7 +267,7 @@ if ($kond=='home' || $kond=='') { ?>
         ?>
 	    </div>
     </div>
-<?php }  elseif ($kond=='jumlah') { ?>
+<?php } elseif ($kond=='jumlah') { ?>
     <div class="row p-3 row-jumlah justify-content-md-center">
     	<div class="col-md-6 mt-5">
     		<h3 class="text-center mb-5">Input Jumlah</h3>
@@ -251,12 +285,39 @@ if ($kond=='home' || $kond=='') { ?>
 	    	</form>
 	    </div>
     </div>
+<?php } elseif ($kond=='kembalian') { ?>
+    <div class="row p-3 row-jumlah justify-content-md-center">
+        <div class="col-md-6 mt-5">
+            <h3 class="text-center mb-5">Jumlah Kembalian</h3>
+            <h1 class="text-center mt-5 mb-3" id="jumlahkembalian">Rp. <?php echo format_rupiah($_SESSION['kembalian']); ?></h1>
+            <button class="btn btn-primary transaksibaru float-right">Transaksi Baru</button>
+        </div>
+    </div>
 <?php } ?>
 
 
 <?php if ($kond=='home' || $kond=='search' || $kond=='item' || $kond=='' ) { ?>
 
 <script type="text/javascript">
+    $('.pilihmember').on('click',function(e){
+        e.preventDefault();
+        var idmember = $('#defaultForm-member').val();
+
+
+        $.ajax({
+            type:'POST',
+            url: "controllers/transaksi.ctrl.php?ket=pilihmember",
+            dataType: "json",
+            data:{
+                idmember:idmember
+            },
+            success:function(data){
+                window.location.reload();
+                $('.container__load').load('components/content/transaksi.content.php?kond=home');
+            }
+        }); 
+    });
+
 	for (var i = 0; i < 30 ; i++) {
         $('#example-'+i).DataTable({
           "paging": true,
@@ -389,16 +450,20 @@ if ($kond=='home' || $kond=='') { ?>
 						plusminusItem(id, idbarang, indexitem, ket, jumlah);
 					});
             	}
-            	/*
-				*/
-
-
             }
         });          
 	});
 
 
 </script>
+
+<?php } elseif ($kond=='kembalian') { ?>
+    <script type="text/javascript">
+        $('.transaksibaru').on('click',function(){
+            window.location.reload();
+            $('.container__load').load('components/content/transaksi.content.php?kond=home');
+        });
+    </script>
 
 <?php } elseif ($kond=='jumlah') { ?>
 
@@ -599,6 +664,19 @@ if ($kond=='home') { ?>
 	        }
 	    });
 
+        $.ajax({
+            type:'POST',
+            url:'api/view.api.php?func=list-member-temp',
+            dataType: "json",
+            success:function(data){
+                $('#listmember table').empty();
+                if (data!='') {
+                    $('#listmember table').append('<tr><td><h6>Nama Member: '+data[0].member_nama+'</h6></td><td class="text-right"><h6>Alamat Member: '+data[0].member_alamat+'</h6></td></tr>');
+                    $('#bayar').removeAttr("disabled");
+                }
+            }
+        });
+
 	</script>
 
 <?php } ?>
@@ -679,7 +757,40 @@ if ($kond=='home') { ?>
 		        }
 
             	console.log("plusminus sukses "+data.totalordertemp);
+                if (data.totalordertemp.toString()=="Stok Kurang") {
+                    $.confirm({
+                          title: 'Stok Kurang',
+                          content: 'Jumlah stok tidak mencukupi',
+                          buttons: {
+                              confirm: {
+                                  text: 'Close',
+                                  btnClass: 'col-md-12 btn btn-primary',
+                                  action: function(){
+                                      
+                                      
+                                  }
+                              }
+                          }
+                    });
+                } else {
+                    $('.container__load').load('components/content/transaksi.content.php?kond=home');
+                }
+
             	/*
+                $.confirm({
+                      title: 'Stok Kurang',
+                      content: 'Jumlah stok tidak mencukupi',
+                      buttons: {
+                          confirm: {
+                              text: 'Close',
+                              btnClass: 'col-md-12 btn btn-primary',
+                              action: function(){
+                                  
+                                  
+                              }
+                          }
+                      }
+                });
             	if (data.jumlahordertemp==0) {
             		$("#listitem tr").eq(index).remove();
             	} else {
@@ -708,7 +819,6 @@ if ($kond=='home') { ?>
 				$('#total').append(formatRupiah(total.toString(), 'Rp. '));
 				*/
 
-				$('.container__load').load('components/content/transaksi.content.php?kond=home');
 				
             }
         });

@@ -488,6 +488,11 @@ main.transaksi {
 	padding: 10px 0;
 }
 
+.transaksi #listitem table .diskon td,
+.transaksi #listitem table .diskon td span {
+	font-size: .9rem;
+}
+
 .transaksi #listitem table td span{
 	font-size: .98rem;
 }

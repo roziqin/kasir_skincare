@@ -15,26 +15,16 @@
 								<h3 class="text-white pt-3 float-left">Order List</h3>
 								<span class="text-white pt-4 float-right" id="datetime"></span>
 								<div class="clear"></div>
-								<!-- Search form -->
-								<div class="form-inline md-form form-sm mt-2 mb-3 form-search info-color-dark">
+								<!-- Search form 
+								<div class="form-inline md-form form-sm mt-2 mb-2 form-search info-color-dark">
 									<input class="form-control form-control-sm text-white " type="text" placeholder="Cari Menu"
 									    aria-label="Search" id="carimenu">
 									<i class="fas fa-search text-white" aria-hidden="true"></i>
 								</div>
-								<div class="form-inline md-form form-sm mt-2 mb-3 form-search info-color-dark">
-								
-									<select class="mdb-select md-form" searchable="Search here..">
-	 									<option value="" disabled selected>Pilih Member</option>
-	 									<option value="0">Non Member</option>
-					                    <?php
-					                        $sql="SELECT * from member";
-					                        $result=mysqli_query($con,$sql);
-					                        while ($data1=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
-					                            echo "<option value='$data1[member_id]'>$data1[member_nama]</option>";
-					                        }
-					                    ?>
-									</select>
-								</div>
+								-->
+							</div>
+							<div class="col-md-12 text-white mt-0 fadeIn animated info-color-dark pt-3 pb-1" id="listmember">
+								<table style="width: 100%;"></table>
 							</div>
 							<div class="col-md-12 text-white mt-3 fadeIn animated" id="listitem">
 								<table class="pt-2 pb-2"></table>
@@ -80,24 +70,24 @@
 							    <input type="hidden" id="defaultForm-jenisdiskon" name="ip-jenisdiskon" value="">
 							    <input type="hidden" id="defaultForm-jumlahdiskon" name="ip-jumlahdiskon" value="0">
 								<div class="row pt-0 pb-2">
-									<div class="col-md-6 btn-bottom">
+									<div class="col-md-8 btn-bottom">
 										<div class="row">
-											<div class="col-md-6 p-0">
+											<div class="col-md-4 p-0">
 												<button type="button" class="btn btn-white waves-effect text-danger" id="batal"><i class="fas fa-trash m-0"></i>Batal</button>
 											</div>
-											<div class="col-md-6 p-0">
+											<div class="col-md-4 p-0">
 												<a href="print/nota-temp.print.php?ordertype=<?php echo $_SESSION['order_type']; ?>" class="btn btn-white waves-effect text-warning" id="print" target="_blank"><i class="fas fa-print m-0"></i>Print</a>
 											</div>
-											<!--
+											
 											<div class="col-md-4 p-0">
 												<button type="button" class="btn btn-white waves-effect text-info" id="discount" data-toggle="modal" data-target="#modaldiscount"><i class="fas fa-tag m-0"></i>Discount</button>
 											</div>
-											-->
+											
 										</div>
 
 									</div>
-									<div class="col-md-6 btn-bottom pr-1">
-										<button type="button" class="btn btn-white waves-effect text-info" id="bayar" data-toggle="modal" data-target="#modaltransaksi"><i class="fas fa-money-bill m-0"></i>Bayar</button>
+									<div class="col-md-4 btn-bottom pr-1">
+										<button type="button" class="btn btn-white waves-effect text-info" id="bayar" data-toggle="modal" data-target="#modaltransaksi" disabled="true"><i class="fas fa-money-bill m-0"></i>Bayar</button>
 									</div>
 								</div>
 								
@@ -111,19 +101,25 @@
 
 	<?php include 'partials/footer.php'; ?>
 
-	<?php //include 'modals/transaksi.modal.php'; ?>
-	<?php //include 'modals/discount.modal.php'; ?>
+	<?php include 'modals/transaksi.modal.php'; ?>
+	<?php include 'modals/discount.modal.php'; ?>
 <script type="text/javascript">
 	$(document).ready(function(){
-	    $('.mdb-select').materialSelect();
 
-		var order_type = $('#defaultForm-ordertype').val();
-		if (order_type!='') {
-			$('#'+order_type).attr("disabled","true");
-			$('#bayar').removeAttr("disabled");
-		} else {
-			$('#bayar').attr("disabled","true");
-		}
+		$.ajax({
+            type:'POST',
+            url:'api/view.api.php?func=list-member-temp',
+            dataType: "json",
+            success:function(data){
+                $('#listmember table').empty();
+                if (data!='') {
+					$('#bayar').removeAttr("disabled");
+                } else {
+					$('#bayar').attr("disabled","true");
+
+                }
+            }
+        });
 
 	    $('.ordertype').on('click',function(){
 			var id = $(this).data('id');
@@ -149,9 +145,7 @@
             });
 	    });
 
-		if (order_type=='dinein') {
-
-		}
+		
 		setInterval(function(){ 
 			$('#datetime').empty(); 
 			$('#datetime').append(moment(new Date()).format('ddd MMM DD YYYY | HH:mm:ss '));
@@ -197,9 +191,8 @@
 		        	$('#listitem table').empty();
 		        	$('#subtotal').empty();
 		        	$('#subtotal').append('Rp. 0');
-					$('.ordertype').removeAttr("disabled");
-                	$('#defaultForm-ordertype').val('');
 					$('#bayar').attr("disabled","true");
+					$('#listmember table').empty();
                 }
             });
 		});
@@ -208,6 +201,7 @@
 		$('#bayar').on('click',function(){
 		    $("#totaltransaksi").empty();
 		    $("#totaltransaksi").append($("#total").text());
+        	$('#defaultForm-totalmodal').val($("#defaultForm-total").val());
 
 
 		    $('.btn.paytype').on('click',function(){
@@ -223,9 +217,11 @@
 				if (id=='cash') {
 					$('#price').removeAttr("disabled");
 					$('#price').val('');
+                  	$("#modaltransaksi label").removeClass("active");
 				} else {
+                  	$("#modaltransaksi label").addClass("active");
+					$('#price').val(formatCurrency($('#defaultForm-totalmodal').val().toString(), ''));
 					$('#price').attr("disabled","true");
-					$('#price').val(0);
 				}
 
 		    });

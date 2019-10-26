@@ -2,6 +2,7 @@
 include '../../config/database.php';
 session_start();
 $bln=date('Y-m');
+$user = $_SESSION['login_user'];
 
 $func = $_GET['func'];
 
@@ -54,8 +55,11 @@ if ($func=='dasboard-omset') {
 	$query = "SELECT * from barang where barang_id='$id'";
 
 } elseif ($func=='list-transaksi-temp') {
-    $user = $_SESSION['login_user'];
     $query="SELECT * from transaksi_detail_temp, barang, kategori where transaksi_detail_temp_barang_id=barang_id and kategori_id=barang_kategori and transaksi_detail_temp_user='$user' ORDER BY transaksi_detail_temp_id";
+} elseif ($func=='list-member-temp') {
+
+    $query="SELECT * from member_temp, member, users where  member_temp_member_id=member_id and member_temp_user_id=id and member_temp_user_id='$user' ORDER BY member_temp_id DESC LIMIT 1";
+
 } elseif ($func=='laporan-omset') {
 	
     
