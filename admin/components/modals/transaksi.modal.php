@@ -87,7 +87,9 @@
             processData: false,
             contentType: false,
             success: function(data) {
-              console.log(data)
+              console.log(data);
+            
+              
               $('.container__load').load('components/content/transaksi.content.php?kond=kembalian');
               $('#listitem table').empty();
               $('#subtotal').empty();
@@ -100,6 +102,8 @@
               $('.text-jumlahdiskon').empty();
               $('#bayar').attr("disabled","true");
               $('#listmember table').empty();
+
+              
             }
           });
           

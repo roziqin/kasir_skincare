@@ -19,9 +19,8 @@ if ($kond=='home' || $kond=='') {
                     <div class="md-form mb-3">
                         <select class="mdb-select md-form" id="defaultForm-member" name="ip-member" searchable="Search here..">
                             <option value="" disabled selected>Pilih Member</option>
-                            <option value="0">Non Member</option>
                             <?php
-                                $sql="SELECT * from member";
+                                $sql="SELECT * from member ORDER BY member_id ASC";
                                 $result=mysqli_query($con,$sql);
                                 while ($data1=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
                                     echo "<option value='$data1[member_id]'>$data1[member_nama]</option>";
@@ -291,6 +290,7 @@ if ($kond=='home' || $kond=='') {
 	    </div>
     </div>
 <?php } elseif ($kond=='kembalian') { ?>
+    <input type="hidden" id="ketnota" value="<?php echo $_SESSION['no-nota']; ?>" name="ketnota">   
     <div class="row p-3 row-jumlah justify-content-md-center">
         <div class="col-md-6 mt-5">
             <h3 class="text-center mb-5">Jumlah Kembalian</h3>
@@ -298,6 +298,22 @@ if ($kond=='home' || $kond=='') {
             <button class="btn btn-primary transaksibaru float-right">Transaksi Baru</button>
         </div>
     </div>
+    
+    <script type="text/javascript">
+        var nota = $("#ketnota").val();
+        windowList = new Array('../print/nota.print.php?id='+nota);
+        i = 0;
+        windowName = "window";
+        windowInterval = window.setInterval(function(){
+            window.open(windowList[i],windowName+i,'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=0,titlebar=no');
+            i++;
+            if(i==windowList.length){
+                window.clearInterval(windowInterval);
+            }
+        },1000);
+    </script>
+
+   
 <?php }  elseif ($kond=='ceknota') { ?>
     <div class="row p-3 row-jumlah justify-content-md-center">
         <div class="col-md-6 mt-5">
@@ -308,6 +324,7 @@ if ($kond=='home' || $kond=='') {
                     <label for="idnonota">No Nota</label>
                 </div>
                 <button class="btn btn-primary prosesceknota float-right">Proses</button>
+                <button class="btn btn-danger kembali float-right">Kembali</button>
             </form>
         </div>
         <div class="clear"></div>
@@ -320,6 +337,8 @@ if ($kond=='home' || $kond=='') {
             $total = $datanot['transaksi_total'];
         ?>
         <div class="col-md-12 p-5">
+
+            <input type="hidden" id="ip-nota" class="form-control" name="ip-nota" value="<?php echo $nota; ?>" >
             <h3>Cek Nota Transaksi : <?php echo $nota; ?></h3>
                 <div class="row">
                     <div class="col-md-6 col-md-offset-0">
@@ -374,7 +393,7 @@ if ($kond=='home' || $kond=='') {
                         <h4>Rp. <?php echo format_rupiah($total); ?></h4>
                     </div>              
                 </div>
-                <button class="btn btn-warning printulang float-right mr-0" data-id="<?php echo $nota; ?>"><i class="fas fa-print mr-2"></i>Print Ulang</button>
+                <button class="btn btn-warning printulang float-right mr-0" id="btn-printulang"><i class="fas fa-print mr-2"></i>Print Ulang</button>
             </div>
         </div>
         <?php } ?>
@@ -462,7 +481,7 @@ if ($kond=='home' || $kond=='') {
             success:function(data){
 				$('#carimenu').val('');
 
-            	console.log(data);
+            	console.log('totalordertemp'+data);
             	if (data.totalordertemp.toString()=="Stok Kurang") {
             		$.confirm({
 	                      title: 'Stok Kurang',
@@ -559,13 +578,38 @@ if ($kond=='home' || $kond=='') {
         });
     </script>
 
-<?php } elseif ($kond=='ceknota') { ?>
+<?php } elseif ($kond=='ceknota' || $kond=='validasi') { ?>
     <script type="text/javascript">
+
+        $('.kembali').on('click',function(e){
+            e.preventDefault();
+            var idnonota = $('#idnonota').val();
+            $('.container__load').load('components/content/transaksi.content.php?kond=home');
+        });
+
         $('.prosesceknota').on('click',function(e){
             e.preventDefault();
             var idnonota = $('#idnonota').val();
             $('.container__load').load('components/content/transaksi.content.php?kond=ceknota&nonota='+idnonota);
         });
+
+        $('#btn-printulang').on('click',function(e){
+            var idnonota = $('#ip-nota').val();
+            e.preventDefault();
+            
+            windowList = new Array('../print/nota.print.php?id='+idnonota);
+            i = 0;
+            windowName = "window";
+            windowInterval = window.setInterval(function(){
+              window.open(windowList[i],windowName+i,'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=0,titlebar=no');
+              i++;
+              if(i==windowList.length){
+                window.clearInterval(windowInterval);
+              }
+            },1000);
+        });
+
+                                    
     </script>
 
 <?php } elseif ($kond=='jumlah') { ?>

@@ -19,8 +19,8 @@ $querypengaturan=mysqli_query($con,$sqlpengaturan);
 $datapengaturan=mysqli_fetch_assoc($querypengaturan);
     
 
-    //$t = $_SESSION['no-nota'];
-$t = 5;
+    $t = $_GET['id'];
+//$t = 5;
     $sql="SELECT * from transaksi, member where transaksi_member=member_id and transaksi_id='$t' ";
     $query = mysqli_query($con,$sql);
     while($data = mysqli_fetch_assoc($query)) {
@@ -66,13 +66,13 @@ $t = 5;
           <td width="100">Tgl & Waktu</td>
           <td width="10">:</td>
           <td ><?php echo $tgl." - ".$wkt; ?></td>
-          <td width="65" align="right"></td>
+          <td width="150" align="right">No. Nota - <?php echo $t; ?></td>
         </tr>
         <tr>
           <td width="60">Pasien</td>
           <td width="10">:</td>
           <td ><?php echo $pelanggan;?></td>
-          <td width="65" align="right">D - <?php echo $idmember; ?></td>
+          <td width="150" align="right">D - <?php echo $idmember; ?></td>
         </tr>
         <tr>
           <td colspan="4"><hr></td>
@@ -81,10 +81,10 @@ $t = 5;
 
       <table width="100%" border="0">
         <tr>
-          <td align="left">Barang</td>
-          <td width="24" align="center">Jml.</td>
-          <td width="60" align="center">Harga</td>
-          <td width="60" align="center">Subtotal</td>
+          <th align="left">Barang</th>
+          <th width="24" align="center">Jml.</th>
+          <th width="60" align="center">Harga</th>
+          <th width="60" align="center">Subtotal</th>
         </tr>
          <?php
           $no=1;
@@ -115,37 +115,37 @@ $t = 5;
           <td colspan="4"><hr color="black"></td>
         </tr>
         <tr>
-          <th align="left" scope="row" colspan="2">Subtotal</th>
+          <td align="left" scope="row" colspan="2">Subtotal</td>
           <td align="right">: Rp.</td>
           <td align="right"><?php echo format_rupiah($tran_tot+$tran_diskon) ; ?></td>
         </tr>
         <tr>
-          <th align="left" scope="row" colspan="2">Diskon</th>
+          <td align="left" scope="row" colspan="2">Diskon</td>
           <td align="right">: Rp.</td>
           <td align="right"><?php echo format_rupiah($tran_diskon) ; ?></td>
         </tr>
         <tr>
-          <th align="left" scope="row" colspan="2">Total</th>
+          <td align="left" scope="row" colspan="2">Total</td>
           <td align="right">: Rp.</td>
           <td align="right"><?php echo format_rupiah($tran_tot) ; ?></td>
         </tr>
         <tr>
-          <th align="left" scope="row" colspan="2">Bayar</th>
+          <td align="left" scope="row" colspan="2">Bayar</td>
           <td align="right">: Rp.</td>
           <td align="right"><?php echo format_rupiah($bayar) ; ?></td>
         </tr>
         <tr>
-          <th align="left" scope="row" colspan="2">Kembalian</th>
+          <td align="left" scope="row" colspan="2">Kembalian</td>
           <td align="right">: Rp.</td>
           <td align="right"><?php echo format_rupiah($kembalian) ; ?></td>
         </tr>
         <tr>
-          <th align="left" scope="row" colspan="2">Pembayaran</th>
+          <td align="left" scope="row" colspan="2">Pembayaran</td>
           <td align="left">&nbsp;</td>
           <td align="right"><?php echo $type ; ?></td>
         </tr>
         <tr>
-          <th colspan="4">BARANG YANG SUDAH DIBELI<br>TIDAK DAPAT DIKEMBALIKAN<br>TERIMA KASIH</th>
+          <td colspan="4" align="center">BARANG YANG SUDAH DIBELI<br>TIDAK DAPAT DIKEMBALIKAN<br>TERIMA KASIH</td>
         </tr>
       </table>
   </div>

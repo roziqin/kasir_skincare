@@ -70,23 +70,24 @@
 							    <input type="hidden" id="defaultForm-jenisdiskon" name="ip-jenisdiskon" value="">
 							    <input type="hidden" id="defaultForm-jumlahdiskon" name="ip-jumlahdiskon" value="0">
 								<div class="row pt-0 pb-2">
-									<div class="col-md-8 btn-bottom">
+									<div class="col-md-6 btn-bottom">
 										<div class="row">
-											<div class="col-md-4 p-0">
+											<div class="col-md-6 p-0">
 												<button type="button" class="btn btn-white waves-effect text-danger" id="batal"><i class="fas fa-trash m-0"></i>Batal</button>
 											</div>
+											<!--
 											<div class="col-md-4 p-0">
 												<a href="print/nota-temp.print.php?ordertype=<?php echo $_SESSION['order_type']; ?>" class="btn btn-white waves-effect text-warning" id="print" target="_blank"><i class="fas fa-print m-0"></i>Print</a>
 											</div>
-											
-											<div class="col-md-4 p-0">
-												<button type="button" class="btn btn-white waves-effect text-info" id="discount" data-toggle="modal" data-target="#modaldiscount"><i class="fas fa-tag m-0"></i>Discount</button>
+											-->
+											<div class="col-md-6 p-0">
+												<button type="button" class="btn btn-white waves-effect text-warning" id="discount" data-toggle="modal" data-target="#modaldiscount"><i class="fas fa-tag m-0"></i>Discount</button>
 											</div>
 											
 										</div>
 
 									</div>
-									<div class="col-md-4 btn-bottom pr-1">
+									<div class="col-md-6 btn-bottom pr-1">
 										<button type="button" class="btn btn-white waves-effect text-info" id="bayar" data-toggle="modal" data-target="#modaltransaksi" disabled="true"><i class="fas fa-money-bill m-0"></i>Bayar</button>
 									</div>
 								</div>

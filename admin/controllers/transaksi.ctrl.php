@@ -7,6 +7,8 @@ $tgl=date('Y-m-j');
 $bln=date('Y-m');
 $wkt=date('H:i:s');
 $array_datas = array();
+
+
 $user = $_SESSION['login_user'];
 $order_type = '';
 if($_GET['ket']=='tambahmenu'){
@@ -67,7 +69,7 @@ if($_GET['ket']=='tambahmenu'){
 
 		$array_datas['totalordertemp']=$total;
 	}
-	
+	$array_datas['ok']="ok bos";
 	echo json_encode($array_datas);
 	
 } elseif($_GET['ket']=='batal'){
@@ -261,11 +263,10 @@ if($_GET['ket']=='tambahmenu'){
     $sqldelete1 = "DELETE from member_temp where member_temp_user_id='$user'";
     mysqli_query($con,$sqldelete1);
 
-    $array_datas['print']='ya';
-    $array_datas['transaksi']='berhasil';
-    $array_datas['kembalian']=$kembalian;
+    $array_dataa = array('nota'=>$no_not);
 
-	echo json_encode($array_datas);
+
+	echo json_encode($array_dataa);
 
 }  elseif($_GET['ket']=='tes') {
 	$sql1="SELECT * from member_temp where member_temp_user_id='$user'";
