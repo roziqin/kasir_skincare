@@ -31,6 +31,11 @@ if ($kond=='home' || $kond=='') {
                     </div>
                     <button class="btn btn-primary pilihmember float-right">Proses</button>
                 </form>
+                <div class="clear"></div>
+                <div class="col-md-12 text-center mt-5">
+                    <button type="button" class="btn btn-default waves-effect mr-2" id="ceknota"><i class="fas fa-clipboard-check mr-2"></i>Cek Nota</button>
+                    <button type="button" class="btn btn-default waves-effect mr-2" id="tutupkasir"><i class="fas fa-cash-register mr-2"></i>Tutup Kasir</button>
+                </div>
             </div>
         </div>
         <script type="text/javascript">
@@ -293,6 +298,87 @@ if ($kond=='home' || $kond=='') {
             <button class="btn btn-primary transaksibaru float-right">Transaksi Baru</button>
         </div>
     </div>
+<?php }  elseif ($kond=='ceknota') { ?>
+    <div class="row p-3 row-jumlah justify-content-md-center">
+        <div class="col-md-6 mt-5">
+            <h3 class="text-center mb-5">Cek Nota</h3>
+            <form method="post" class="form-jumlah"> 
+                <div class="md-form mb-3">
+                    <input type="text" id="idnonota" class="form-control" name="idnonota" >
+                    <label for="idnonota">No Nota</label>
+                </div>
+                <button class="btn btn-primary prosesceknota float-right">Proses</button>
+            </form>
+        </div>
+        <div class="clear"></div>
+        <?php if ($_GET['nonota']!='') { 
+            $nota = $_GET['nonota'];
+            $sqlnot="SELECT * FROM transaksi, member where transaksi_member=member_id AND transaksi_id='$nota' ";
+            $querynot=mysqli_query($con,$sqlnot);
+            $datanot=mysqli_fetch_assoc($querynot);
+            $diskon = $datanot['transaksi_diskon'];
+            $total = $datanot['transaksi_total'];
+        ?>
+        <div class="col-md-12 p-5">
+            <h3>Cek Nota Transaksi : <?php echo $nota; ?></h3>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-0">
+                        <h4>Nama : <?php echo $datanot['member_nama'];?></h4>
+                    </div>
+                    <div class="col-md-6 col-md-offset-0 text-right">
+                        <h4>Alamat : <?php echo $datanot['member_alamat'];?></h4>
+                    </div>
+                    <table id="listbarang" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                          <th>Nama Produk</th>
+                          <th class="text-right">Harga</th>
+                          <th width="50px" style="padding-right: 8px; ">Jumlah</th>
+                          <th class="text-right">Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            $sqlte1="SELECT * from transaksi_detail, barang where transaksi_detail_barang_id=barang_id and transaksi_detail_nota='$nota' ORDER BY transaksi_detail_id ASC";
+                            $queryte1 = mysqli_query($con,$sqlte1);
+                            while($datatea = mysqli_fetch_assoc($queryte1)) {
+                                $jumlah = $datatea["transaksi_detail_jumlah"];
+                                $harga = $datatea["barang_harga_jual"];
+                            ?>
+                                <tr>
+                                    <td><?php echo $datatea["barang_nama"]; ?></td>
+                                    <td class="text-right">Rp. <?php echo format_rupiah($harga); ?></td>
+                                    <td><?php echo $jumlah; ?></td>
+                                    <td class="text-right">Rp. <?php echo format_rupiah($jumlah*$harga); ?></td>
+                                    
+                                </tr>
+                            <?php
+                                if ($datatea["transaksi_detail_diskon"]!=0) {
+                                ?>
+                                    <tr style="font-weight: 700;">
+                                        <td>Diskon</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-right">Rp. <?php echo format_rupiah($datatea["transaksi_detail_diskon"]); ?></td>
+                                    </tr>
+                                <?php
+                                }
+                            }
+                        ?>
+                        </tbody>
+                    </table>
+                    <div class="col-6 col-md-offset-0">
+                        <h4>Total : </h4>
+                    </div>
+                    <div class="col-md-6 col-md-offset-0 text-right">
+                        <h4>Rp. <?php echo format_rupiah($total); ?></h4>
+                    </div>              
+                </div>
+                <button class="btn btn-warning printulang float-right mr-0" data-id="<?php echo $nota; ?>"><i class="fas fa-print mr-2"></i>Print Ulang</button>
+            </div>
+        </div>
+        <?php } ?>
+    </div>
 <?php } ?>
 
 
@@ -344,6 +430,14 @@ if ($kond=='home' || $kond=='') {
 		$('.container__load').load('components/content/transaksi.content.php?kond=home');
 
 	});
+
+    $('#ceknota').on('click',function(){
+        $('.container__load').load('components/content/transaksi.content.php?kond=ceknota&nonota=');
+    });
+
+    $('#tutupkasir').on('click',function(){
+        $('.container__load').load('components/content/transaksi.content.php?kond=tutupkasir');
+    });
 
 	$('.tambahmenu').on('click',function(){
     	var barang_id = $(this).data('id');
@@ -462,6 +556,15 @@ if ($kond=='home' || $kond=='') {
         $('.transaksibaru').on('click',function(){
             window.location.reload();
             $('.container__load').load('components/content/transaksi.content.php?kond=home');
+        });
+    </script>
+
+<?php } elseif ($kond=='ceknota') { ?>
+    <script type="text/javascript">
+        $('.prosesceknota').on('click',function(e){
+            e.preventDefault();
+            var idnonota = $('#idnonota').val();
+            $('.container__load').load('components/content/transaksi.content.php?kond=ceknota&nonota='+idnonota);
         });
     </script>
 

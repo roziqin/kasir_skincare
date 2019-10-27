@@ -1,0 +1,9 @@
+.box {
+	display: inline-block;
+	width: 100%;
+}
+.box-custom {
+	float: left;
+	display: inline-block;
+	margin-right: 15px;
+}
