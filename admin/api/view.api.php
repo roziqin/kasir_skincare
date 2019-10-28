@@ -16,7 +16,12 @@ if ($func=='dasboard-omset') {
 
 } elseif ($func=='dasboard-itemsold') {
 
-	$query = "SELECT count(*) as jumlah FROM transaksi, transaksi_detail where transaksi_id=transaksi_detail_nota and  transaksi_bulan = '$bln' GROUP BY transaksi_tanggal";
+    $id = $_POST['jenisid'];
+    $query = "SELECT barang_nama, sum(transaksi_detail_jumlah) as jumlah FROM transaksi, transaksi_detail, barang, kategori, jenis where transaksi_id=transaksi_detail_nota and transaksi_detail_barang_id=barang_id and barang_kategori=kategori_id and kategori_jenis=jenis_id and jenis_id='$id' and transaksi_bulan='$bln' GROUP BY barang_id ORDER BY jumlah DESC LIMIT 10";
+
+} elseif ($func=='getjenis') {
+
+    $query = "SELECT * from jenis";
 
 } elseif ($func=='listproduk') {
 

@@ -75,80 +75,38 @@ if ($("main").hasClass("dashboard") == true) {
         }
     });
 
-
     $.ajax({
+
         type:'POST',
-        url:'api/view.api.php?func=dasboard-pelanggan',
+        url:'api/view.api.php?func=getjenis',
         dataType: "json",
         success:function(data){
-            var date = [];
-            var jumlah = [];
 
             for (var i in data) {
-                date.push(dateformat[i]);
-                jumlah.push(data[i].jumlah);
-            }
-            var ctxL = document.getElementById("chartpelanggan").getContext('2d');
-            var myLineChart = new Chart(ctxL, {
-                type: 'line',
-                data: {
-                    labels: date,
-                    datasets: [{
-                            label: "",
-                            data: jumlah,
-                            backgroundColor: [
-                                'rgba(54, 162, 235, 0.5)',
-                            ],
-                            borderColor: [
-                                'rgba(54, 162, 235, .9)',
-                            ],
-                            borderWidth: 2
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    aspectRatio: 3,
-                }
-            });
-        }
-    });
+                var jenisid = data[i].jenis_id;
+                console.log(jenisid)
+                $.ajax({
 
-    $.ajax({
-        type:'POST',
-        url:'api/view.api.php?func=dasboard-itemsold',
-        dataType: "json",
-        success:function(data){
-            var date = [];
-            var jumlah = [];
-
-            for (var i in data) {
-                date.push(dateformat[i]);
-                jumlah.push(data[i].jumlah);
-            }
-            var ctxL = document.getElementById("chartitem").getContext('2d');
-            var myLineChart = new Chart(ctxL, {
-                type: 'line',
-                data: {
-                    labels: date,
-                    datasets: [{
-                            label: "",
-                            data: jumlah,
-                            backgroundColor: [
-                                'rgba(255, 159, 64, 0.5)',
-                            ],
-                            borderColor: [
-                                'rgba(255, 159, 64, .9)',
-                            ],
-                            borderWidth: 2
+                    type:'POST',
+                    url:'api/view.api.php?func=dasboard-itemsold',
+                    dataType: "json",
+                    data:{jenisid:jenisid},
+                    success:function(data1){
+                        var content = '<div class="card testimonial-card">'+
+                                            '<div class="card-body">'+
+                                                '<h4 class="card-title">Pelanggan</h4>'+
+                                                '<hr><canvas id="chartpelanggan" ></canvas>'+
+                                            '</div>'+
+                                        '</div>';
+                        console.log("ok")
+                        for (var i in data1) {
+                            console.log(data1[i].barang_nama);
                         }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    aspectRatio: 3,
-                }
-            });
+                        
+                    }
+                });
+            }
+            
         }
     });
 }
