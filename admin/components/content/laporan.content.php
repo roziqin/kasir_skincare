@@ -360,11 +360,15 @@ if ($ket=='omset' || $ket=='kasir') {
 			
 			}
 		});
+		$('.datepicker').datepicker({
+			    format: 'yyyy-mm-dd'
+			});
+		/*
 		$('.datepicker').pickadate({
 			weekdaysShort: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
 			showMonthsShort: true
 		})
-		
+		*/
 		function convertToRupiah(angka)
 		{
 		  var rupiah = '';    

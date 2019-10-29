@@ -18,7 +18,7 @@
 						<canvas id="lineChart" ></canvas>
 
 					</div>
-					<div class="col-md-5">
+					<div class="col-md-5" id="box-right-dashboard">
 						<!-- Card -->
 						<div class="card testimonial-card">
 							<!-- Content -->
