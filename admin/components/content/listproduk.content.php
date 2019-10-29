@@ -16,20 +16,6 @@
                 <th></th>
             </tr>
         </thead>
-        <tfoot>
-            <tr>
-                <th>nama</th>
-                <th>kategori</th>
-                <th>stok</th>
-                <th>batas stok</th>
-                <th>harga beli</th>
-                <th>harga jual</th>
-                <th>diskon (%)</th>
-                <th>disable</th>
-                <th>foto produk</th>
-                <th></th>
-            </tr>
-        </tfoot>
     </table>
 
 
@@ -74,8 +60,14 @@
                 { "data": "kategori_nama" },
                 { "data": "barang_stok" },
                 { "data": "barang_batas_stok" },
-                { "data": "barang_harga_beli" },
-                { "data": "barang_harga_jual" },
+                { "render": function(data, type, full){
+                   return formatRupiah(full['barang_harga_beli'].toString(), 'Rp. ');
+                  }
+                },
+                { "render": function(data, type, full){
+                   return formatRupiah(full['barang_harga_jual'].toString(), 'Rp. ');
+                  }
+                },
                 { "data": "barang_diskon" },
                 { "width": "150px", "render": function(data, type, full){
 

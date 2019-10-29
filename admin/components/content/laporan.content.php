@@ -136,20 +136,9 @@ if ($ket=='omset' || $ket=='kasir') {
 		                            <th>kasir</th>
 		                            <th style="text-align: right;">Cash</th>
 		                            <th style="text-align: right;">Debet</th>
-		                            <th style="text-align: right;">online</th>
-		                            <th>total omset</th>
+		                            <th style="text-align: right;">total omset</th>
 					            </tr>
 					        </thead>
-					        <tfoot>
-					            <tr>
-		                            <th>tanggal</th>
-		                            <th>kasir</th>
-		                            <th style="text-align: right;">Cash</th>
-		                            <th style="text-align: right;">Debet</th>
-		                            <th style="text-align: right;">online</th>
-		                            <th>total omset</th>
-					            </tr>
-					        </tfoot>
 					    </table>
 
 
@@ -162,19 +151,9 @@ if ($ket=='omset' || $ket=='kasir') {
 		                            <th>tanggal</th>
 		                            <th style="text-align: right;">Cash</th>
 		                            <th style="text-align: right;">Debet</th>
-		                            <th style="text-align: right;">online</th>
-		                            <th>total omset</th>
+		                            <th style="text-align: right;">total omset</th>
 					            </tr>
 					        </thead>
-					        <tfoot>
-					            <tr>
-		                            <th>tanggal</th>
-		                            <th style="text-align: right;">Cash</th>
-		                            <th style="text-align: right;">Debet</th>
-		                            <th style="text-align: right;">online</th>
-		                            <th>total omset</th>
-					            </tr>
-					        </tfoot>
 					    </table>
 					<?php
 					}
@@ -304,14 +283,14 @@ if ($ket=='omset' || $ket=='kasir') {
 				        <thead>
 				            <tr>
 	                            <th>tanggal</th>
-	                            <th>menu</th>
+	                            <th>item</th>
 	                            <th>jumlah</th>
 				            </tr>
 				        </thead>
 				        <tfoot>
 				            <tr>
 	                            <th>tanggal</th>
-	                            <th>menu</th>
+	                            <th>item</th>
 	                            <th>jumlah</th>
 				            </tr>
 				        </tfoot>
@@ -417,12 +396,21 @@ if ($ket=='omset' || $ket=='kasir') {
 						    searching: false,
 						    ordering: false,
 						    data: data,
+				            deferRender: true,
 						    columns: [
 						        { data: 'transaksi_bulan' },
-						        { data: 'cash' },
-						        { data: 'debet' },
-						        { data: 'online' },
-						        { data: 'total' }
+				                { render: function(data, type, full){
+				                   return formatRupiah(full['cash'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { render: function(data, type, full){
+				                   return formatRupiah(full['debet'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { render: function(data, type, full){
+				                   return formatRupiah(full['total'].toString(), 'Rp. ');
+				                  }
+				                }
 						    ]
 						} );
 
@@ -431,13 +419,22 @@ if ($ket=='omset' || $ket=='kasir') {
 						    paging: false,
 						    searching: false,
 						    ordering: false,
+				            deferRender: true,
 						    data: data,
 						    columns: [
 						        { data: 'transaksi_tanggal' },
-						        { data: 'cash' },
-						        { data: 'debet' },
-						        { data: 'online' },
-						        { data: 'total' }
+				                { render: function(data, type, full){
+				                   return formatRupiah(full['cash'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { render: function(data, type, full){
+				                   return formatRupiah(full['debet'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { render: function(data, type, full){
+				                   return formatRupiah(full['total'].toString(), 'Rp. ');
+				                  }
+				                }
 						    ]
 						} );
 
@@ -578,13 +575,22 @@ if ($ket=='omset' || $ket=='kasir') {
 						    searching: false,
 						    ordering: false,
 						    data: data,
+				            deferRender: true,
 						    columns: [
 						        { data: 'transaksi_bulan' },
 						        { data: 'kasir' },
-						        { data: 'cash' },
-						        { data: 'debet' },
-						        { data: 'online' },
-						        { data: 'total' }
+				                { render: function(data, type, full){
+				                   return formatRupiah(full['cash'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { render: function(data, type, full){
+				                   return formatRupiah(full['debet'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { render: function(data, type, full){
+				                   return formatRupiah(full['total'].toString(), 'Rp. ');
+				                  }
+				                }
 						    ]
 						} );
 
@@ -594,13 +600,22 @@ if ($ket=='omset' || $ket=='kasir') {
 						    searching: false,
 						    ordering: false,
 						    data: data,
+				            deferRender: true,
 						    columns: [
 						        { data: 'transaksi_tanggal' },
 						        { data: 'kasir' },
-						        { data: 'cash' },
-						        { data: 'debet' },
-						        { data: 'online' },
-						        { data: 'total' }
+				                { render: function(data, type, full){
+				                   return formatRupiah(full['cash'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { render: function(data, type, full){
+				                   return formatRupiah(full['debet'].toString(), 'Rp. ');
+				                  }
+				                },
+				                { render: function(data, type, full){
+				                   return formatRupiah(full['total'].toString(), 'Rp. ');
+				                  }
+				                }
 						    ]
 						} );
 

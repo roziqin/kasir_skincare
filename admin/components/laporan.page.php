@@ -13,7 +13,7 @@
 				      <a class="nav-link waves-light" id="kasir">Kasir</a>
 				    </li>
 				    <li class="nav-item">
-				      <a class="nav-link waves-light" id="menu">Menu</a>
+				      <a class="nav-link waves-light" id="menu">Item</a>
 				    </li>
 				</ul>
 			</div>

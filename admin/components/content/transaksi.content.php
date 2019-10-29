@@ -340,63 +340,90 @@ if ($kond=='home' || $kond=='') {
 
             <input type="hidden" id="ip-nota" class="form-control" name="ip-nota" value="<?php echo $nota; ?>" >
             <h3>Cek Nota Transaksi : <?php echo $nota; ?></h3>
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-0">
-                        <h4>Nama : <?php echo $datanot['member_nama'];?></h4>
-                    </div>
-                    <div class="col-md-6 col-md-offset-0 text-right">
-                        <h4>Alamat : <?php echo $datanot['member_alamat'];?></h4>
-                    </div>
-                    <table id="listbarang" class="table table-bordered table-striped">
-                        <thead>
-                        <tr>
-                          <th>Nama Produk</th>
-                          <th class="text-right">Harga</th>
-                          <th width="50px" style="padding-right: 8px; ">Jumlah</th>
-                          <th class="text-right">Total</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-0">
+                    <h4>Nama : <?php echo $datanot['member_nama'];?></h4>
+                </div>
+                <div class="col-md-6 col-md-offset-0 text-right">
+                    <h4>Alamat : <?php echo $datanot['member_alamat'];?></h4>
+                </div>
+                <table id="listbarang" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                      <th>Nama Produk</th>
+                      <th class="text-right">Harga</th>
+                      <th width="50px" style="padding-right: 8px; ">Jumlah</th>
+                      <th class="text-right">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                        $sqlte1="SELECT * from transaksi_detail, barang where transaksi_detail_barang_id=barang_id and transaksi_detail_nota='$nota' ORDER BY transaksi_detail_id ASC";
+                        $queryte1 = mysqli_query($con,$sqlte1);
+                        while($datatea = mysqli_fetch_assoc($queryte1)) {
+                            $jumlah = $datatea["transaksi_detail_jumlah"];
+                            $harga = $datatea["barang_harga_jual"];
+                        ?>
+                            <tr>
+                                <td><?php echo $datatea["barang_nama"]; ?></td>
+                                <td class="text-right">Rp. <?php echo format_rupiah($harga); ?></td>
+                                <td><?php echo $jumlah; ?></td>
+                                <td class="text-right">Rp. <?php echo format_rupiah($jumlah*$harga); ?></td>
+                                
+                            </tr>
                         <?php
-                            $sqlte1="SELECT * from transaksi_detail, barang where transaksi_detail_barang_id=barang_id and transaksi_detail_nota='$nota' ORDER BY transaksi_detail_id ASC";
-                            $queryte1 = mysqli_query($con,$sqlte1);
-                            while($datatea = mysqli_fetch_assoc($queryte1)) {
-                                $jumlah = $datatea["transaksi_detail_jumlah"];
-                                $harga = $datatea["barang_harga_jual"];
+                            if ($datatea["transaksi_detail_diskon"]!=0) {
                             ?>
-                                <tr>
-                                    <td><?php echo $datatea["barang_nama"]; ?></td>
-                                    <td class="text-right">Rp. <?php echo format_rupiah($harga); ?></td>
-                                    <td><?php echo $jumlah; ?></td>
-                                    <td class="text-right">Rp. <?php echo format_rupiah($jumlah*$harga); ?></td>
-                                    
+                                <tr style="font-weight: 700;">
+                                    <td>Diskon</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-right">Rp. <?php echo format_rupiah($datatea["transaksi_detail_diskon"]); ?></td>
                                 </tr>
                             <?php
-                                if ($datatea["transaksi_detail_diskon"]!=0) {
-                                ?>
-                                    <tr style="font-weight: 700;">
-                                        <td>Diskon</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td class="text-right">Rp. <?php echo format_rupiah($datatea["transaksi_detail_diskon"]); ?></td>
-                                    </tr>
-                                <?php
-                                }
                             }
-                        ?>
-                        </tbody>
-                    </table>
-                    <div class="col-6 col-md-offset-0">
-                        <h4>Total : </h4>
-                    </div>
-                    <div class="col-md-6 col-md-offset-0 text-right">
-                        <h4>Rp. <?php echo format_rupiah($total); ?></h4>
-                    </div>              
+                        }
+                    ?>
+                    </tbody>
+                </table>
+                <div class="col-6 col-md-offset-0">
+                    <h4>Total : </h4>
                 </div>
-                <button class="btn btn-warning printulang float-right mr-0" id="btn-printulang"><i class="fas fa-print mr-2"></i>Print Ulang</button>
+                <div class="col-md-6 col-md-offset-0 text-right">
+                    <h4>Rp. <?php echo format_rupiah($total); ?></h4>
+                </div>              
             </div>
+            <button class="btn btn-warning printulang float-right mr-0" id="btn-printulang"><i class="fas fa-print mr-2"></i>Print Ulang</button>
         </div>
         <?php } ?>
+    </div>
+<?php }  elseif ($kond=='tutupkasir') { ?>
+    <div class="row-jumlah">
+        <div class="row p-3 justify-content-md-center">
+            <div class="col-md-6 mt-5">
+                <h3 class="text-center mb-5">Tutup Kasir</h3>
+                <form method="post" class="form-omset"> 
+                    <div class="md-form mb-3">
+                        <input type="text" id="uangfisik" class="form-control" name="uangfisik" >
+                        <label for="uangfisik">Masukkan Jumlah Uang Fisik</label>
+                    </div>
+                    <button class="btn btn-primary prosestutupkasir float-right">Proses</button>
+                    <button class="btn btn-danger kembali float-right">Kembali</button>
+                </form>
+            </div>
+        </div>
+        <div class="row p-3 justify-content-md-center">
+            <div class="col-md-6 p-5">
+
+                <h3 id="spuangfisik"></h3>
+                <h3 id="spcash"></h3>
+                <h3 id="spdebet"></h3>
+                <h3 id="spomset"></h3>
+                <h3 id="spselisih"></h3>
+                
+                    
+            </div>
+        </div>
     </div>
 <?php } ?>
 
@@ -455,7 +482,7 @@ if ($kond=='home' || $kond=='') {
     });
 
     $('#tutupkasir').on('click',function(){
-        $('.container__load').load('components/content/transaksi.content.php?kond=tutupkasir');
+        $('.container__load').load('components/content/transaksi.content.php?kond=tutupkasir&omset=');
     });
 
 	$('.tambahmenu').on('click',function(){
@@ -578,7 +605,7 @@ if ($kond=='home' || $kond=='') {
         });
     </script>
 
-<?php } elseif ($kond=='ceknota' || $kond=='validasi') { ?>
+<?php } elseif ($kond=='ceknota' || $kond=='tutupkasir') { ?>
     <script type="text/javascript">
 
         $('.kembali').on('click',function(e){
@@ -591,6 +618,69 @@ if ($kond=='home' || $kond=='') {
             e.preventDefault();
             var idnonota = $('#idnonota').val();
             $('.container__load').load('components/content/transaksi.content.php?kond=ceknota&nonota='+idnonota);
+        });
+
+        $('.prosestutupkasir').on('click',function(e){
+            e.preventDefault();
+            var data = $('.form-omset').serialize();
+            console.log("data "+data)
+            $.ajax({
+                type:'POST',
+                url: "controllers/transaksi.ctrl.php?ket=tutupkasir",
+                dataType: "json",
+                data:data,
+                success:function(data){
+                    console.log("data "+data.ket);
+                    if (data.ket == "gagal") {
+                        $.confirm({
+                              title: 'Validasi Gagal',
+                              content: 'Validasi max 1x',
+                              buttons: {
+                                  confirm: {
+                                      text: 'Close',
+                                      btnClass: 'col-md-12 btn btn-primary',
+                                      action: function(){
+                                          
+                                          
+                                      }
+                                  }
+                              }
+                        });
+                    } else {
+
+
+                        $('#spuangfisik').empty();
+                        $('#spuangfisik').append("Uang Fisik : <span class='float-right'>"+formatRupiah(data.uangfisik.toString(), 'Rp. ')+"</span>");
+                        $('#spcash').empty();
+                        $('#spcash').append("Omset Cash : <span class='float-right'>"+formatRupiah(data.cash.toString(), 'Rp. ')+"</span>");
+                        $('#spdebet').empty();
+                        $('#spdebet').append("Omset Debet : <span class='float-right'>"+formatRupiah(data.debet.toString(), 'Rp. ')+"</span>");
+                        $('#spomset').empty();
+                        $('#spomset').append("Total Omset : <span class='float-right'>"+formatRupiah(data.omset.toString(), 'Rp. ')+"</span>");
+                        $('#spselisih').empty();
+                        var selisih = data.uangfisik - data.cash;
+                        if (selisih < 0) {
+                            $('#spselisih').append("Selisih : <span class='float-right text-danger'>"+formatRupiah(selisih.toString(), 'Rp. ')+"</span>");
+                        } else {
+                            $('#spselisih').append("Selisih : <span class='float-right'>"+formatRupiah(selisih.toString(), 'Rp. ')+"</span>");
+                        }
+
+                            windowList = new Array('../print/omset.print.php');
+                            i = 0;
+                            windowName = "window";
+                            windowInterval = window.setInterval(function(){
+                                window.open(windowList[i],windowName+i,'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=0,titlebar=no');
+                                i++;
+                                if(i==windowList.length){
+                                    window.clearInterval(windowInterval);
+                                }
+                            },1000);
+
+                    }
+
+                }
+            });
+
         });
 
         $('#btn-printulang').on('click',function(e){

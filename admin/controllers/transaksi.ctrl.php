@@ -268,7 +268,51 @@ if($_GET['ket']=='tambahmenu'){
 
 	echo json_encode($array_dataa);
 
-}  elseif($_GET['ket']=='tes') {
+}  elseif($_GET['ket']=='tutupkasir'){
+
+	$uangfisik = $_POST['uangfisik'];
+	//$uangfisik = 200000;
+
+	$sqlcek="SELECT count(*) as jml from validasi where validasi_user_id='$user' and validasi_tanggal='$tgl'";
+	$querycek=mysqli_query($con,$sqlcek);
+	$datacek=mysqli_fetch_assoc($querycek);
+
+	if ($datacek['jml']!=0) {
+		$array_datas['ket'] = "gagal";
+
+	} else {
+
+		$sql="SELECT * from users where id='$user'";
+		$query=mysqli_query($con,$sql);
+		$data=mysqli_fetch_assoc($query);
+		$usernama=$data['name'];
+
+		$sql1="SELECT count(transaksi_id) as jumlah, sum(transaksi_total) as total, sum(transaksi_diskon) as diskon from transaksi where transaksi_tanggal='$tgl' and transaksi_user = '$user' group by transaksi_tanggal";
+		$query1=mysqli_query($con,$sql1);
+		$data1=mysqli_fetch_assoc($query1);
+
+		$sql2="SELECT count(transaksi_id) as jumlah, sum(transaksi_total) as debet, sum(transaksi_diskon) as diskon from transaksi where transaksi_tanggal='$tgl' and transaksi_user = '$user' and transaksi_type_bayar='Debet' group by transaksi_tanggal";
+		$query2=mysqli_query($con,$sql2);
+		$data2=mysqli_fetch_assoc($query2);
+
+		$sql3="SELECT count(transaksi_id) as jumlah, sum(transaksi_total) as cash, sum(transaksi_diskon) as diskon from transaksi where transaksi_tanggal='$tgl' and transaksi_user = '$user' and transaksi_type_bayar='Cash' group by transaksi_tanggal";
+		$query3=mysqli_query($con,$sql3);
+		$data3=mysqli_fetch_assoc($query3);
+
+		$a="INSERT into validasi(validasi_tanggal,validasi_waktu,validasi_user_id,validasi_user_nama,validasi_jumlah,validasi_cash,validasi_debet,validasi_omset)values('$tgl','$wkt','$user','$usernama','$uangfisik','$data3[cash]','$data2[debet]','$data1[total]')";
+			mysqli_query($con,$a);
+
+
+		$array_datas['omset'] = $data1['total'];
+		$array_datas['debet'] = $data2['debet'];
+		$array_datas['cash'] = $data3['cash'];
+		$array_datas['uangfisik'] = $uangfisik;
+		$array_datas['ket'] = "sukses";
+
+	}
+	echo json_encode($array_datas);
+	
+} elseif($_GET['ket']=='tes') {
 	$sql1="SELECT * from member_temp where member_temp_user_id='$user'";
 	$query1=mysqli_query($con,$sql1);
 	$data1=mysqli_fetch_assoc($query1);
