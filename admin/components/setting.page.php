@@ -18,7 +18,6 @@
 		</div>
 	</main>
 
-
 	<?php include 'partials/footer.php'; ?>
 	<script type="text/javascript">
 		$(document).ready(function(){
