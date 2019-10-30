@@ -190,6 +190,20 @@ body.modal-open {
 	opacity: .65;
 }
 
+table.dashboard {
+	width: 100%;
+}
+
+table.dashboard th,
+table.dashboard td {
+	text-align: left;
+}
+
+table.dashboard th:last-child,
+table.dashboard td:last-child {
+	text-align: right;
+}
+
 table.table thead th {
 	text-transform: capitalize;
 }

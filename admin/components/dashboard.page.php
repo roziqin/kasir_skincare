@@ -12,38 +12,14 @@
 				<div class="row mt-2 fadeIn animated">
 
 					<!--Grid column-->
-					<div class="col-md-7">
+					<div class="col-md-6">
 						<h5>Total Omset bulan ini</h5>
 						<h3 id="totomset" class="display-4"></h3>
 						<canvas id="lineChart" ></canvas>
 
 					</div>
-					<div class="col-md-5" id="box-right-dashboard">
-						<!-- Card -->
-						<div class="card testimonial-card">
-							<!-- Content -->
-							<div class="card-body">
-							    <!-- Name -->
-							    <h4 class="card-title">Pelanggan</h4>
-							    <hr>    
-								<canvas id="chartpelanggan" ></canvas>
-						  	</div>
-
-						</div>
-						<!-- Card -->
-
-						<!-- Card -->
-						<div class="card testimonial-card mt-3">
-							<!-- Content -->
-							<div class="card-body">
-							    <!-- Name -->
-							    <h4 class="card-title">Total Item Sold</h4>
-							    <hr>    
-								<canvas id="chartitem" ></canvas>
-						  	</div>
-
-						</div>
-						<!-- Card -->
+					<div class="col-md-6">
+						<div class="row" id="box-right-dashboard"></div>
 					</div>
 					<!--Grid column-->
 

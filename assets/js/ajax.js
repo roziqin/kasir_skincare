@@ -81,10 +81,11 @@ if ($("main").hasClass("dashboard") == true) {
         url:'api/view.api.php?func=getjenis',
         dataType: "json",
         success:function(data){
-
+            $('#box-right-dashboard').empty();
             for (var i in data) {
                 var jenisid = data[i].jenis_id;
-                console.log(jenisid)
+                var jenisnama = data[i].jenis_nama;
+                console.log("jnis "+jenisnama)
                 $.ajax({
 
                     type:'POST',
@@ -92,17 +93,21 @@ if ($("main").hasClass("dashboard") == true) {
                     dataType: "json",
                     data:{jenisid:jenisid},
                     success:function(data1){
-                        var content = '<div class="card testimonial-card">'+
+                        var content = '<div class="col-4"><div class="card testimonial-card">'+
                                             '<div class="card-body">'+
-                                                '<h4 class="card-title">Pelanggan</h4>'+
-                                                '<hr><canvas id="chartpelanggan" ></canvas>'+
-                                            '</div>'+
-                                        '</div>';
-                        console.log("ok")
+                                                '<h4 class="card-title">'+data1[0].jenis_nama+' Paling Laku</h4>'+
+                                                '<hr>'+
+                                                '<table class="dashboard"><tr><th>Nama Item</th><th>Jumlah</th>';
+                        console.log(jenisid)
                         for (var i in data1) {
-                            console.log(data1[i].barang_nama);
+
+                            content += '<tr><td>'+data1[i].barang_nama+'</td><td>'+data1[i].jumlah+'</td></tr>';
+
                         }
+
+                        content += '</table></div></div></div>'; 
                         
+                        $('#box-right-dashboard').append(content); 
                     }
                 });
             }

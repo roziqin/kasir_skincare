@@ -5,7 +5,7 @@
 <script type="text/javascript" src="../assets/js/modules/chart.js"></script>
 <script type="text/javascript" src="../assets/js/compiled.js?asu"></script>
 <script type="text/javascript" src="../assets/js/moments.js?aa"></script>
-<script type="text/javascript" src="../assets/js/ajax.js?"></script>
+<script type="text/javascript" src="../assets/js/ajax.js?aa"></script>
 <script type="text/javascript" src="../assets/js/addons/datatables.min.js"></script>
 <script type="text/javascript" src="../assets/js/jquery-confirm.min.js"></script>
 <script type="text/javascript" src="../assets/js/jquery.price_format.2.0.js"></script>
