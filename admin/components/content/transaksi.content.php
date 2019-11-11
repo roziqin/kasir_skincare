@@ -570,7 +570,7 @@ if ($kond=='home' || $kond=='') {
 					$('#listitem table').append(content);
 					$('.container__load').load('components/content/transaksi.content.php?kond=');
 
-					$('.btn-remove').on('click',function(){
+					$('.btn-remove').unbind('click').click(function() {
 						var indexitem = $(this).parent().parent().index();
                         var id = $(this).data('id');
 
@@ -788,7 +788,7 @@ if ($kond=='home' || $kond=='') {
 						$('#listitem table').append(content);
 						$('.container__load').load('components/content/transaksi.content.php?kond=');
 
-						$('.btn-remove').on('click',function(){
+						$('.btn-remove').unbind('click').click(function() {
 							var indexitem = $(this).parent().parent().index();
                             var id = $(this).data('id');
 
@@ -881,7 +881,7 @@ if ($kond=='home') { ?>
                 $('#defaultForm-subtotal').val(subtotal);
 				$('#defaultForm-total').val(total);
 
-				$('.btn-remove').on('click',function(){
+				$('.btn-remove').unbind('click').click(function() {
 					var indexitem = $(this).parent().parent().index();
 					var id = $(this).data('id');
                     var classdiskon = $(this).parent().parent().hasClass("itemdiskon");
