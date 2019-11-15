@@ -1,5 +1,6 @@
 
     <input type="hidden" id="defaultForm-role" name="ip-role" value="<?php echo $_SESSION['role']; ?>">
+    <input type="hidden" id="defaultForm-user" name="ip-user" value="<?php echo $_SESSION['name']; ?>">
 	<main class="transaksi p-0 mr-0">
 		<div class="main-wrapper">
 		    <div class="container-fluid">

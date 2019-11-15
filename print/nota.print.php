@@ -21,12 +21,18 @@ $datapengaturan=mysqli_fetch_assoc($querypengaturan);
 
     $t = $_GET['id'];
 //$t = 5;
-    $sql="SELECT * from transaksi, member where transaksi_member=member_id and transaksi_id='$t' ";
+    $sql="SELECT * from transaksi, member, users where transaksi_member=member_id and id=transaksi_therapist and transaksi_id='$t' ";
     $query = mysqli_query($con,$sql);
     while($data = mysqli_fetch_assoc($query)) {
 
-      $pelanggan=$data['member_nama'];
       $idmember=$data['member_id'];
+      $nomember=$data['member_no'];
+      if ($idmember==0) {
+        $pelanggan=$data['member_nama'];
+      } else {
+        $pelanggan=$data['transaksi_nama'];
+      }
+      $therapist=$data['name'];
       $type=$data['transaksi_type_bayar'];
       $tanggal = $data['transaksi_tanggal'];
       $tran_diskon = $data['transaksi_diskon'];
@@ -72,7 +78,19 @@ $datapengaturan=mysqli_fetch_assoc($querypengaturan);
           <td width="60">Pasien</td>
           <td width="10">:</td>
           <td ><?php echo $pelanggan;?></td>
-          <td width="150" align="right">D - <?php echo $idmember; ?></td>
+          <td width="150" align="right">ID - <?php echo $nomember; ?></td>
+        </tr>
+        <tr>
+          <td width="60">Kasir</td>
+          <td width="10">:</td>
+          <td ><?php echo $id;?></td>
+          <td width="150" align="right"></td>
+        </tr>
+        <tr>
+          <td width="60">Therapist</td>
+          <td width="10">:</td>
+          <td ><?php echo $therapist;?></td>
+          <td width="150" align="right"></td>
         </tr>
         <tr>
           <td colspan="4"><hr></td>

@@ -12,6 +12,7 @@
       <form method="post" class="form-member">
         <div class="modal-body mx-3">
             <input type="hidden" id="defaultForm-id" name="ip-id">
+            <input type="hidden" id="defaultForm-no" name="ip-no">
             <div class="md-form mb-0">
               <input type="text" id="defaultForm-nama" class="form-control validate mb-3" name="ip-nama">
               <label for="defaultForm-nama">Nama</label>
@@ -67,6 +68,8 @@
           success: function() {
             console.log("sukses")
             $('#table-member').DataTable().ajax.reload();
+            $("#modalmember #defaultForm-id").val('');
+            $("#modalmember #defaultForm-no").val('');
             $("#modalmember #defaultForm-nama").val('');
             $("#modalmember #defaultForm-alamat").val('');
             $("#modalmember #defaultForm-hp").val('');
@@ -86,6 +89,8 @@
           success: function() {
             console.log("sukses edit")
             $('#table-member').DataTable().ajax.reload();
+            $("#modalmember #defaultForm-id").val('');
+            $("#modalmember #defaultForm-no").val('');
             $("#modalmember #defaultForm-nama").val('');
             $("#modalmember #defaultForm-alamat").val('');
             $("#modalmember #defaultForm-hp").val('');

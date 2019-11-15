@@ -63,7 +63,7 @@ if ($func=='dasboard-omset') {
     $query="SELECT * from transaksi_detail_temp, barang, kategori where transaksi_detail_temp_barang_id=barang_id and kategori_id=barang_kategori and transaksi_detail_temp_user='$user' ORDER BY transaksi_detail_temp_id";
 } elseif ($func=='list-member-temp') {
 
-    $query="SELECT * from member_temp, member, users where  member_temp_member_id=member_id and member_temp_user_id=id and member_temp_user_id='$user' ORDER BY member_temp_id DESC LIMIT 1";
+    $query="SELECT * from member_temp, member, users where  member_temp_member_id=member_id and member_temp_therapist=id and member_temp_user_id='$user' ORDER BY member_temp_id DESC LIMIT 1";
 
 } elseif ($func=='laporan-omset') {
 	
@@ -129,6 +129,31 @@ if ($func=='dasboard-omset') {
     }
 
 	$query ="SELECT transaksi_tanggal, transaksi_bulan, barang_nama, barang_id, sum(transaksi_detail_jumlah) as jumlah from transaksi, transaksi_detail, barang WHERE transaksi_id=transaksi_detail_nota and transaksi_detail_barang_id=barang_id and $text1 $ket BETWEEN '$tgl11' AND '$tgl22' GROUP BY $ket $text2 ORDER BY jumlah DESC";
+
+}  elseif ($func=='laporan-stok') {
+    
+    $menu = $_POST['menu'];
+
+    if ($menu==0) {
+        $text1 = '';
+        $text2 = ', barang_id';
+    } else {
+        $text1 = 'barang_id='.$menu.' and ';
+        $text2 = '';
+
+    }
+
+    if ($_POST['daterange']=="harian") {
+        $ket = "tanggal"; 
+        $tgl11 = date("Y-m-j", strtotime($_POST['start']));
+        $tgl22 = date("Y-m-j", strtotime($_POST['end']));
+    } elseif ($_POST['daterange']=="bulanan") {
+        $ket = "transaksi_bulan";     
+        $tgl11 = date("Y-m", strtotime($_POST['start']));
+        $tgl22 = date("Y-m", strtotime($_POST['end']));
+    }
+
+    $query ="SELECT * from log_stok, barang, users WHERE log_stok.barang=barang_id and id=log_stok.user and keterangan='tambah' and $text1 $ket BETWEEN '$tgl11' AND '$tgl22' ORDER BY tanggal ASC";
 }
 
 

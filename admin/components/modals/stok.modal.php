@@ -21,13 +21,13 @@
               <label for="defaultForm-jumlah">Jumlah</label>
             </div>
             <div class="md-form" id="md-form-ket">
-              <textarea id="defaultForm-ket" class="md-textarea form-control" rows="3" name="ip-ket"></textarea>
+              <input type="text" id="defaultForm-ket" class="form-control validate mb-3" name="ip-ket">
               <label for="defaultForm-ket">Ket Dikurangi</label>
             </div>
         </div>
         <div class="modal-footer d-flex justify-content-center">
           <button class="btn btn-primary" id="submit-stok" data-dismiss="modal" aria-label="Close">Proses</button>
-          <button class="btn btn-primary" id="update-stok" data-dismiss="modal" aria-label="Close">Proses</button>
+          <button class="btn btn-primary" id="update-stok" data-dismiss="modal" aria-label="Close" disabled="true">Proses</button>
         </div>
       </form>
     </div>
@@ -42,7 +42,13 @@
 
   <script type="text/javascript">
     $(document).ready(function(){
-
+      $( "#defaultForm-ket" ).change(function() {
+        if($(this).val()!='') {
+          $('#update-stok').removeAttr("disabled");
+        } else {
+          $('#update-stok').attr("disabled","true");
+        }
+      });
       $("#submit-stok").click(function(){
         var data = $('#modalstok .form-stok').serialize();
         $.ajax({

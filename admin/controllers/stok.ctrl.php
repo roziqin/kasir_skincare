@@ -18,7 +18,7 @@ if($_GET['ket']=='submit-stok'){
 	$awal=$data['barang_stok'];
 	$jumlah = $_POST['ip-jumlah']+$awal;
 
-	$sql1 = "INSERT into log_stok(user,barang,stok_awal,stok_jumlah,tanggal)values('$user','$id','$awal','$jumlah','$tgl')";
+	$sql1 = "INSERT into log_stok(user,barang,stok_awal,stok_jumlah,tanggal,keterangan)values('$user','$id','$awal','$jumlah','$tgl','tambah')";
 	mysqli_query($con,$sql1);
 
 	$sql2="UPDATE barang set barang_stok='$jumlah' where barang_id='$id'";
@@ -44,7 +44,7 @@ if($_GET['ket']=='submit-stok'){
 
 	if ($jumlah>0) {
 
-		$sql1 = "INSERT into log_stok(user,barang,stok_awal,stok_jumlah,tanggal,alasan)values('$user','$id','$awal','$jumlah','$tgl','$ket')";
+		$sql1 = "INSERT into log_stok(user,barang,stok_awal,stok_jumlah,tanggal,alasan,keterangan)values('$user','$id','$awal','$jumlah','$tgl','$ket','kurang')";
 		mysqli_query($con,$sql1);
 
 		$sql2="UPDATE barang set barang_stok='$jumlah' where barang_id='$id'";

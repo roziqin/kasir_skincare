@@ -16,14 +16,30 @@ if ($kond=='home' || $kond=='') {
             <div class="col-md-6 mt-5">
                 <h3 class="text-center mb-5">Pilih Member</h3>
                 <form method="post" class="form-member">
-                    <div class="md-form mb-3">
+                    <div class="md-form mb-5">
                         <select class="mdb-select md-form" id="defaultForm-member" name="ip-member" searchable="Search here..">
                             <option value="" disabled selected>Pilih Member</option>
                             <?php
                                 $sql="SELECT * from member ORDER BY member_id ASC";
                                 $result=mysqli_query($con,$sql);
                                 while ($data1=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
-                                    echo "<option value='$data1[member_id]'>$data1[member_nama]</option>";
+                                    echo "<option value='$data1[member_id]'>$data1[member_nama] - $data1[member_no]</option>";
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="md-form mb-3">
+                        <input type="text" id="defaultForm-nama" class="form-control" name="ip-nama">
+                        <label for="defaultForm-nama">Nama Pasien</label>
+                    </div>
+                    <div class="md-form mb-3">
+                        <select class="mdb-select md-form" id="defaultForm-therapist" name="ip-therapist" searchable="Search here..">
+                            <option value="" disabled selected>Pilih Therapist</option>
+                            <?php
+                                $sql="SELECT * from users, roles WHERE roles_id=role and roles_name='therapist' ORDER BY id ASC";
+                                $result=mysqli_query($con,$sql);
+                                while ($data1=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+                                    echo "<option value='$data1[id]'>$data1[name]</option>";
                                 }
                             ?>
                         </select>
@@ -47,7 +63,7 @@ if ($kond=='home' || $kond=='') {
             <ul class="nav tabs-white border-bottom" id="myClassicTab" role="tablist">
                 <?php
                     $n=0;
-                    $sql="SELECT * from kategori ORDER BY kategori_id";
+                    $sql="SELECT * from jenis ORDER BY jenis_id";
                     $query=mysqli_query($con, $sql);
                     while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
                         if ($n==0) {
@@ -62,8 +78,8 @@ if ($kond=='home' || $kond=='') {
                         }
                     ?>
                         <li class="nav-item <?php echo $ket2; ?>">
-                            <a class="nav-link  waves-light <?php echo $ket; ?>" id="profile-tab-classic" data-toggle="tab" href="#<?php echo $data1['kategori_slug']; ?>"
-                            role="tab" aria-controls="<?php echo $data1['kategori_slug']; ?>" aria-selected="<?php echo $ket1; ?>"><?php echo $data1['kategori_nama']; ?></a>
+                            <a class="nav-link  waves-light <?php echo $ket; ?>" id="profile-tab-classic" data-toggle="tab" href="#<?php echo $data1['jenis_slug']; ?>"
+                            role="tab" aria-controls="<?php echo $data1['jenis_slug']; ?>" aria-selected="<?php echo $ket1; ?>"><?php echo $data1['jenis_nama']; ?></a>
                         </li>
                     <?php
                     $n++;
@@ -75,7 +91,7 @@ if ($kond=='home' || $kond=='') {
             <div class="tab-content" id="myClassicTabContent">
                 <?php
                     $n=0;
-                    $sql="SELECT * from kategori ORDER BY kategori_id";
+                    $sql="SELECT * from kategori, jenis WHERE kategori_jenis=jenis_id ORDER BY jenis_id";
                     $query=mysqli_query($con, $sql);
                     while ($data1=mysqli_fetch_array($query, MYSQLI_ASSOC)) {
                         if ($n==0) {
@@ -85,12 +101,13 @@ if ($kond=='home' || $kond=='') {
 
                         }
                     ?>
-                        <div class="tab-pane fade <?php echo $ket; ?>" id="<?php echo $data1['kategori_slug']; ?>" role="tabpanel" aria-labelledby="<?php echo $data1['kategori_slug']; ?>-tab">
+                        <div class="tab-pane fade <?php echo $ket; ?>" id="<?php echo $data1['jenis_slug']; ?>" role="tabpanel" aria-labelledby="<?php echo $data1['jenis_slug']; ?>-tab">
                             <div class="row">
-                                <table id="example-<?php echo $data1['kategori_id']; ?>" class="table table-striped table-bordered fadeIn animated" style="width:100%">
+                                <table id="example-<?php echo $data1['jenis_id']; ?>" class="table table-striped table-bordered fadeIn animated" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>nama item</th>
+                                            <th>kategori</th>
                                             <th>stok</th>
                                             <th>diskon</th>
                                             <th>harga</th>
@@ -99,7 +116,7 @@ if ($kond=='home' || $kond=='') {
                                     </thead>
                                     <tbody>
                                     <?php
-                                        $sqlbarang="SELECT * from barang where barang_kategori='$data1[kategori_id]'";
+                                        $sqlbarang="SELECT * from barang, kategori where barang_kategori=kategori_id and barang_kategori='$data1[kategori_id]'";
                                         $querybarang=mysqli_query($con, $sqlbarang);
                                         while ($databarang=mysqli_fetch_array($querybarang, MYSQLI_ASSOC)) {
                                             if ($databarang['barang_image']=='') {
@@ -120,6 +137,7 @@ if ($kond=='home' || $kond=='') {
                                                 ?>
                                                 <tr>
                                                     <td><strong class=""><?php echo $databarang['barang_nama']; ?></strong></td>
+                                                    <td><strong class=""><?php echo $databarang['kategori_nama']; ?></strong></td>
                                                     <td> - </td>
                                                     <td><?php echo $databarang['barang_diskon']; ?>%</td>
                                                     <td>Rp. <?php echo format_rupiah($harga); ?></td>
@@ -141,6 +159,7 @@ if ($kond=='home' || $kond=='') {
                                                     ?>
                                                     <tr>
                                                         <td><strong class=""><?php echo $databarang['barang_nama']; ?></strong></td>
+                                                        <td><strong class=""><?php echo $databarang['kategori_nama']; ?></strong></td>
                                                         <td><span class="stok <?php echo $stok_status; ?>"><?php echo $databarang['barang_stok']; ?></span></td>
                                                         <td><?php echo $databarang['barang_diskon']; ?>%</td>
                                                         <td>Rp. <?php echo format_rupiah($harga); ?></td>
@@ -154,6 +173,7 @@ if ($kond=='home' || $kond=='') {
                                                     ?>
                                                     <tr>
                                                         <td><strong class=""><?php echo $databarang['barang_nama']; ?></strong></td>
+                                                        <td><strong class=""><?php echo $databarang['kategori_nama']; ?></strong></td>
                                                         <td><span class="stok <?php echo $stok_status; ?>">0</span></td>
                                                         <td><?php echo $databarang['barang_diskon']; ?>%</td>
                                                         <td>Rp. <?php echo format_rupiah($harga); ?></td>
@@ -296,6 +316,7 @@ if ($kond=='home' || $kond=='') {
             <h3 class="text-center mb-5">Jumlah Kembalian</h3>
             <h1 class="text-center mt-5 mb-3" id="jumlahkembalian">Rp. <?php echo format_rupiah($_SESSION['kembalian']); ?></h1>
             <button class="btn btn-primary transaksibaru float-right">Transaksi Baru</button>
+            <button class="btn btn-default printulangnota float-right">Print Ulang nota</button>
         </div>
     </div>
     
@@ -311,6 +332,19 @@ if ($kond=='home' || $kond=='') {
                 window.clearInterval(windowInterval);
             }
         },1000);
+
+        $('.printulangnota').on('click',function(){
+            windowList = new Array('../print/nota.print.php?id='+nota);
+            i = 0;
+            windowName = "window";
+            windowInterval = window.setInterval(function(){
+                window.open(windowList[i],windowName+i,'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=0,titlebar=no');
+                i++;
+                if(i==windowList.length){
+                    window.clearInterval(windowInterval);
+                }
+            },1000);
+        });
     </script>
 
    
@@ -434,6 +468,8 @@ if ($kond=='home' || $kond=='') {
     $('.pilihmember').on('click',function(e){
         e.preventDefault();
         var idmember = $('#defaultForm-member').val();
+        var idtherapist = $('#defaultForm-therapist').val();
+        var nama = $('#defaultForm-nama').val();
 
 
         $.ajax({
@@ -441,7 +477,9 @@ if ($kond=='home' || $kond=='') {
             url: "controllers/transaksi.ctrl.php?ket=pilihmember",
             dataType: "json",
             data:{
-                idmember:idmember
+                idmember:idmember,
+                idtherapist:idtherapist,
+                nama:nama
             },
             success:function(data){
                 window.location.reload();
@@ -630,7 +668,7 @@ if ($kond=='home' || $kond=='') {
                 dataType: "json",
                 data:data,
                 success:function(data){
-                    console.log("data "+data.ket);
+                    console.log("data "+data);
                     if (data.ket == "gagal") {
                         $.confirm({
                               title: 'Validasi Gagal',
@@ -652,9 +690,17 @@ if ($kond=='home' || $kond=='') {
                         $('#spuangfisik').empty();
                         $('#spuangfisik').append("Uang Fisik : <span class='float-right'>"+formatRupiah(data.uangfisik.toString(), 'Rp. ')+"</span>");
                         $('#spcash').empty();
-                        $('#spcash').append("Omset Cash : <span class='float-right'>"+formatRupiah(data.cash.toString(), 'Rp. ')+"</span>");
+                        if (data.cash==null) {
+                            $('#spcash').append("Omset Cash : <span class='float-right'>Rp. 0</span>");
+                        } else {
+                            $('#spcash').append("Omset Cash : <span class='float-right'>"+formatRupiah(data.cash.toString(), 'Rp. ')+"</span>");
+                        }
                         $('#spdebet').empty();
-                        $('#spdebet').append("Omset Debet : <span class='float-right'>"+formatRupiah(data.debet.toString(), 'Rp. ')+"</span>");
+                        if (data.cash==null) {
+                            $('#spdebet').append("Omset Debet : <span class='float-right'>Rp. 0</span>");
+                        } else {
+                            $('#spdebet').append("Omset Debet : <span class='float-right'>"+formatRupiah(data.debet.toString(), 'Rp. ')+"</span>");
+                        }
                         $('#spomset').empty();
                         $('#spomset').append("Total Omset : <span class='float-right'>"+formatRupiah(data.omset.toString(), 'Rp. ')+"</span>");
                         $('#spselisih').empty();
@@ -907,8 +953,15 @@ if ($kond=='home') { ?>
             dataType: "json",
             success:function(data){
                 $('#listmember table').empty();
+                var nama = ''; 
                 if (data!='') {
-                    $('#listmember table').append('<tr><td><h6>Nama Member: '+data[0].member_nama+'</h6></td><td class="text-right"><h6>Alamat Member: '+data[0].member_alamat+'</h6></td></tr>');
+                    if (data[0].member_temp_member_id==0) {
+                        nama = data[0].member_temp_nama;
+                    } else {
+                        nama = data[0].member_nama;
+                    }
+                    $('#listmember table').append('<tr><td><h6>Nama Member: '+nama+'</h6></td><td class="text-right"><h6>Alamat Member: '+data[0].member_alamat+'</h6></td></tr>'+
+                        '<tr><td><h6>Nama Therapist: '+data[0].name+'</h6></td><td class="text-right"><h6>Nama Kasir: '+$('#defaultForm-user').val()+'</h6></td></tr>');
                     $('#bayar').removeAttr("disabled");
                 }
             }
@@ -929,7 +982,7 @@ if ($kond=='home') { ?>
             	index:index
             },
             success:function(data){
-            	
+            	/*
             	if ($('#defaultForm-ordertype').val()=='online') {
 		        	var pajakjml = $('#ip-pajakonline').val();	
 	        	} else {
@@ -968,7 +1021,9 @@ if ($kond=='home') { ?>
 				var total = tax+data.totalordertemp;
 				$('#total').empty();
 				$('#total').append(formatRupiah(total.toString(), 'Rp. '));
-				//$('.container__load').load('components/content/transaksi.content.php?kond=home');
+                */
+
+				$('.container__load').load('components/content/transaksi.content.php?kond=home');
             }
         });
 	}

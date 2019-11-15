@@ -13,7 +13,10 @@
 				      <a class="nav-link waves-light" id="kasir">Kasir</a>
 				    </li>
 				    <li class="nav-item">
-				      <a class="nav-link waves-light" id="menu">Item</a>
+				      <a class="nav-link waves-light" id="menu">Item Terjual</a>
+				    </li>
+				    <li class="nav-item">
+				      <a class="nav-link waves-light" id="stok">Stok Masuk</a>
 				    </li>
 				</ul>
 			</div>
@@ -45,6 +48,8 @@
 					$('.container__load').load('components/content/laporan.content.php?ket=kasir');			
 				} else if(menu == "menu"){
 					$('.container__load').load('components/content/laporan.content.php?ket=menu');			
+				} else if(menu == "stok"){
+					$('.container__load').load('components/content/laporan.content.php?ket=stok');			
 				}
 			});
 	 

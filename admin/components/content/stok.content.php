@@ -112,10 +112,11 @@
                       dataType: "json",
                       data:{id:id},
                       success:function(data){
-                      $("#modalstok #update-stok").removeClass('hidden');
-                      $("#modalstok #submit-stok").addClass('hidden');
-                      $("#modalstok #md-form-ket").removeClass('hidden');
-                      $('#modalstok h4.modal-title').text('Kurangi stok');
+                          $("#modalstok #update-stok").removeClass('hidden');
+                          $("#modalstok #submit-stok").addClass('hidden');
+                          $("#modalstok #md-form-ket").removeClass('hidden');
+                          $("[name='ip-ket']").attr('required',true);
+                          $('#modalstok h4.modal-title').text('Kurangi stok');
                           $("#modalstok label").addClass("active");
                           $("#modalstok #defaultForm-id").val(data[0].barang_id);
                           $("#modalstok #defaultForm-nama").val(data[0].barang_nama);

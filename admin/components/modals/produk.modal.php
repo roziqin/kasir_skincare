@@ -37,10 +37,13 @@
               ?>
               </select>
           </div>
+          <input type="hidden" id="defaultForm-beli" class="form-control validate mb-3" name="ip-beli" value="0">
+          <!--
           <div class="md-form mb-0 mt-0">
             <input type="text" id="defaultForm-beli" class="form-control validate mb-3" name="ip-beli">
             <label for="defaultForm-beli">Harga Beli</label>
           </div>
+          -->
           <div class="md-form mb-0 mt-0">
             <input type="text" id="defaultForm-jual" class="form-control validate mb-3" name="ip-jual">
             <label for="defaultForm-jual">Harga Jual</label>

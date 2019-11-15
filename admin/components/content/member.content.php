@@ -4,6 +4,7 @@
     <table id="table-member" class="table table-striped table-bordered fadeInLeft slow animated" style="width:100%">
         <thead>
             <tr>
+                <th>no member</th>
                 <th>nama</th>
                 <th>alamat</th>
                 <th>tanggal lahir</th>
@@ -14,6 +15,7 @@
         </thead>
         <tfoot>
             <tr>
+                <th>no member</th>
                 <th>nama</th>
                 <th>alamat</th>
                 <th>tanggal lahir</th>
@@ -51,6 +53,7 @@
             },
             "deferRender": true,
             "columns": [
+                { "data": "member_no" },
                 { "data": "member_nama" },
                 { "data": "member_alamat" },
                 { "data": "member_tgl_lahir" },
@@ -79,6 +82,7 @@
                       $('#modalmember h4.modal-title').text('Edit member');
                           $("#modalmember label").addClass("active");
                           $("#modalmember #defaultForm-id").val(data[0].member_id);
+                          $("#modalmember #defaultForm-no").val(data[0].member_no);
                           $("#modalmember #defaultForm-nama").val(data[0].member_nama);
                           $("#modalmember #defaultForm-alamat").val(data[0].member_alamat);
                           $("#modalmember #defaultForm-hp").val(data[0].member_hp);

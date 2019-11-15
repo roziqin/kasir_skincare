@@ -179,9 +179,11 @@ if($_GET['ket']=='tambahmenu'){
 
 } elseif($_GET['ket']=='pilihmember'){
 
-	$idmember = $_POST['idmember'];	
+	$idmember = $_POST['idmember'];
+	$idtherapist = $_POST['idtherapist'];
+	$nama = $_POST['nama'];
 	
-	$sql = "INSERT INTO member_temp(member_temp_member_id,member_temp_user_id)values('$idmember','$user')";
+	$sql = "INSERT INTO member_temp(member_temp_member_id,member_temp_user_id,member_temp_therapist,member_temp_nama)values('$idmember','$user','$idtherapist','$nama')";
 
 	mysqli_query($con,$sql);
 
@@ -210,8 +212,10 @@ if($_GET['ket']=='tambahmenu'){
 	$query1=mysqli_query($con,$sql1);
 	$data1=mysqli_fetch_assoc($query1);
 	$member = $data1['member_temp_member_id'];
+	$namanonmember = $data1['member_temp_nama'];
+	$therapist = $data1['member_temp_therapist'];
 
-	$sql = "INSERT INTO transaksi (transaksi_tanggal,transaksi_bulan,transaksi_waktu,transaksi_member,transaksi_total,transaksi_diskon,transaksi_tax,transaksi_tax_service,transaksi_bayar,transaksi_type_bayar,transaksi_user,transaksi_ket) VALUES ('$tgl','$bln','$wkt','$member','$total','$jumlahdiskon','$tax','0','$bayar','$paytype','$user','')" ;
+	$sql = "INSERT INTO transaksi (transaksi_tanggal,transaksi_bulan,transaksi_waktu,transaksi_member,transaksi_total,transaksi_diskon,transaksi_tax,transaksi_tax_service,transaksi_bayar,transaksi_type_bayar,transaksi_user,transaksi_therapist,transaksi_nama,transaksi_ket) VALUES ('$tgl','$bln','$wkt','$member','$total','$jumlahdiskon','$tax','0','$bayar','$paytype','$user','$therapist','$namanonmember','')" ;
 
 	mysqli_query($con,$sql);
 

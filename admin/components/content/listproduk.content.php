@@ -8,7 +8,6 @@
                 <th>kategori</th>
                 <th>stok</th>
                 <th>batas stok</th>
-                <th>harga beli</th>
                 <th>harga jual</th>
                 <th>diskon (%)</th>
                 <th>disable</th>
@@ -60,10 +59,6 @@
                 { "data": "kategori_nama" },
                 { "data": "barang_stok" },
                 { "data": "barang_batas_stok" },
-                { "render": function(data, type, full){
-                   return formatRupiah(full['barang_harga_beli'].toString(), 'Rp. ');
-                  }
-                },
                 { "render": function(data, type, full){
                    return formatRupiah(full['barang_harga_jual'].toString(), 'Rp. ');
                   }
