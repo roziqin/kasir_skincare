@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2019 at 10:57 PM
+-- Generation Time: Nov 15, 2019 at 07:11 PM
 -- Server version: 10.1.21-MariaDB
 -- PHP Version: 5.6.30
 
@@ -49,7 +49,8 @@ CREATE TABLE `barang` (
 INSERT INTO `barang` (`barang_id`, `barang_nama`, `barang_kategori`, `barang_harga_beli`, `barang_harga_jual`, `barang_diskon`, `barang_komisi`, `barang_komisi_dokter`, `barang_set_stok`, `barang_stok`, `barang_batas_stok`, `barang_disable`, `barang_image`) VALUES
 (1, 'Glow Acne Light', 1, 0, 170000, 10, 0, 0, 0, 0, 0, 0, ''),
 (2, 'Oxy Glow Facial', 1, 0, 150000, 0, 0, 0, 0, 0, 0, 0, ''),
-(3, 'Acne Series', 2, 150000, 300000, 0, 0, 0, 1, 19, 5, 0, '');
+(3, 'Acne Series', 2, 150000, 300000, 0, 0, 0, 1, 31, 5, 0, ''),
+(4, 'Tes', 3, 0, 60000, 0, 0, 0, 0, 0, 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -69,7 +70,8 @@ CREATE TABLE `jenis` (
 
 INSERT INTO `jenis` (`jenis_id`, `jenis_nama`, `jenis_slug`) VALUES
 (1, 'Obat', 'obat'),
-(2, 'Treament', 'treament');
+(2, 'Treament', 'treament'),
+(3, 'Therapist', 'therapist');
 
 -- --------------------------------------------------------
 
@@ -90,7 +92,8 @@ CREATE TABLE `kategori` (
 
 INSERT INTO `kategori` (`kategori_id`, `kategori_nama`, `kategori_jenis`, `kategori_slug`) VALUES
 (1, 'Facial', '2', 'facial'),
-(2, 'Obat', '1', 'obat');
+(2, 'Obat', '1', 'obat'),
+(3, 'Therapist', '3', 'therapist');
 
 -- --------------------------------------------------------
 
@@ -117,7 +120,9 @@ CREATE TABLE `log_harga` (
 
 INSERT INTO `log_harga` (`log_id`, `barang_id`, `harga_beli_awal`, `harga_beli_baru`, `harga_jual_awal`, `harga_jual_baru`, `harga_jual_online_lama`, `harga_jual_online_baru`, `user`, `tanggal`) VALUES
 (1, 1, '0', '0', '150000', '170000', '', '', 43, '2019-10-19'),
-(2, 3, '150000', '150000', '300000', '300000', '', '', 43, '2019-10-19');
+(2, 3, '150000', '150000', '300000', '300000', '', '', 43, '2019-10-19'),
+(3, 4, '0', '0', '50000', '60000', '', '', 2, '2019-11-15'),
+(4, 4, '0', '0', '60000', '60000', '', '', 2, '2019-11-15');
 
 -- --------------------------------------------------------
 
@@ -145,16 +150,18 @@ CREATE TABLE `log_stok` (
   `stok_awal` int(10) NOT NULL,
   `stok_jumlah` int(10) NOT NULL,
   `tanggal` date NOT NULL,
-  `alasan` text NOT NULL
+  `alasan` text NOT NULL,
+  `keterangan` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `log_stok`
 --
 
-INSERT INTO `log_stok` (`log_id`, `user`, `barang`, `stok_awal`, `stok_jumlah`, `tanggal`, `alasan`) VALUES
-(1, 43, 3, 25, 30, '2019-10-19', ''),
-(2, 43, 3, 30, 24, '2019-10-19', 'Rusak');
+INSERT INTO `log_stok` (`log_id`, `user`, `barang`, `stok_awal`, `stok_jumlah`, `tanggal`, `alasan`, `keterangan`) VALUES
+(9, 2, 3, 31, 32, '2019-11-16', '', 'tambah'),
+(10, 2, 3, 32, 29, '2019-11-16', 'Rusak', 'kurang'),
+(11, 2, 3, 29, 31, '2019-11-16', '', 'tambah');
 
 -- --------------------------------------------------------
 
@@ -179,7 +186,11 @@ INSERT INTO `log_user` (`log_id`, `user`, `login`, `logout`) VALUES
 (3, 2, '2019-10-25 22:05:59', '0000-00-00 00:00:00'),
 (4, 2, '2019-10-26 10:50:38', '0000-00-00 00:00:00'),
 (5, 2, '2019-10-26 19:45:45', '0000-00-00 00:00:00'),
-(6, 2, '2019-10-27 20:25:35', '0000-00-00 00:00:00');
+(6, 2, '2019-10-27 20:25:35', '0000-00-00 00:00:00'),
+(7, 2, '2019-10-29 19:41:47', '2019-10-29 22:18:23'),
+(8, 2, '2019-10-29 22:19:03', '0000-00-00 00:00:00'),
+(9, 2, '2019-11-07 21:58:56', '0000-00-00 00:00:00'),
+(10, 2, '2019-11-15 21:41:10', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -189,6 +200,7 @@ INSERT INTO `log_user` (`log_id`, `user`, `login`, `logout`) VALUES
 
 CREATE TABLE `member` (
   `member_id` int(10) NOT NULL,
+  `member_no` varchar(10) NOT NULL,
   `member_nama` varchar(100) NOT NULL,
   `member_alamat` text NOT NULL,
   `member_tgl_lahir` date NOT NULL,
@@ -200,10 +212,11 @@ CREATE TABLE `member` (
 -- Dumping data for table `member`
 --
 
-INSERT INTO `member` (`member_id`, `member_nama`, `member_alamat`, `member_tgl_lahir`, `member_hp`, `member_gender`) VALUES
-(0, 'Non Member', '', '0000-00-00', '', 'Perempuan'),
-(2, 'Anna', 'Jl H Alwi A, Pakis, Malang', '1999-10-06', '08500001021', 'Perempuan'),
-(3, 'Roziqin', 'Malang', '2019-10-09', '085000003235', 'Laki-laki');
+INSERT INTO `member` (`member_id`, `member_no`, `member_nama`, `member_alamat`, `member_tgl_lahir`, `member_hp`, `member_gender`) VALUES
+(0, '', 'Non Member', '', '0000-00-00', '', 'Perempuan'),
+(2, 'A1', 'Anna', 'Jl H Alwi A, Pakis, Malang', '1999-10-06', '08500001021', 'Perempuan'),
+(3, 'A2', 'Ahmad', 'Malang', '2019-10-09', '085000003235', 'Laki-laki'),
+(4, 'A3', 'Anggi', 'Malang', '1992-11-05', '0812200000', 'Perempuan');
 
 -- --------------------------------------------------------
 
@@ -214,7 +227,9 @@ INSERT INTO `member` (`member_id`, `member_nama`, `member_alamat`, `member_tgl_l
 CREATE TABLE `member_temp` (
   `member_temp_id` int(2) NOT NULL,
   `member_temp_member_id` int(5) NOT NULL,
-  `member_temp_user_id` int(5) NOT NULL
+  `member_temp_user_id` int(5) NOT NULL,
+  `member_temp_therapist` int(5) NOT NULL,
+  `member_temp_nama` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -264,11 +279,9 @@ CREATE TABLE `roles` (
 
 INSERT INTO `roles` (`roles_id`, `roles_name`, `display_name`) VALUES
 (0, 'administrator', 'Administrator'),
-(1, 'owner', 'Owner'),
-(2, 'admin', 'Admin'),
-(3, 'kasir', 'Kasir'),
-(4, 'pelanggan', 'Pelanggan'),
-(6, 'investor', 'Investor');
+(1, 'admin', 'Admin'),
+(2, 'therapist', 'Therapist'),
+(3, 'kasir', 'Kasir');
 
 -- --------------------------------------------------------
 
@@ -289,6 +302,8 @@ CREATE TABLE `transaksi` (
   `transaksi_bayar` int(20) NOT NULL,
   `transaksi_type_bayar` varchar(20) NOT NULL,
   `transaksi_user` int(5) NOT NULL,
+  `transaksi_therapist` int(5) NOT NULL,
+  `transaksi_nama` varchar(50) NOT NULL,
   `transaksi_ket` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -296,22 +311,30 @@ CREATE TABLE `transaksi` (
 -- Dumping data for table `transaksi`
 --
 
-INSERT INTO `transaksi` (`transaksi_id`, `transaksi_tanggal`, `transaksi_waktu`, `transaksi_bulan`, `transaksi_member`, `transaksi_total`, `transaksi_diskon`, `transaksi_tax`, `transaksi_tax_service`, `transaksi_bayar`, `transaksi_type_bayar`, `transaksi_user`, `transaksi_ket`) VALUES
-(1, '2019-10-26', '20:52:28', '2019-10', 0, 495000, 0, 45000, 0, 500000, 'cash', 2, ''),
-(2, '2019-10-26', '20:59:02', '2019-10', 2, 330000, 0, 30000, 0, 350000, 'cash', 2, ''),
-(3, '2019-10-26', '21:06:11', '2019-10', 2, 300000, 0, 0, 0, 300000, 'cash', 2, ''),
-(4, '2019-10-26', '21:07:03', '2019-10', 2, 120000, 30000, 0, 0, 150000, 'cash', 2, ''),
-(5, '2019-10-26', '21:09:55', '2019-10', 2, 453000, 0, 0, 0, 453000, 'debet', 2, ''),
-(6, '2019-10-27', '20:57:39', '2019-10', 2, 450000, 0, 0, 0, 500000, 'cash', 2, ''),
-(7, '2019-10-27', '21:00:01', '2019-10', 2, 153000, 0, 0, 0, 200000, 'cash', 2, ''),
-(8, '2019-10-27', '21:01:33', '2019-10', 2, 150000, 0, 0, 0, 150000, 'debet', 2, ''),
-(9, '2019-10-27', '21:02:20', '2019-10', 2, 300000, 0, 0, 0, 300000, 'debet', 2, ''),
-(10, '2019-10-27', '21:05:28', '2019-10', 2, 150000, 0, 0, 0, 150000, 'debet', 2, ''),
-(11, '2019-10-27', '21:21:21', '2019-10', 2, 150000, 0, 0, 0, 150000, 'debet', 2, ''),
-(12, '2019-10-27', '21:23:35', '2019-10', 2, 153000, 0, 0, 0, 200000, 'cash', 2, ''),
-(13, '2019-10-27', '21:28:44', '2019-10', 0, 153000, 0, 0, 0, 153000, 'debet', 2, ''),
-(14, '2019-10-27', '21:43:23', '2019-10', 0, 303000, 0, 0, 0, 350000, 'cash', 2, ''),
-(15, '2019-10-27', '21:49:59', '2019-10', 3, 150000, 0, 0, 0, 150000, 'debet', 2, '');
+INSERT INTO `transaksi` (`transaksi_id`, `transaksi_tanggal`, `transaksi_waktu`, `transaksi_bulan`, `transaksi_member`, `transaksi_total`, `transaksi_diskon`, `transaksi_tax`, `transaksi_tax_service`, `transaksi_bayar`, `transaksi_type_bayar`, `transaksi_user`, `transaksi_therapist`, `transaksi_nama`, `transaksi_ket`) VALUES
+(1, '2019-10-26', '20:52:28', '2019-10', 0, 495000, 0, 45000, 0, 500000, 'cash', 2, 0, '', ''),
+(2, '2019-10-26', '20:59:02', '2019-10', 2, 330000, 0, 30000, 0, 350000, 'cash', 2, 0, '', ''),
+(3, '2019-10-26', '21:06:11', '2019-10', 2, 300000, 0, 0, 0, 300000, 'cash', 2, 0, '', ''),
+(4, '2019-10-26', '21:07:03', '2019-10', 2, 120000, 30000, 0, 0, 150000, 'cash', 2, 0, '', ''),
+(5, '2019-10-26', '21:09:55', '2019-10', 2, 453000, 0, 0, 0, 453000, 'debet', 2, 0, '', ''),
+(6, '2019-10-27', '20:57:39', '2019-10', 2, 450000, 0, 0, 0, 500000, 'cash', 2, 0, '', ''),
+(7, '2019-10-27', '21:00:01', '2019-10', 2, 153000, 0, 0, 0, 200000, 'cash', 2, 0, '', ''),
+(8, '2019-10-27', '21:01:33', '2019-10', 2, 150000, 0, 0, 0, 150000, 'debet', 2, 0, '', ''),
+(9, '2019-10-27', '21:02:20', '2019-10', 2, 300000, 0, 0, 0, 300000, 'debet', 2, 0, '', ''),
+(10, '2019-10-27', '21:05:28', '2019-10', 2, 150000, 0, 0, 0, 150000, 'debet', 2, 0, '', ''),
+(11, '2019-10-27', '21:21:21', '2019-10', 2, 150000, 0, 0, 0, 150000, 'debet', 2, 0, '', ''),
+(12, '2019-10-27', '21:23:35', '2019-10', 2, 153000, 0, 0, 0, 200000, 'cash', 2, 0, '', ''),
+(13, '2019-10-27', '21:28:44', '2019-10', 0, 153000, 0, 0, 0, 153000, 'debet', 2, 0, '', ''),
+(14, '2019-10-27', '21:43:23', '2019-10', 0, 303000, 0, 0, 0, 350000, 'cash', 2, 0, '', ''),
+(15, '2019-10-27', '21:49:59', '2019-10', 3, 150000, 0, 0, 0, 150000, 'debet', 2, 0, '', ''),
+(16, '2019-10-29', '20:20:45', '2019-10', 3, 150000, 0, 0, 0, 150000, 'debet', 2, 0, '', ''),
+(17, '2019-10-29', '21:18:37', '2019-10', 2, 153000, 0, 0, 0, 200000, 'cash', 2, 0, '', ''),
+(18, '2019-11-15', '21:58:26', '2019-11', 2, 300000, 0, 0, 0, 300000, 'debet', 2, 0, '', ''),
+(19, '2019-11-15', '22:09:55', '2019-11', 3, 153000, 0, 0, 0, 200000, 'cash', 2, 0, '', ''),
+(20, '2019-11-15', '22:14:56', '2019-11', 2, 450000, 0, 0, 0, 450000, 'cash', 2, 0, '', ''),
+(21, '2019-11-15', '23:30:51', '2019-11', 0, 300000, 0, 0, 0, 300000, 'cash', 2, 7, 'TES', ''),
+(22, '2019-11-16', '00:08:42', '2019-11', 4, 60000, 0, 0, 0, 60000, 'debet', 2, 5, '', ''),
+(23, '2019-11-16', '00:13:06', '2019-11', 2, 900000, 0, 0, 0, 900000, 'cash', 2, 5, '', '');
 
 -- --------------------------------------------------------
 
@@ -353,7 +376,15 @@ INSERT INTO `transaksi_detail` (`transaksi_detail_id`, `transaksi_detail_nota`, 
 (13, 13, 1, 153000, 0, 17000, 1, 153000, '', 0, 2),
 (14, 14, 1, 153000, 0, 17000, 1, 153000, '', 0, 2),
 (15, 14, 2, 150000, 0, 0, 1, 150000, '', 0, 2),
-(16, 15, 2, 150000, 0, 0, 1, 150000, '', 0, 2);
+(16, 15, 2, 150000, 0, 0, 1, 150000, '', 0, 2),
+(17, 16, 2, 150000, 0, 0, 1, 150000, '', 0, 2),
+(18, 17, 1, 153000, 0, 17000, 1, 153000, '', 0, 2),
+(19, 18, 2, 150000, 0, 0, 2, 300000, '', 0, 2),
+(20, 19, 1, 153000, 0, 17000, 1, 153000, '', 0, 2),
+(21, 20, 2, 150000, 0, 0, 3, 450000, '', 0, 2),
+(22, 21, 3, 300000, 150000, 0, 1, 300000, '', 0, 2),
+(23, 22, 4, 60000, 0, 0, 1, 60000, '', 0, 2),
+(24, 23, 3, 300000, 150000, 0, 3, 900000, '', 0, 2);
 
 -- --------------------------------------------------------
 
@@ -409,11 +440,11 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `username`, `password`, `role`, `remember_token`) VALUES
 (1, 'Roziqin', 'roziqin', '21232f297a57a5a743894a0e4a801fc3', '0', '0'),
-(2, 'Admin', 'admin', '21232f297a57a5a743894a0e4a801fc3', '2', '0'),
+(2, 'Admin', 'admin', '21232f297a57a5a743894a0e4a801fc3', '1', '0'),
 (3, 'kasir', 'kasir', '21232f297a57a5a743894a0e4a801fc3', '3', '0'),
-(4, 'Pelanggan', 'pelanggan', '7f78f06d2d1262a0a222ca9834b15d9d', '4', '0'),
-(5, 'Bagus', 'bagus', '21232f297a57a5a743894a0e4a801fc3', '1', '0'),
-(7, 'Investor', 'roketto', '92348a8febc8970da8442379262506f2', '6', '0');
+(4, 'Anggi', 'anggi', '7f78f06d2d1262a0a222ca9834b15d9d', '2', '0'),
+(5, 'Bunga', 'bunga', '21232f297a57a5a743894a0e4a801fc3', '2', '0'),
+(7, 'Indah', 'indah', '92348a8febc8970da8442379262506f2', '2', '0');
 
 -- --------------------------------------------------------
 
@@ -427,9 +458,19 @@ CREATE TABLE `validasi` (
   `validasi_waktu` time NOT NULL,
   `validasi_user_id` int(10) NOT NULL,
   `validasi_user_nama` varchar(50) NOT NULL,
-  `validasi_jumlah` int(50) NOT NULL,
-  `validasi_omset` int(50) NOT NULL
+  `validasi_jumlah` int(20) NOT NULL,
+  `validasi_cash` int(20) NOT NULL,
+  `validasi_debet` int(20) NOT NULL,
+  `validasi_omset` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `validasi`
+--
+
+INSERT INTO `validasi` (`validasi_id`, `validasi_tanggal`, `validasi_waktu`, `validasi_user_id`, `validasi_user_nama`, `validasi_jumlah`, `validasi_cash`, `validasi_debet`, `validasi_omset`) VALUES
+(12, '2019-10-29', '21:55:25', 2, 'Admin', 153000, 153000, 150000, 303000),
+(16, '2019-11-15', '22:10:39', 2, 'Admin', 100000, 153000, 300000, 453000);
 
 --
 -- Indexes for dumped tables
@@ -546,22 +587,22 @@ ALTER TABLE `validasi`
 -- AUTO_INCREMENT for table `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `barang_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `barang_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `jenis`
 --
 ALTER TABLE `jenis`
-  MODIFY `jenis_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `jenis_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `kategori_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `kategori_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `log_harga`
 --
 ALTER TABLE `log_harga`
-  MODIFY `log_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `log_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `log_nota`
 --
@@ -571,22 +612,22 @@ ALTER TABLE `log_nota`
 -- AUTO_INCREMENT for table `log_stok`
 --
 ALTER TABLE `log_stok`
-  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `log_user`
 --
 ALTER TABLE `log_user`
-  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `log_id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `member`
 --
 ALTER TABLE `member`
-  MODIFY `member_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `member_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `member_temp`
 --
 ALTER TABLE `member_temp`
-  MODIFY `member_temp_id` int(2) NOT NULL AUTO_INCREMENT;
+  MODIFY `member_temp_id` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `pengaturan_perusahaan`
 --
@@ -601,17 +642,17 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `transaksi_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `transaksi_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT for table `transaksi_detail`
 --
 ALTER TABLE `transaksi_detail`
-  MODIFY `transaksi_detail_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `transaksi_detail_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `transaksi_detail_temp`
 --
 ALTER TABLE `transaksi_detail_temp`
-  MODIFY `transaksi_detail_temp_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `transaksi_detail_temp_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `transaksi_pengeluaran`
 --
@@ -626,7 +667,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `validasi`
 --
 ALTER TABLE `validasi`
-  MODIFY `validasi_id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `validasi_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
