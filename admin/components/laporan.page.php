@@ -18,6 +18,12 @@
 				    <li class="nav-item">
 				      <a class="nav-link waves-light" id="stok">Stok Masuk</a>
 				    </li>
+				    <li class="nav-item">
+				      <a class="nav-link waves-light" id="stokkeluar">Stok Keluar</a>
+				    </li>
+				    <li class="nav-item">
+				      <a class="nav-link waves-light" id="validasi">Validasi</a>
+				    </li>
 				</ul>
 			</div>
 		</div>
@@ -50,6 +56,10 @@
 					$('.container__load').load('components/content/laporan.content.php?ket=menu');			
 				} else if(menu == "stok"){
 					$('.container__load').load('components/content/laporan.content.php?ket=stok');			
+				} else if(menu == "stokkeluar"){
+					$('.container__load').load('components/content/laporan.content.php?ket=stokkeluar');			
+				} else if(menu == "validasi"){
+					$('.container__load').load('components/content/laporan.content.php?ket=validasi');			
 				}
 			});
 	 

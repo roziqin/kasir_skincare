@@ -128,7 +128,7 @@ if ($func=='dasboard-omset') {
 	    $tgl22 = date("Y-m", strtotime($_POST['end']));
     }
 
-	$query ="SELECT transaksi_tanggal, transaksi_bulan, barang_nama, barang_id, sum(transaksi_detail_jumlah) as jumlah from transaksi, transaksi_detail, barang WHERE transaksi_id=transaksi_detail_nota and transaksi_detail_barang_id=barang_id and $text1 $ket BETWEEN '$tgl11' AND '$tgl22' GROUP BY $ket $text2 ORDER BY jumlah DESC";
+	$query ="SELECT transaksi_tanggal, transaksi_bulan, barang_nama, barang_id, sum(transaksi_detail_jumlah) as jumlah from transaksi, transaksi_detail, barang WHERE transaksi_id=transaksi_detail_nota and transaksi_detail_barang_id=barang_id and $text1 $ket BETWEEN '$tgl11' AND '$tgl22' GROUP BY $ket $text2 ORDER BY transaksi_tanggal ASC";
 
 }  elseif ($func=='laporan-stok') {
     
@@ -143,17 +143,39 @@ if ($func=='dasboard-omset') {
 
     }
 
-    if ($_POST['daterange']=="harian") {
         $ket = "tanggal"; 
         $tgl11 = date("Y-m-j", strtotime($_POST['start']));
         $tgl22 = date("Y-m-j", strtotime($_POST['end']));
-    } elseif ($_POST['daterange']=="bulanan") {
-        $ket = "transaksi_bulan";     
-        $tgl11 = date("Y-m", strtotime($_POST['start']));
-        $tgl22 = date("Y-m", strtotime($_POST['end']));
-    }
+    
 
     $query ="SELECT * from log_stok, barang, users WHERE log_stok.barang=barang_id and id=log_stok.user and keterangan='tambah' and $text1 $ket BETWEEN '$tgl11' AND '$tgl22' ORDER BY tanggal ASC";
+
+}  elseif ($func=='laporan-stokkeluar') {
+    
+    $menu = $_POST['menu'];
+
+    if ($menu==0) {
+        $text1 = '';
+        $text2 = ', barang_id';
+    } else {
+        $text1 = 'barang_id='.$menu.' and ';
+        $text2 = '';
+
+    }
+    
+    $ket = "transaksi_tanggal"; 
+    $tgl11 = date("Y-m-j", strtotime($_POST['start']));
+    $tgl22 = date("Y-m-j", strtotime($_POST['end']));
+
+
+    $query ="SELECT name, transaksi_tanggal, barang_nama, barang_id, sum(transaksi_detail_jumlah) as jumlah from transaksi, transaksi_detail, barang, users WHERE transaksi_id=transaksi_detail_nota and transaksi_detail_barang_id=barang_id and transaksi_user=users.id and barang_set_stok=1 and $text1 $ket BETWEEN '$tgl11' AND '$tgl22' GROUP BY $ket $text2 , users.id ORDER BY transaksi_tanggal ASC";
+
+}  elseif ($func=='laporan-validasi') {
+    
+    $tgl11 = date("Y-m-j", strtotime($_POST['start']));
+    $tgl22 = date("Y-m-j", strtotime($_POST['end']));
+
+    $query="SELECT * from  validasi WHERE validasi_tanggal BETWEEN '$tgl11' AND '$tgl22' ORDER BY validasi_id asc";
 }
 
 

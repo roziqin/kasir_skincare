@@ -125,10 +125,11 @@ if ($ket=='omset' || $ket=='kasir') {
 				</div>
 			</div>	
 			<div class="row fadeInLeft slow animated">
-				<div class="col-md-12">
 					<?php
 					if ($ket=='kasir') {
 					?>
+					<div class="col-md-12"><h2 class="text-center mb-4">Omset per Kasir</h2></div>
+					<div class="col-md-12">
 						<table id="table-kasir" class="table table-striped table-bordered" style="width:100%">
 					        <thead>
 					            <tr>
@@ -140,11 +141,14 @@ if ($ket=='omset' || $ket=='kasir') {
 					            </tr>
 					        </thead>
 					    </table>
+					</div>
 
 
 					<?php
 					} else {
 					?>
+					<div class="col-md-12"><h2 class="text-center mb-4">Omset</h2></div>
+					<div class="col-md-12">
 						<table id="table-omset" class="table table-striped table-bordered" style="width:100%">
 					        <thead>
 					            <tr>
@@ -155,6 +159,7 @@ if ($ket=='omset' || $ket=='kasir') {
 					            </tr>
 					        </thead>
 					    </table>
+					</div>
 					<?php
 					}
 					?>
@@ -180,7 +185,7 @@ if ($ket=='omset' || $ket=='kasir') {
 				<div class="col-md-2">
 				    <div class="md-form">
 				        <select class="mdb-select md-form" id="defaultForm-menu" name="ip-menu">
-		                    <option value="" disabled selected>Pilih Menu</option>
+		                    <option value="" disabled selected>Pilih barang</option>
 		                <?php
 		                	$sql="SELECT * from barang";
 		                  	$result=mysqli_query($con,$sql);
@@ -278,6 +283,7 @@ if ($ket=='omset' || $ket=='kasir') {
 				</div>
 			</div>	
 			<div class="row fadeInLeft slow animated">
+				<div class="col-md-12"><h2 class="text-center mb-4">Barang</h2></div>
 				<div class="col-md-12">
 					<table id="table-menu" class="table table-striped table-bordered" style="width:100%">
 				        <thead>
@@ -321,7 +327,7 @@ if ($ket=='omset' || $ket=='kasir') {
 				<div class="col-md-2">
 				    <div class="md-form">
 				        <select class="mdb-select md-form" id="defaultForm-menu" name="ip-menu">
-		                    <option value="" disabled selected>Pilih Menu</option>
+		                    <option value="" disabled selected>Pilih Barang</option>
 		                <?php
 		                	$sql="SELECT * from barang where barang_set_stok=1";
 		                  	$result=mysqli_query($con,$sql);
@@ -332,7 +338,7 @@ if ($ket=='omset' || $ket=='kasir') {
 				        </select>
 				    </div>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-8">
 					<div class="row form-date">
 						<div class="col-md-6">
 				            <div class="md-form">
@@ -345,72 +351,6 @@ if ($ket=='omset' || $ket=='kasir') {
 				            </div>
 				        </div>
 					</div>
-					<div class="row form-month hidden">
-						<div class="col-md-6">
-				            <div class="md-form m-0">
-				            	<div class="row">
-					            	<div class="col-md-6">
-								        <select class="mdb-select md-form" id="startmonth" name="ip-startmonth">
-						                    <option value="" disabled selected>Bulan Mulai</option>
-								            <option value="01">01</option>
-								            <option value="02">02</option>
-								            <option value="03">03</option>
-								            <option value="04">04</option>
-								            <option value="05">05</option>
-								            <option value="06">06</option>
-								            <option value="07">07</option>
-								            <option value="08">08</option>
-								            <option value="09">09</option>
-								            <option value="10">10</option>
-								            <option value="11">11</option>
-								            <option value="12">12</option>
-								        </select>
-					            	</div>
-					            	<div class="col-md-6">
-								        <select class="mdb-select md-form" id="startyear" name="ip-startyear">
-						                    <option value="" disabled selected>Tahun Mulai</option>
-								            <option value="2018">2018</option>
-								            <option value="2019">2019</option>
-								            <option value="2020">2020</option>
-								            <option value="2021">2021</option>
-								        </select>
-					            	</div>
-					            </div>
-				            </div>
-						</div>
-						<div class="col-md-6">
-				            <div class="md-form m-0">
-				            	<div class="row">
-					            	<div class="col-md-6">
-								        <select class="mdb-select md-form" id="endmonth" name="ip-endmonth">
-						                    <option value="" disabled selected>Bulan Sampai</option>
-								            <option value="01">01</option>
-								            <option value="02">02</option>
-								            <option value="03">03</option>
-								            <option value="04">04</option>
-								            <option value="05">05</option>
-								            <option value="06">06</option>
-								            <option value="07">07</option>
-								            <option value="08">08</option>
-								            <option value="09">09</option>
-								            <option value="10">10</option>
-								            <option value="11">11</option>
-								            <option value="12">12</option>
-								        </select>
-					            	</div>
-					            	<div class="col-md-6">
-								        <select class="mdb-select md-form" id="endyear" name="ip-endyear">
-						                    <option value="" disabled selected>Tahun Sampai</option>
-								            <option value="2018">2018</option>
-								            <option value="2019">2019</option>
-								            <option value="2020">2020</option>
-								            <option value="2021">2021</option>
-								        </select>
-					            	</div>
-					            </div>
-				            </div>
-				        </div>
-					</div>
 				</div>
 				<div class="col-md-2">
 				    <div class="md-form">
@@ -419,6 +359,7 @@ if ($ket=='omset' || $ket=='kasir') {
 				</div>
 			</div>	
 			<div class="row fadeInLeft slow animated">
+				<div class="col-md-12"><h2 class="text-center mb-4">Stok Masuk</h2></div>
 				<div class="col-md-12">
 					<table id="table-stok" class="table table-striped table-bordered" style="width:100%">
 				        <thead>
@@ -437,6 +378,133 @@ if ($ket=='omset' || $ket=='kasir') {
 	                            <th>user</th>
 				            </tr>
 				        </tfoot>
+				    </table>
+				</div>
+				<div class="col-md-12">
+				    <div class="md-form">
+				    	<a class="btn btn-default export-stokmasuk hidden" href="">Export</a>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<?php
+
+} elseif ($ket=='stokkeluar') {
+	?>
+	<div class="row justify-content-md-center">
+		<div class="col-md-10">
+			<div class="row">
+				<input type="hidden" name="ip-daterange" id="daterange" value="harian">
+				<div class="col-md-2">
+				    <div class="md-form">
+				        <select class="mdb-select md-form" id="defaultForm-menu" name="ip-menu">
+		                    <option value="" disabled selected>Pilih Barang</option>
+		                <?php
+		                	$sql="SELECT * from barang where barang_set_stok=1";
+		                  	$result=mysqli_query($con,$sql);
+		                  	while ($data1=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
+		                      	echo "<option value='$data1[barang_id]'>$data1[barang_nama]</option>";
+		                  	}
+		                ?>
+				        </select>
+				    </div>
+				</div>
+				<div class="col-md-8">
+					<div class="row form-date">
+						<div class="col-md-6">
+				            <div class="md-form">
+							  	<input placeholder="Start date" type="text" id="defaultForm-startdate" class="form-control datepicker">
+				            </div>
+						</div>
+						<div class="col-md-6">
+				            <div class="md-form">
+							  	<input placeholder="End date" type="text" id="defaultForm-enddate" class="form-control datepicker">
+				            </div>
+				        </div>
+					</div>
+				</div>
+				<div class="col-md-2">
+				    <div class="md-form">
+				    	<button class="btn btn-primary btn-proses-laporan-stokkeluar">Proses</button>
+				    </div>
+				</div>
+			</div>	
+			<div class="row fadeInLeft slow animated">
+				<div class="col-md-12"><h2 class="text-center mb-4">Stok Keluar</h2></div>
+				<div class="col-md-12">
+					<table id="table-stokkeluar" class="table table-striped table-bordered" style="width:100%">
+				        <thead>
+				            <tr>
+	                            <th>tanggal</th>
+	                            <th>item</th>
+	                            <th>jumlah</th>
+	                            <th>user</th>
+				            </tr>
+				        </thead>
+				        <tfoot>
+				            <tr>
+	                            <th>tanggal</th>
+	                            <th>item</th>
+	                            <th>jumlah</th>
+	                            <th>user</th>
+				            </tr>
+				        </tfoot>
+				    </table>
+				</div>
+				<div class="col-md-12">
+				    <div class="md-form">
+				    	<a class="btn btn-default export-stokkeluar hidden" href="">Export</a>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<?php
+
+} elseif ($ket=='validasi') {
+	?>
+	<div class="row justify-content-md-center">
+		<div class="col-md-10">
+			<div class="row">
+				<input type="hidden" name="ip-daterange" id="daterange" value="harian">
+				<div class="col-md-10">
+					<div class="row form-date">
+						<div class="col-md-6">
+				            <div class="md-form">
+							  	<input placeholder="Start date" type="text" id="defaultForm-startdate" class="form-control datepicker">
+				            </div>
+						</div>
+						<div class="col-md-6">
+				            <div class="md-form">
+							  	<input placeholder="End date" type="text" id="defaultForm-enddate" class="form-control datepicker">
+				            </div>
+				        </div>
+					</div>
+				</div>
+				<div class="col-md-2">
+				    <div class="md-form">
+				    	<button class="btn btn-primary btn-proses-laporan-validasi">Proses</button>
+				    </div>
+				</div>
+			</div>	
+			<div class="row fadeInLeft slow animated">
+				<div class="col-md-12"><h2 class="text-center mb-4">Tutup Kasir</h2></div>
+				<div class="col-md-12">
+					<table id="table-validasi" class="table table-striped table-bordered" style="width:100%">
+				        <thead>
+				            <tr>  
+		                        <th>tanggal</th>
+		                        <th>waktu</th>
+		                        <th>nama</th>
+		                        <th>uang fisik</th>
+		                        <th>cash</th>
+		                        <th>debet</th>
+		                        <th>total omset</th>
+				            </tr>
+				        </thead>
 				    </table>
 				</div>
 			</div>
@@ -853,6 +921,12 @@ if ($ket=='omset' || $ket=='kasir') {
 	          	var kettext = 'transaksi_bulan';
 				
 			}
+			var date = start+":"+end;
+
+			if (menu==null) {
+				menu = 0;
+			}
+
 
 			
 			$.ajax({
@@ -884,6 +958,116 @@ if ($ket=='omset' || $ket=='kasir') {
 				                  }
 				                },
 						        { data: 'name' }
+						    ]
+						} );
+
+		        	
+			        $("a.export-stokmasuk").removeClass("hidden");
+			        $("a.export-stokmasuk").attr("href","../include/export.php?data="+menu+"&date="+date+"&waktu="+daterange+"&ket=masuk");
+		        	console.log("success "+kettext);
+		        	console.log(data);
+		        }
+		    });
+		}); 
+
+		$('.btn-proses-laporan-stokkeluar').on('click',function(){
+			var daterange = $('#daterange').val();
+			var menu = $('#defaultForm-menu').val();
+
+          	var start = $('#defaultForm-startdate').val();
+          	var end = $('#defaultForm-enddate').val();
+          	var kettext = 'transaksi_tanggal';
+				
+			
+			var date = start+":"+end;
+
+			if (menu==null) {
+				menu = 0;
+			}
+
+			
+			$.ajax({
+		        type:'POST',
+		        url:'api/view.api.php?func=laporan-stokkeluar',
+		        dataType: "json",
+            	data:{
+            		daterange:daterange,
+            		start:start,
+            		end:end,
+            		menu:menu
+            	},
+		        success:function(data){
+		        	console.log(menu);
+		        	$('#table-stokkeluar').DataTable().clear().destroy();
+		        	
+			        	$('#table-stokkeluar').DataTable( {
+						    paging: false,
+						    searching: false,
+						    ordering: false,
+				            deferRender: true,
+						    data: data,
+						    columns: [
+						        { data: 'transaksi_tanggal' },
+						        { data: 'barang_nama' },
+						        { data: 'jumlah' },
+						        { data: 'name' }
+						    ]
+						} );
+
+		        	
+
+			        $("a.export-stokkeluar").removeClass("hidden");
+			        $("a.export-stokkeluar").attr("href","../include/export.php?data="+menu+"&date="+date+"&waktu="+daterange+"&ket=keluar");
+		        	console.log("success "+kettext);
+		        	console.log(data);
+		        }
+		    });
+		}); 
+
+		$('.btn-proses-laporan-validasi').on('click',function(){
+
+          	var start = $('#defaultForm-startdate').val();
+          	var end = $('#defaultForm-enddate').val();
+
+			
+			$.ajax({
+		        type:'POST',
+		        url:'api/view.api.php?func=laporan-validasi',
+		        dataType: "json",
+            	data:{
+            		start:start,
+            		end:end
+            	},
+		        success:function(data){
+		        	console.log(menu);
+		        	$('#table-validasi').DataTable().clear().destroy();
+		        	
+			        	$('#table-validasi').DataTable( {
+						    paging: false,
+						    searching: false,
+						    ordering: false,
+				            deferRender: true,
+						    data: data,
+						    columns: [
+		                          { data: 'validasi_tanggal' },
+		                          { data: 'validasi_waktu' },
+		                          { data: 'validasi_user_nama' },
+		                          { "render": function(data, type, full){
+		                             return formatRupiah(full['validasi_jumlah'].toString(), 'Rp. ');
+		                            }
+		                          },
+		                          { "render": function(data, type, full){
+		                             return formatRupiah(full['validasi_cash'].toString(), 'Rp. ');
+		                            }
+		                          },
+		                          { "render": function(data, type, full){
+		                             return formatRupiah(full['validasi_debet'].toString(), 'Rp. ');
+		                            }
+		                          },
+		                          { "render": function(data, type, full){
+		                             return formatRupiah(full['validasi_omset'].toString(), 'Rp. ');
+		                            }
+		                          }
 						    ]
 						} );
 
