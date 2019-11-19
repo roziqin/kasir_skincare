@@ -64,6 +64,7 @@ else{
             //Ubah alamat url berikut, sesuaikan dengan alamat script pada komputer anda
             var url_login    = 'controllers/login.ctrl.php';
             var url_admin    = 'admin/?menu=';
+            var url_kasir    = 'admin/?menu=transaksi';
             
             //Ubah tulisan pada button saat click login
             
@@ -79,13 +80,15 @@ else{
                 dataType: 'html',
                 //Respon jika data berhasil dikirim
                 success : function(pesan){
-                    if(pesan=='ok'){
-                        //Arahkan ke halaman admin jika script pemroses mencetak kata ok
+
+                    if (pesan=='admin' || pesan=='administrator') {
                         window.location = url_admin;
                     }
-                    else{
-                        //Cetak peringatan untuk username & password salah
-                        alert(pesan);
+                    else if (pesan=='salah') {
+                        alert("Username atau Password Salah !");
+                    } else {
+                        window.location = url_kasir;
+
                     }
                 },
             });

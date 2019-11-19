@@ -28,9 +28,9 @@ $datapengaturan=mysqli_fetch_assoc($querypengaturan);
       $idmember=$data['member_id'];
       $nomember=$data['member_no'];
       if ($idmember==0) {
-        $pelanggan=$data['member_nama'];
-      } else {
         $pelanggan=$data['transaksi_nama'];
+      } else {
+        $pelanggan=$data['member_nama'];
       }
       $therapist=$data['name'];
       $type=$data['transaksi_type_bayar'];

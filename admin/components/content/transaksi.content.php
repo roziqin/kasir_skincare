@@ -305,6 +305,10 @@ if ($kond=='home' || $kond=='') {
 					<textarea id="keterangan" class="md-textarea form-control" rows="3" name="keterangan"></textarea>
 					<label for="keterangan">Request</label>
 				</div>
+                <div class="md-form mt-4">
+                    <input type="text" id="hargamanual" class="form-control" name="hargamanual" >
+                    <label for="hargamanual">Harga Manual</label>
+                </div>
 				<button class="btn btn-primary prosesmenu float-right">Proses</button>
 	    	</form>
 	    </div>
@@ -527,6 +531,7 @@ if ($kond=='home' || $kond=='') {
     	var barang_id = $(this).data('id');
     	var jumlah = 1;
     	var keterangan = '';
+        var hargamanual = 0;
     	if ($('#defaultForm-ordertype').val()=='online') {
         	var pajakjml = $('#ip-pajakonline').val();	
     	} else {
@@ -541,7 +546,8 @@ if ($kond=='home' || $kond=='') {
             data:{
             	barang_id:barang_id,
             	jumlah:jumlah,
-            	keterangan:keterangan
+            	keterangan:keterangan,
+                hargamanual:hargamanual
             },
             success:function(data){
 				$('#carimenu').val('');

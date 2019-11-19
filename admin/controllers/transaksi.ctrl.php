@@ -16,6 +16,7 @@ if($_GET['ket']=='tambahmenu'){
 	$id = $_POST['barang_id'];	
 	$jumlah = $_POST['jumlah'];
 	$ket = $_POST['keterangan'];
+	$hargamanual = $_POST['hargamanual'];
 
 	$sql="SELECT * from barang where barang_id='$id'";
 	$query=mysqli_query($con,$sql);
@@ -37,9 +38,13 @@ if($_GET['ket']=='tambahmenu'){
 		$array_datas['totalordertemp']=["Stok Kurang"];
 		//echo ("<script>location.href='../home.php?menu=jumlah&id=$id&nama=$data[barang_nama]&ket=Stok Kurang&pelanggan='</script>");
 	} else {
+
+		if($hargamanual!=0) {
+			$harga = $hargamanual;
+		} else {
 		
-		$harga = $data['barang_harga_jual'];
-		
+			$harga = $data['barang_harga_jual'];
+		}
 
 		$diskon = $harga*$data['barang_diskon']/100;
 		if ($diskon!=0) {

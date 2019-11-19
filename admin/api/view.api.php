@@ -171,7 +171,7 @@ if ($func=='dasboard-omset') {
     $query ="SELECT name, transaksi_tanggal, barang_nama, barang_id, sum(transaksi_detail_jumlah) as jumlah from transaksi, transaksi_detail, barang, users WHERE transaksi_id=transaksi_detail_nota and transaksi_detail_barang_id=barang_id and transaksi_user=users.id and barang_set_stok=1 and $text1 $ket BETWEEN '$tgl11' AND '$tgl22' GROUP BY $ket $text2 , users.id ORDER BY transaksi_tanggal ASC";
 
 }  elseif ($func=='laporan-validasi') {
-    
+
     $tgl11 = date("Y-m-j", strtotime($_POST['start']));
     $tgl22 = date("Y-m-j", strtotime($_POST['end']));
 
@@ -197,7 +197,7 @@ if ($func=="laporan-omset" || $func=="laporan-kasir") {
             $text1 = '';
 	    } else {
 	    	$text = '';
-            $text1 = ', transaksi_user';
+            $text1 = '';
 	    }
 
 		$tglket = $data[$ket];
