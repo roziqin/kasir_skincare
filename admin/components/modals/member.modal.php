@@ -25,6 +25,10 @@
               <input placeholder="Tanggal Lahir" type="text" id="defaultForm-tgl-lahir" class="form-control datepicker" name="ip-tgl-lahir">
             </div>
             <div class="md-form mb-0">
+              <input type="text" id="defaultForm-usia" class="form-control validate mb-3" name="ip-usia">
+              <label for="defaultForm-usia">Usia</label>
+            </div>
+            <div class="md-form mb-0">
               <input type="text" id="defaultForm-hp" class="form-control validate mb-3" name="ip-hp">
               <label for="defaultForm-hp">No. HP</label>
             </div>
@@ -73,6 +77,7 @@
             $("#modalmember #defaultForm-nama").val('');
             $("#modalmember #defaultForm-alamat").val('');
             $("#modalmember #defaultForm-hp").val('');
+            $("#modalmember #defaultForm-usia").val('');
             $("#modalmember #defaultForm-gender").val('');
             $("#modalmember #defaultForm-tgl-lahir").val('');
           }
@@ -94,6 +99,7 @@
             $("#modalmember #defaultForm-nama").val('');
             $("#modalmember #defaultForm-alamat").val('');
             $("#modalmember #defaultForm-hp").val('');
+            $("#modalmember #defaultForm-usia").val('');
             $("#modalmember #defaultForm-gender").val('');
             $("#modalmember #defaultForm-tgl-lahir").val('');
           }

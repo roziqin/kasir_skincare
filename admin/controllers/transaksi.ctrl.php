@@ -311,10 +311,21 @@ if($_GET['ket']=='tambahmenu'){
 		$a="INSERT into validasi(validasi_tanggal,validasi_waktu,validasi_user_id,validasi_user_nama,validasi_jumlah,validasi_cash,validasi_debet,validasi_omset)values('$tgl','$wkt','$user','$usernama','$uangfisik','$data3[cash]','$data2[debet]','$data1[total]')";
 			mysqli_query($con,$a);
 
+		if ($data2['debet']=='') {
+			$totdebet = 0;
+		} else {
+			$totdebet = $data2['debet'];
+		}
+
+		if ($data3['cash']=='') {
+			$totcash = 0;
+		} else {
+			$totcash = $data3['cash'];
+		}
 
 		$array_datas['omset'] = $data1['total'];
-		$array_datas['debet'] = $data2['debet'];
-		$array_datas['cash'] = $data3['cash'];
+		$array_datas['debet'] = $totdebet;
+		$array_datas['cash'] = $totcash;
 		$array_datas['uangfisik'] = $uangfisik;
 		$array_datas['ket'] = "sukses";
 

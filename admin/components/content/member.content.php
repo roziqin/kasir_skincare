@@ -8,22 +8,12 @@
                 <th>nama</th>
                 <th>alamat</th>
                 <th>tanggal lahir</th>
+                <th>usia (Th)</th>
                 <th>no hp</th>
                 <th>gender</th>
                 <th></th>
             </tr>
         </thead>
-        <tfoot>
-            <tr>
-                <th>no member</th>
-                <th>nama</th>
-                <th>alamat</th>
-                <th>tanggal lahir</th>
-                <th>no hp</th>
-                <th>gender</th>
-                <th></th>
-            </tr>
-        </tfoot>
     </table>
 
 
@@ -36,6 +26,7 @@
             $("#modalmember #defaultForm-nama").val('');
             $("#modalmember #defaultForm-alamat").val('');
             $("#modalmember #defaultForm-hp").val('');
+            $("#modalmember #defaultForm-usia").val('');
             $("#modalmember #defaultForm-gender").val('');
             $("#modalmember #defaultForm-tgl-lahir").val('');
             $("#modalmember #submit-member").removeClass('hidden');
@@ -57,6 +48,7 @@
                 { "data": "member_nama" },
                 { "data": "member_alamat" },
                 { "data": "member_tgl_lahir" },
+                { "data": "member_usia" },
                 { "data": "member_hp" },
                 { "data": "member_gender" },
 
@@ -85,6 +77,7 @@
                           $("#modalmember #defaultForm-no").val(data[0].member_no);
                           $("#modalmember #defaultForm-nama").val(data[0].member_nama);
                           $("#modalmember #defaultForm-alamat").val(data[0].member_alamat);
+                          $("#modalmember #defaultForm-usia").val(data[0].member_usia);
                           $("#modalmember #defaultForm-hp").val(data[0].member_hp);
                           $("#modalmember #defaultForm-gender").val(data[0].member_gender);
                           $("#modalmember #defaultForm-tgl-lahir").val(data[0].member_tgl_lahir);

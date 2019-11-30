@@ -13,6 +13,9 @@
 				      <a class="nav-link waves-light" id="kasir">Kasir</a>
 				    </li>
 				    <li class="nav-item">
+				      <a class="nav-link waves-light" id="nota">Nota</a>
+				    </li>
+				    <li class="nav-item">
 				      <a class="nav-link waves-light" id="menu">Item Terjual</a>
 				    </li>
 				    <li class="nav-item">
@@ -52,6 +55,8 @@
 					$('.container__load').load('components/content/laporan.content.php?ket=omset');						
 				} else if(menu == "kasir"){
 					$('.container__load').load('components/content/laporan.content.php?ket=kasir');			
+				} else if(menu == "nota"){
+					$('.container__load').load('components/content/laporan.content.php?ket=nota');			
 				} else if(menu == "menu"){
 					$('.container__load').load('components/content/laporan.content.php?ket=menu');			
 				} else if(menu == "stok"){

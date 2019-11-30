@@ -160,6 +160,11 @@ if ($ket=='omset' || $ket=='kasir') {
 					        </thead>
 					    </table>
 					</div>
+					<div class="col-md-12">
+					    <div class="md-form">
+					    	<a class="btn btn-default export-omset hidden" href="" target="_blank">Export</a>
+					    </div>
+					</div>
 					<?php
 					}
 					?>
@@ -513,6 +518,56 @@ if ($ket=='omset' || $ket=='kasir') {
 
 <?php
 
+} elseif ($ket=='nota') {
+	?>
+	<div class="row justify-content-md-center">
+		<div class="col-md-10">
+			<div class="row">
+				<div class="col-md-10">
+					<div class="row form-date">
+						<div class="col-md-6">
+				            <div class="md-form">
+							  	<input placeholder="Start date" type="text" id="defaultForm-startdate" class="form-control datepicker">
+				            </div>
+						</div>
+						<div class="col-md-6">
+				            <div class="md-form">
+							  	<input placeholder="End date" type="text" id="defaultForm-enddate" class="form-control datepicker">
+				            </div>
+				        </div>
+					</div>
+				</div>
+				<div class="col-md-2">
+				    <div class="md-form">
+				    	<button class="btn btn-primary btn-proses-laporan-nota">Proses</button>
+				    </div>
+				</div>
+			</div>	
+			<div class="row fadeInLeft slow animated">
+				<div class="col-md-12">
+					<table id="table-nota" class="table table-striped table-bordered" style="width:100%">
+				        <thead>
+				            <tr>
+	                            <th>nota</th>
+	                            <th>tanggal</th>
+	                            <th>pelanggan</th>
+	                            <th>kasir</th>
+	                            <th>total</th>
+	                            <th></th>
+				            </tr>
+				        </thead>
+				    </table>
+				</div>
+				<div class="col-md-12">
+				    <div class="md-form">
+				    	<a class="btn btn-default export-nota hidden" href="" target="_blank">Export</a>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<?php
 }
 
 
@@ -588,6 +643,7 @@ if ($ket=='omset' || $ket=='kasir') {
 	          	var kettext = 'transaksi_bulan';
 				
 			}
+			var date = start+":"+end;
 
 			
 			$.ajax({
@@ -651,100 +707,14 @@ if ($ket=='omset' || $ket=='kasir') {
 
 		        	} 
 
+
+		        	$("a.export-omset").removeClass("hidden");
+			        $("a.export-omset").attr("href","../include/export_omset.php?date="+date+"&ket="+daterange);
 		        	console.log("success "+kettext);
 		        	console.log(data);
 		        }
 		    });
-			/*
-		    
-			$('#table-omset').DataTable( {
-			    ajax:  {
-			        type:'POST',
-			        url:'api/view.api.php?func=laporan-omset',
-			        dataType: "json",
-	            	data:{
-	            		daterange:daterange,
-	            		start:start,
-	            		end:end
-	            	}
-			    },
-			    columns: [
-			        { data: 'transaksi_tanggal' },
-			        { data: 'cash' },
-			        { data: 'debet' },
-			        { data: 'online' },
-			        { data: 'total' }
-			    ]
-			} );
-
-		    $.ajax({
-		        type:'POST',
-		        url:'api/view.api.php?func=laporan-omset',
-		        dataType: "json",
-            	data:{
-            		daterange:daterange,
-            		start:start,
-            		end:end
-            	},
-		        success:function(data){
-		            var date = [];
-		            var total = [];
-		            var omset = 0;
-
-		            for (var i in data) {
-		                date.push(moment(new Date(data[i].transaksi_tanggal)).format('ddd')+'-'+moment(new Date(data[i].transaksi_tanggal)).format('DD'));
-		                total.push(data[i].total);
-		                omset += parseInt(data[i].total);
-		            }
-		            $('#totomset').text(convertToRupiah(omset));
-		            var ctxL = document.getElementById("lineChart").getContext('2d');
-		            var myLineChart = new Chart(ctxL, {
-		                type: 'line',
-		                data: {
-		                    labels: date,
-		                    datasets: [{
-		                            label: "",
-		                            data: total,
-		                            backgroundColor: [
-		                                'rgba(0, 137, 132, .2)',
-		                            ],
-		                            borderColor: [
-		                                'rgba(0, 10, 130, .7)',
-		                            ],
-		                            borderWidth: 2
-		                        }
-		                    ]
-		                },
-		                options: {
-		                    responsive: true,
-		                    aspectRatio: 2,
-		                    tooltips: {
-		                      callbacks: {
-		                        label: function(t, d) {
-		                           var xLabel = d.datasets[t.datasetIndex].label;
-		                           var yLabel = t.yLabel >= 1000 ? '$' + t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '$' + t.yLabel;
-		                           return xLabel + ': ' + yLabel;
-		                        }
-		                      }
-		                    },
-		                    scales: {
-		                      yAxes: [{
-		                        ticks: {
-		                           callback: function(value, index, total) {
-		                              if (parseInt(value) >= 1000) {
-		                                 return 'Rp. ' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		                              } else {
-		                                 return 'Rp. ' + value;
-		                              }
-		                           }
-		                        }
-		                      }]
-		                    }
-		                }
-		            });
-		        }
-		    });
-		    */
+			
 		});
 
 	
@@ -1077,151 +1047,88 @@ if ($ket=='omset' || $ket=='kasir') {
 		        	console.log(data);
 		        }
 		    });
-		});         
+		});
+
+		$('.btn-proses-laporan-nota').on('click',function(){
+			
+          	var start = $('#defaultForm-startdate').val();
+          	var end = $('#defaultForm-enddate').val();
+          	var kettext = 'transaksi_tanggal';
+
+			var date = start+":"+end;
+			console.log("nota")
+			$.ajax({
+		        type:'POST',
+		        url:'api/view.api.php?func=laporan-nota',
+		        dataType: "json",
+            	data:{
+            		start:start,
+            		end:end
+            	},
+		        success:function(data){
+		        	$('#table-nota').DataTable().clear().destroy();
+		        	
+		        	$('#table-nota').DataTable( {
+					    paging: true,
+					    searching: true,
+					    ordering: true,
+					    data: data,
+			            deferRender: true,
+					    columns: [
+					        { data: 'transaksi_id' },
+					        { data: 'transaksi_tanggal' },
+					        { data: 'member_nama' },
+					        { data: 'name' },
+					        { render: function(data, type, full){
+			                   return formatRupiah(full['transaksi_total'].toString(), 'Rp. ');
+			                  }
+			                },
+			                { render: function(data, type, full){
+			                   return '<a class="btn-floating btn-sm btn-primary mr-2 btn-detailnota" data-toggle="modal" data-target="#modaldetail" data-id="' + full['transaksi_id'] + '" title="Detail"><i class="far fa-file-alt"></i></a>';
+			                  }
+			                }
+					    ],
+			            drawCallback: function( settings ) {
+		
+							$('.btn-detailnota').on('click',function(){
+								var notaid = $(this).data('id');
+					          	$.ajax({
+							        type:'POST',
+							        url:'api/view.api.php?func=cek-nota',
+							        dataType: "json",
+					            	data:{
+					            		notaid:notaid
+					            	},
+							        success:function(data){
+							        	for (var i in data) {
+
+							        		if (i==0) {
+					                        	$('#modaldetail p.nama').text('Pelanggan: '+data[i].pelanggan);
+					                        	$('#modaldetail p.nonota').text('No Nota: '+data[i].notaid);
+					                        	$('#modaldetail p.kasir').text('Kasir: '+data[i].user);
+					                        	$('#modaldetail p.therapist').text('Therapist: '+data[i].therapist);
+					                        	$('#modaldetail p.potongan').text(formatRupiah(data[i].potongan.toString(), 'Rp. '));
+					                        	$('#modaldetail p.total').text(formatRupiah(data[i].total.toString(), 'Rp. '));
+					                        	$('#modaldetail p.subtotal').text(formatRupiah(data[i].subtotal.toString(), 'Rp. '));
+							        		} else {
+							        			$('#listbarang tbody').append("<tr><td>"+data[i].barang_nama+"</td><td class='text-right'>"+formatRupiah(data[i].transaksi_detail_harga.toString(), 'Rp. ')+"</td><td class='text-right'>"+data[i].transaksi_detail_jumlah+"</td><td class='text-right'>"+formatRupiah(data[i].transaksi_detail_total.toString(), 'Rp. ')+"</td></tr>");
+							        		}
+							            }
+
+							        }
+							    });
+							}); 
+
+			            }
+					});
+
+		        	$("a.export-nota").removeClass("hidden");
+			        $("a.export-nota").attr("href","../include/export_nota.php?date="+date);
+		        }
+		    });
+			
+		});          
 	});
 
-/*
-if ($("main").hasClass("dashboard") == true) {
 
-    $.ajax({
-        type:'POST',
-        url:'api/view.api.php?func=dasboard-omset',
-        dataType: "json",
-        success:function(data){
-            var date = [];
-            var total = [];
-            var omset = 0;
-
-            for (var i in data) {
-                date.push(moment(new Date(data[i].transaksi_tanggal)).format('ddd')+'-'+moment(new Date(data[i].transaksi_tanggal)).format('DD'));
-                total.push(data[i].total);
-                omset += parseInt(data[i].total);
-            }
-            $('#totomset').text(convertToRupiah(omset));
-            var ctxL = document.getElementById("lineChart").getContext('2d');
-            var myLineChart = new Chart(ctxL, {
-                type: 'line',
-                data: {
-                    labels: date,
-                    datasets: [{
-                            label: "",
-                            data: total,
-                            backgroundColor: [
-                                'rgba(0, 137, 132, .2)',
-                            ],
-                            borderColor: [
-                                'rgba(0, 10, 130, .7)',
-                            ],
-                            borderWidth: 2
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    aspectRatio: 2,
-                    tooltips: {
-                      callbacks: {
-                        label: function(t, d) {
-                           var xLabel = d.datasets[t.datasetIndex].label;
-                           var yLabel = t.yLabel >= 1000 ? '$' + t.yLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '$' + t.yLabel;
-                           return xLabel + ': ' + yLabel;
-                        }
-                      }
-                    },
-                    scales: {
-                      yAxes: [{
-                        ticks: {
-                           callback: function(value, index, total) {
-                              if (parseInt(value) >= 1000) {
-                                 return 'Rp. ' + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                              } else {
-                                 return 'Rp. ' + value;
-                              }
-                           }
-                        }
-                      }]
-                    }
-                }
-            });
-        }
-    });
-
-
-    $.ajax({
-        type:'POST',
-        url:'api/view.api.php?func=dasboard-pelanggan',
-        dataType: "json",
-        success:function(data){
-            var date = [];
-            var jumlah = [];
-
-            for (var i in data) {
-                date.push(dateformat[i]);
-                jumlah.push(data[i].jumlah);
-            }
-            var ctxL = document.getElementById("chartpelanggan").getContext('2d');
-            var myLineChart = new Chart(ctxL, {
-                type: 'line',
-                data: {
-                    labels: date,
-                    datasets: [{
-                            label: "",
-                            data: jumlah,
-                            backgroundColor: [
-                                'rgba(54, 162, 235, 0.5)',
-                            ],
-                            borderColor: [
-                                'rgba(54, 162, 235, .9)',
-                            ],
-                            borderWidth: 2
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    aspectRatio: 3,
-                }
-            });
-        }
-    });
-
-    $.ajax({
-        type:'POST',
-        url:'api/view.api.php?func=dasboard-itemsold',
-        dataType: "json",
-        success:function(data){
-            var date = [];
-            var jumlah = [];
-
-            for (var i in data) {
-                date.push(dateformat[i]);
-                jumlah.push(data[i].jumlah);
-            }
-            var ctxL = document.getElementById("chartitem").getContext('2d');
-            var myLineChart = new Chart(ctxL, {
-                type: 'line',
-                data: {
-                    labels: date,
-                    datasets: [{
-                            label: "",
-                            data: jumlah,
-                            backgroundColor: [
-                                'rgba(255, 159, 64, 0.5)',
-                            ],
-                            borderColor: [
-                                'rgba(255, 159, 64, .9)',
-                            ],
-                            borderWidth: 2
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    aspectRatio: 3,
-                }
-            });
-        }
-    });
-}
-*/
 </script>

@@ -20,12 +20,13 @@ if($_GET['ket']=='submit-member'){
     	$nomember = $a."".$jml;
     }
 
+	$usia = $_POST['ip-usia'];
 	$alamat = $_POST['ip-alamat'];
 	$tgllahir = date("Y-m-j", strtotime($_POST['ip-tgl-lahir']));
 	$hp = $_POST['ip-hp'];
 	$gender = $_POST['ip-gender'];
 
-	$sql = "INSERT into member(member_no,member_nama,member_alamat,member_tgl_lahir,member_hp,member_gender)values('$nomember','$nama','$alamat','$tgllahir','$hp','$gender')";
+	$sql = "INSERT into member(member_no,member_nama,member_alamat,member_tgl_lahir,member_usia,member_hp,member_gender)values('$nomember','$nama','$alamat','$tgllahir','$usia','$hp','$gender')";
 
 	mysqli_query($con,$sql);
 	
@@ -55,12 +56,13 @@ if($_GET['ket']=='submit-member'){
 	} else {
 		$nomember = $no;
 	}
+	$usia = $_POST['ip-usia'];
 	$alamat = $_POST['ip-alamat'];
 	$tgllahir = date("Y-m-j", strtotime($_POST['ip-tgl-lahir']));
 	$hp = $_POST['ip-hp'];
 	$gender = $_POST['ip-gender'];
 
-	$sql="UPDATE member set member_no='$nomember', member_nama='$nama', member_alamat='$alamat', member_tgl_lahir='$tgllahir',member_hp='$hp', member_gender='$gender' where member_id='$id'";
+	$sql="UPDATE member set member_no='$nomember', member_nama='$nama', member_alamat='$alamat', member_tgl_lahir='$tgllahir',member_usia='$usia' ,member_hp='$hp', member_gender='$gender' where member_id='$id'";
 	mysqli_query($con,$sql);
 	
 } elseif($_GET['ket']=='remove-member'){

@@ -47,7 +47,7 @@ $datapengaturan=mysqli_fetch_assoc($querypengaturan);
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link rel="stylesheet" href="../assets/css/style-print.css">
+<link rel="stylesheet" href="../assets/css/style-print.css?ab">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <script type="text/javascript">
   window.setTimeout(function() {
@@ -61,39 +61,34 @@ $datapengaturan=mysqli_fetch_assoc($querypengaturan);
         <div class="box-custom">
           <img src="../assets/img/<?php echo $datapengaturan['pengaturan_logo']; ?>" style=" width: 100px;">
         </div>
-        <div class="box-custom">
-          <p><?php echo $datapengaturan['pengaturan_nama']; ?></p>
+        <div class="box-custom" style="width: 200px;">
+          <p style=" font-size: 13px;"><?php echo $datapengaturan['pengaturan_nama']; ?></p>
           <p><?php echo $datapengaturan['pengaturan_alamat']; ?></p>
           <p>Tlp. <?php echo $datapengaturan['pengaturan_telp']; ?></p>        
         </div>
       </div>
+     
+      
       <table  width="100%" border="0" >
         <tr>
-          <td width="100">Tgl & Waktu</td>
+          <td width="80">Tgl & Waktu</td>
           <td width="10">:</td>
           <td ><?php echo $tgl." - ".$wkt; ?></td>
-          <td width="150" align="right">No. Nota - <?php echo $t; ?></td>
+          <td width="80" align="right">No. Nota - <?php echo $t; ?></td>
         </tr>
         <tr>
           <td width="60">Pasien</td>
           <td width="10">:</td>
           <td ><?php echo $pelanggan;?></td>
-          <td width="150" align="right">ID - <?php echo $nomember; ?></td>
+          <td width="80" align="right">ID - <?php echo $nomember; ?></td>
         </tr>
+      </table>
+      <table  width="100%" border="0" >
         <tr>
-          <td width="60">Kasir</td>
+          <td width="80">Kasir</td>
           <td width="10">:</td>
           <td ><?php echo $id;?></td>
-          <td width="150" align="right"></td>
-        </tr>
-        <tr>
-          <td width="60">Therapist</td>
-          <td width="10">:</td>
-          <td ><?php echo $therapist;?></td>
-          <td width="150" align="right"></td>
-        </tr>
-        <tr>
-          <td colspan="4"><hr></td>
+          <td align="right">Therapist : <?php echo $therapist;?></td>
         </tr>
       </table>
 
@@ -158,12 +153,7 @@ $datapengaturan=mysqli_fetch_assoc($querypengaturan);
           <td align="right"><?php echo format_rupiah($kembalian) ; ?></td>
         </tr>
         <tr>
-          <td align="left" scope="row" colspan="2">Pembayaran</td>
-          <td align="left">&nbsp;</td>
-          <td align="right"><?php echo $type ; ?></td>
-        </tr>
-        <tr>
-          <td colspan="4" align="center">BARANG YANG SUDAH DIBELI<br>TIDAK DAPAT DIKEMBALIKAN<br>TERIMA KASIH</td>
+          <td colspan="4" align="center" style="font-size: 9px; padding-top: 3px;">TERIMA KASIH</td>
         </tr>
       </table>
   </div>

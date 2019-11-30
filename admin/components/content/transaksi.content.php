@@ -116,7 +116,7 @@ if ($kond=='home' || $kond=='') {
                                     </thead>
                                     <tbody>
                                     <?php
-                                        $sqlbarang="SELECT * from barang, kategori where barang_kategori=kategori_id and barang_kategori='$data1[kategori_id]'";
+                                        $sqlbarang="SELECT * from barang, kategori, jenis where barang_kategori=kategori_id and kategori_jenis=jenis_id and jenis_id='$data1[jenis_id]'";
                                         $querybarang=mysqli_query($con, $sqlbarang);
                                         while ($databarang=mysqli_fetch_array($querybarang, MYSQLI_ASSOC)) {
                                             if ($databarang['barang_image']=='') {
@@ -499,7 +499,133 @@ if ($kond=='home' || $kond=='') {
           "searching": true,
           "ordering": true,
           "info": true,
-          "autoWidth": false
+          "autoWidth": false,
+          "deferRender": true,
+          "drawCallback": function( settings, json ) {
+                $('.pilihmenu').on('click',function(e){
+                    if(e.handled !== true) {
+                        var barang_id = $(this).data('id');
+                        console.log("b")
+                        $('.container__load').load('components/content/transaksi.content.php?kond=jumlah&id='+barang_id);
+                        e.handled = true;
+                    }
+                }); 
+
+                $('.tambahmenu').on('click',function(e){
+                    if(e.handled !== true) {
+                        var barang_id = $(this).data('id');
+                        var jumlah = 1;
+                        var keterangan = '';
+                        var hargamanual = 0;
+                        if ($('#defaultForm-ordertype').val()=='online') {
+                            var pajakjml = $('#ip-pajakonline').val();  
+                        } else {
+                            var pajakjml = $('#ip-pajakresto').val();
+                        }
+                        console.log(barang_id);
+                        
+                        $.ajax({
+                            type:'POST',
+                            url: "controllers/transaksi.ctrl.php?ket=tambahmenu",
+                            dataType: "json",
+                            data:{
+                                barang_id:barang_id,
+                                jumlah:jumlah,
+                                keterangan:keterangan,
+                                hargamanual:hargamanual
+                            },
+                            success:function(data){
+                                $('#carimenu').val('');
+
+                                console.log('totalordertemp'+data);
+                                if (data.totalordertemp.toString()=="Stok Kurang") {
+                                    $.confirm({
+                                          title: 'Stok Kurang',
+                                          content: 'Jumlah stok tidak mencukupi',
+                                          buttons: {
+                                              confirm: {
+                                                  text: 'Close',
+                                                  btnClass: 'col-md-12 btn btn-primary',
+                                                  action: function(){
+                                                      
+                                                      
+                                                  }
+                                              }
+                                          }
+                                    });
+                                } else {
+                                    var diskon = '';
+                                    var ketdiskon = '';
+                                    if (data.item.transaksi_detail_temp_diskon!=0) {
+                                        diskon = '<tr class="fadeInLeft animated diskon"><td></td><td>Diskon</td><td></td><td><span class="text_total">Rp. '+formatRupiah((data.item.transaksi_detail_temp_jumlah*data.item.transaksi_detail_temp_diskon).toString())+'</span></td></tr>';
+                                        ketdiskon = 'itemdiskon';
+                                    } else {
+                                        diskon = '';
+                                        ketdiskon = '';
+                                    }
+                                    var content = '<tr class="'+ketdiskon+' fadeInLeft animated"><td><button type="button" class="btn btn-dark-info waves-effect btn orange-text m-0 p-0 btn-remove" data-id="'+data.item.transaksi_detail_temp_id+'"><i class="fas fa-times"></i></button></td><td>'+data.item.barang_nama+'<br><span>'+data.item.transaksi_detail_temp_keterangan+'</span></td><td><button type="button" class="btn btn-dark-info waves-effect btn btn-outline-white mr-2 mt-0 ml-0 mb-0 p-1 btn-plusminus" data-ket="minus" data-id="'+data.item.transaksi_detail_temp_id+'" data-idbarang="'+data.item.transaksi_detail_temp_barang_id+'" data-jumlah="'+data.item.transaksi_detail_temp_jumlah+'"><i class="fas fa-minus"></i></button><span class="text_jumlah">'+data.item.transaksi_detail_temp_jumlah+'</span><button type="button" class="btn btn-dark-info waves-effect btn-outline-white mr-0 mt-0 ml-2 mb-0 p-1 btn-plusminus" data-ket="plus" data-id="'+data.item.transaksi_detail_temp_id+'" data-idbarang="'+data.item.transaksi_detail_temp_barang_id+'" data-jumlah="'+data.item.transaksi_detail_temp_jumlah+'"><i class="fas fa-plus"></i></button></td><td><span class="text_total">'+formatRupiah(data.item.transaksi_detail_temp_total, 'Rp. ')+'</span></td></tr>'+diskon;
+                                    $('#subtotal').empty();
+                                    $('#subtotal').append(formatRupiah(data.totalordertemp.toString(), 'Rp. '));
+
+                                    var tax = parseInt(pajakjml)*data.totalordertemp*0.1;
+                                    if ($('#ip-pajakpembulatan').val()==1) {
+                                        tax = pembulatan(tax);
+                                    }
+
+                                    $('#pajak').empty();
+                                    $('#pajak').append(formatRupiah(tax.toString(), 'Rp. '))
+                                    
+                                    var taxservice = 0;
+                                    if ($('#ip-pajakservice').val()!='') {
+                                        taxservice = parseInt($('#ip-pajakservice').val())*data.totalordertemp/100;
+                                        if ($('#ip-pajakpembulatan').val()==1) {
+                                            taxservice = pembulatan(taxservice);
+                                        }
+                                        
+                                        $('#pajakservice').empty();
+                                        $('#pajakservice').append(formatRupiah(taxservice.toString(), 'Rp. '))
+                                    }
+                                    
+                                    var jmldiskon = $("#defaultForm-jumlahdiskon").val();
+
+                                    var total = tax+data.totalordertemp+taxservice-jmldiskon;
+                                    $('#total').empty();
+                                    $('#total').append(formatRupiah(total.toString(), 'Rp. '));
+
+                                    $('#defaultForm-tax').val(tax);
+                                    $('#defaultForm-subtotal').val(data.totalordertemp);
+                                    $('#defaultForm-total').val(total);
+
+                                    $('#listitem table').append(content);
+                                    $('.container__load').load('components/content/transaksi.content.php?kond=');
+
+                                    $('.btn-remove').unbind('click').click(function() {
+                                        var indexitem = $(this).parent().parent().index();
+                                        var id = $(this).data('id');
+
+                                        var classdiskon = $(this).parent().parent().hasClass("itemdiskon");
+                                        console.log(classdiskon+" "+indexitem+" "+$(this).parent().parent())
+                                        removeItemTemp(id, indexitem, classdiskon);
+                                    });
+
+
+                                    $('.btn-plusminus').on('click',function(){
+                                        var indexitem = $(this).parent().parent().index();
+                                        var id = $(this).data('id');
+                                        var idbarang = $(this).data('idbarang');
+                                        var ket = $(this).data('ket');
+                                        var jumlah = $(this).data('jumlah');
+
+                                        plusminusItem(id, idbarang, indexitem, ket, jumlah);
+                                    });
+                                }
+                            }
+                        }); 
+                        e.handled = true;
+                    }         
+                });
+            }
+
         });
     }
 
@@ -527,7 +653,7 @@ if ($kond=='home' || $kond=='') {
         $('.container__load').load('components/content/transaksi.content.php?kond=tutupkasir&omset=');
     });
 
-	$('.tambahmenu').on('click',function(){
+	$('.tambahmenu').unbind('click',function(){
     	var barang_id = $(this).data('id');
     	var jumlah = 1;
     	var keterangan = '';

@@ -176,6 +176,22 @@ if ($func=='dasboard-omset') {
     $tgl22 = date("Y-m-j", strtotime($_POST['end']));
 
     $query="SELECT * from  validasi WHERE validasi_tanggal BETWEEN '$tgl11' AND '$tgl22' ORDER BY validasi_id asc";
+    
+} elseif ($func=='laporan-nota') {
+       
+    $ket = "transaksi_tanggal"; 
+    $tgl11 = date("Y-m-j", strtotime($_POST['start']));
+    $tgl22 = date("Y-m-j", strtotime($_POST['end']));
+    
+
+    $query ="SELECT * from transaksi, users, member WHERE transaksi_member=member_id and transaksi_user=id and transaksi_tanggal BETWEEN '$tgl11' AND '$tgl22'  ";
+
+} elseif ($func=='cek-nota') {
+       
+    $nota = $_POST['notaid'];
+
+    $query ="SELECT * from transaksi_detail, barang where transaksi_detail_barang_id=barang_id and transaksi_detail_nota='$nota' ORDER BY transaksi_detail_id ASC";
+
 }
 
 
@@ -236,6 +252,37 @@ if ($func=="laporan-omset" || $func=="laporan-kasir") {
 		$row_array['total'] = $data['total'];
         array_push($array_data,$row_array);
 	}
+} elseif ($func=="cek-nota") {
+
+    $nota = $_POST['notaid'];
+    $sqlnot="SELECT * FROM transaksi, users, member where transaksi_member=member_id and transaksi_user=id and transaksi_id='$nota' ";
+    $querynot=mysqli_query($con,$sqlnot);
+    $datanot=mysqli_fetch_assoc($querynot);
+
+    $total = $datanot['transaksi_total'];
+    $pelanggan = $datanot['member_nama'];
+    $therapist = $datanot['transaksi_therapist'];
+    $diskon = $datanot['transaksi_diskon'];
+    $user = $datanot['name'];
+
+    $sqlt="SELECT * FROM users where id='$therapist' ";
+    $queryt=mysqli_query($con,$sqlt);
+    $datat=mysqli_fetch_assoc($queryt);
+    $namatherapist = $datat['name'];
+
+    $row_array['subtotal'] = $total+$diskon;
+    $row_array['total'] = $total;
+    $row_array['pelanggan'] = $pelanggan;
+    $row_array['user'] = $user;
+    $row_array['therapist'] = $namatherapist;
+    $row_array['potongan'] = $diskon;
+    $row_array['notaid'] = $nota;
+    array_push($array_data,$row_array);
+    while($data = mysqli_fetch_assoc($result))
+    {
+        $array_data[]=$data;
+    }
+
 } else {
 	while($baris = mysqli_fetch_assoc($result))
 	{

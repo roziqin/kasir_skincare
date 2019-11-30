@@ -26,7 +26,7 @@ else{
                                     <div class="row delay-2s fadeIn animated">
                                         <div class="col-12">
                                             <div class="align-items-center">
-                                                <div class="text-center"><img src="assets/img/logo.png" width="200px" class="m-lr-auto"></div>
+                                                <div class="text-center"><img src="assets/img/logo-baru.jpeg" width="200px" class="m-lr-auto"></div>
                                                 <!--<h1 class="display-4 text-center mt-2 text-white">POS App</h1>-->
                                             </div>
                                         </div>
