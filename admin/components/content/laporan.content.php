@@ -1,4 +1,5 @@
 <?php
+include '../modals/laporan.modal.php';
 $con = mysqli_connect("localhost","root","","salon_kecantikan");
 $ket = $_GET['ket'];
 

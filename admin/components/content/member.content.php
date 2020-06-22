@@ -1,5 +1,6 @@
 <?php include '../modals/member.modal.php'; ?>
 
+<?php include '../modals/historymember.modal.php'; ?>
     <button class="btn btn-primary btn-tambah-member" data-toggle="modal" data-target="#modalmember">Tambah Member <i class="fas fa-box-open ml-1"></i></button>
     <table id="table-member" class="table table-striped table-bordered fadeInLeft slow animated" style="width:100%">
         <thead>
@@ -54,11 +55,57 @@
 
                 { "width": "180px", "render": function(data, type, full){
                     
-                      return '<a class="btn-floating btn-sm btn-default mr-2 btn-edit" data-toggle="modal" data-target="#modalmember" data-id="' + full['member_id'] + '" title="Edit"><i class="fas fa-pen"></i></a> <a class="btn-floating btn-sm btn-danger btn-remove  mr-2" data-id="' + full['member_id'] + '" title="Delete"><i class="fas fa-trash"></i></a>';
+                      return '<a class="btn-floating btn-sm btn-warning mr-2 btn-history" data-toggle="modal" data-target="#historymember" data-id="' + full['member_id'] + '" title="Info"><i class="fas fa-clipboard-list"></i></a><a class="btn-floating btn-sm btn-default mr-2 btn-edit" data-toggle="modal" data-target="#modalmember" data-id="' + full['member_id'] + '" title="Edit"><i class="fas fa-pen"></i></a> <a class="btn-floating btn-sm btn-danger btn-remove  mr-2" data-id="' + full['member_id'] + '" title="Delete"><i class="fas fa-trash"></i></a>';
                   }
                 },
             ],
             "drawCallback": function( settings ) {
+              $('.btn-history').on('click',function(){
+                  var id = $(this).data('id');
+                  console.log("history")
+                  $.ajax({
+                      type:'POST',
+                      url:'api/view.api.php?func=historymember',
+                      dataType: "json",
+                      data:{id:id},
+                      success:function(data){
+                        $('#table-historymember').DataTable().clear().destroy();
+
+                              
+                        for (var i in data) {
+
+                            if (i==0) {
+                                $("#historymember .text-no").text("No Member: "+data[0].member.member_no);
+                                $("#historymember .text-nama").text("Nama: "+data[0].member.member_nama);
+                                $("#historymember .text-alamat").text("Alamat: "+data[0].member.member_alamat);
+                                $("#historymember .text-usia").text("Usia: "+data[0].member.member_usia);
+                                $("#historymember .text-hp").text("Telp: "+data[0].member.member_hp);
+                                $("#historymember .text-gender").text("Gender: "+data[0].member.member_gender);
+                                $("#historymember .text-tgl-lahir").text("Tgl Lahir: "+data[0].member.member_tgl_lahir);
+                            } else {
+                                
+                                $('#table-historymember').DataTable( {
+                                    paging: true,
+                                    searching: true,
+                                    ordering: true,
+                                    deferRender: true,
+                                    data: data["table"],
+                                    columns: [
+                                        { data: 'transaksi_tanggal' },
+                                        { data: 'barang_nama' },
+                                        { data: 'kategori_nama' },
+                                        { data: 'jenis_nama' }
+                                    ]
+                                });
+                                
+
+                            }
+                        }
+
+                      }
+                  });
+              });
+
               $('.btn-edit').on('click',function(){
                   var id = $(this).data('id');
                         console.log(id+" edit");

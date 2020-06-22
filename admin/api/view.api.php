@@ -59,6 +59,10 @@ if ($func=='dasboard-omset') {
 	$id = $_POST['id'];
 	$query = "SELECT * from barang where barang_id='$id'";
 
+} elseif ($func=='historymember') {
+    $id = $_POST['id'];
+    $query = "SELECT * from transaksi, transaksi_detail, barang, kategori, jenis where transaksi_id=transaksi_detail_nota and transaksi_detail_barang_id=barang_id and barang_kategori=kategori_id and kategori_jenis=jenis_id and transaksi_member='$id' ORDER BY transaksi_tanggal DESC";
+
 } elseif ($func=='list-transaksi-temp') {
     $query="SELECT * from transaksi_detail_temp, barang, kategori where transaksi_detail_temp_barang_id=barang_id and kategori_id=barang_kategori and transaksi_detail_temp_user='$user' ORDER BY transaksi_detail_temp_id";
 } elseif ($func=='list-member-temp') {
@@ -281,6 +285,36 @@ if ($func=="laporan-omset" || $func=="laporan-kasir") {
     while($data = mysqli_fetch_assoc($result))
     {
         $array_data[]=$data;
+    }
+
+} elseif ($func=="historymember") {
+
+    $id = $_POST['id'];
+    $sqlmember="SELECT * FROM member where member_id='$id' ";
+    $querymember=mysqli_query($con,$sqlmember);
+    $datamember=mysqli_fetch_assoc($querymember);
+
+    $member_id = $datamember['member_id'];
+    $member_no = $datamember['member_no'];
+    $member_nama = $datamember['member_nama'];
+    $member_alamat = $datamember['member_alamat'];
+    $member_usia = $datamember['member_usia'];
+    $member_hp = $datamember['member_hp'];
+    $member_gender = $datamember['member_gender'];
+    $member_tgl_lahir = $datamember['member_tgl_lahir'];
+
+    $row_array['member']['member_id'] = $member_id;
+    $row_array['member']['member_no'] = $member_no;
+    $row_array['member']['member_nama'] = $member_nama;
+    $row_array['member']['member_alamat'] = $member_alamat;
+    $row_array['member']['member_usia'] = $member_usia;
+    $row_array['member']['member_hp'] = $member_hp;
+    $row_array['member']['member_gender'] = $member_gender;
+    $row_array['member']['member_tgl_lahir'] = $member_tgl_lahir;
+    array_push($array_data,$row_array);
+    while($data = mysqli_fetch_assoc($result))
+    {
+        $array_data['table'][]=$data;
     }
 
 } else {

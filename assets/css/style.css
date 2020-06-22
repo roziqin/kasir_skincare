@@ -537,3 +537,7 @@ main.transaksi {
 .transaksi #listitem table td:last-child {
 	text-align: right;
 }
+
+.modal-dialog.custom {
+	max-width: 900px;
+}
