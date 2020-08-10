@@ -6,6 +6,7 @@
         <thead>
             <tr>
                 <th>no member</th>
+                <th>no rm</th>
                 <th>nama</th>
                 <th>alamat</th>
                 <th>tanggal lahir</th>
@@ -24,6 +25,7 @@
     $(document).ready(function() {
         $('.btn-tambah-member').on('click',function(){
             $("#modalmember #defaultForm-id").val('');
+            $("#modalmember #defaultForm-rm").val('');
             $("#modalmember #defaultForm-nama").val('');
             $("#modalmember #defaultForm-alamat").val('');
             $("#modalmember #defaultForm-hp").val('');
@@ -46,6 +48,7 @@
             "deferRender": true,
             "columns": [
                 { "data": "member_no" },
+                { "data": "member_rm" },
                 { "data": "member_nama" },
                 { "data": "member_alamat" },
                 { "data": "member_tgl_lahir" },
@@ -76,6 +79,7 @@
 
                             if (i==0) {
                                 $("#historymember .text-no").text("No Member: "+data[0].member.member_no);
+                                $("#historymember .text-rm").text("No RM: "+data[0].member.member_rm);
                                 $("#historymember .text-nama").text("Nama: "+data[0].member.member_nama);
                                 $("#historymember .text-alamat").text("Alamat: "+data[0].member.member_alamat);
                                 $("#historymember .text-usia").text("Usia: "+data[0].member.member_usia);
@@ -122,6 +126,7 @@
                           $("#modalmember label").addClass("active");
                           $("#modalmember #defaultForm-id").val(data[0].member_id);
                           $("#modalmember #defaultForm-no").val(data[0].member_no);
+                          $("#modalmember #defaultForm-rm").val(data[0].member_rm);
                           $("#modalmember #defaultForm-nama").val(data[0].member_nama);
                           $("#modalmember #defaultForm-alamat").val(data[0].member_alamat);
                           $("#modalmember #defaultForm-usia").val(data[0].member_usia);
