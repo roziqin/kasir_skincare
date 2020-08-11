@@ -23,7 +23,7 @@ if ($kond=='home' || $kond=='') {
                                 $sql="SELECT * from member ORDER BY member_id ASC";
                                 $result=mysqli_query($con,$sql);
                                 while ($data1=mysqli_fetch_array($result,MYSQLI_ASSOC)) {
-                                    echo "<option value='$data1[member_id]'>$data1[member_nama] - $data1[member_no]</option>";
+                                    echo "<option value='$data1[member_id]'>$data1[member_nama] - $data1[member_no] - $data1[member_rm]</option>";
                                 }
                             ?>
                         </select>

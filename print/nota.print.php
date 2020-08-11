@@ -27,6 +27,7 @@ $datapengaturan=mysqli_fetch_assoc($querypengaturan);
 
       $idmember=$data['member_id'];
       $nomember=$data['member_no'];
+      $rmmember=$data['member_rm'];
       if ($idmember==0) {
         $pelanggan=$data['transaksi_nama'];
       } else {
@@ -80,7 +81,7 @@ $datapengaturan=mysqli_fetch_assoc($querypengaturan);
           <td width="60">Pasien</td>
           <td width="10">:</td>
           <td ><?php echo $pelanggan;?></td>
-          <td width="80" align="right">ID - <?php echo $nomember; ?></td>
+          <td width="80" align="right">RM - <?php echo $rmmember; ?></td>
         </tr>
       </table>
       <table  width="100%" border="0" >
