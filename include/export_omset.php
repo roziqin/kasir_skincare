@@ -30,6 +30,8 @@ include '../config/database.php';
 	$tgl = $_GET['date'];
 	
 	$ket1 = $_GET['ket'];
+
+	$typebayar = $_GET['typebayar'];
 	
 	$filename = "laporan_omset".$ket1."-".$tgl.".xls";
 	header("Content-type: application/vnd-ms-excel");
@@ -61,7 +63,15 @@ include '../config/database.php';
 		    $ket = "transaksi_bulan";     
 		}
 
-		$sql ="SELECT transaksi_tanggal, transaksi_bulan, sum(transaksi_total) as total, sum(transaksi_diskon) as diskon from transaksi WHERE $ket BETWEEN '$tgl11' AND '$tgl22' GROUP BY $ket ORDER BY transaksi_tanggal ASC";
+
+	    if ($typebayar=='') {
+	        $bayartext = '';
+	    } else {
+	        $bayartext = "transaksi_type_bayar='".$typebayar."' and ";
+
+	    }
+
+		$sql ="SELECT transaksi_tanggal, transaksi_bulan, sum(transaksi_total) as total, sum(transaksi_diskon) as diskon from transaksi WHERE $bayartext $ket BETWEEN '$tgl11' AND '$tgl22' GROUP BY $ket ORDER BY transaksi_tanggal ASC";
 
 
 
@@ -85,6 +95,12 @@ include '../config/database.php';
 	        $totaldebet = 0;
 	        if ($datadebet['total']!='') {
 	            $totaldebet = $datadebet['total'];
+	        }
+
+	        if ($typebayar=='debet') {
+	            $totalcash = 0;
+	        } elseif ($typebayar=='cash') {
+	            $totaldebet = 0;
 	        }
 
 			?>

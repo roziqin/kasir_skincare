@@ -41,6 +41,7 @@ $datapengaturan=mysqli_fetch_assoc($querypengaturan);
       $bayar = $data['transaksi_bayar'];
       $kembalian = $bayar - $tran_tot;
       $type = $data['transaksi_type_bayar'];
+      $nota_print=$data['transaksi_nota_print'];
     }
         
 
@@ -75,7 +76,7 @@ $datapengaturan=mysqli_fetch_assoc($querypengaturan);
           <td width="80">Tgl & Waktu</td>
           <td width="10">:</td>
           <td ><?php echo $tgl." - ".$wkt; ?></td>
-          <td width="80" align="right">No. Nota - <?php echo $t; ?></td>
+          <td width="80" align="right">No. Nota - <?php echo $nota_print; ?></td>
         </tr>
         <tr>
           <td width="60">Pasien</td>

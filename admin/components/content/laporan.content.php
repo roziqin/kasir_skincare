@@ -10,7 +10,7 @@ if ($ket=='omset' || $ket=='kasir') {
 		$btn = 'btn-proses-laporan-kasir';
 	} else {
 		$kasir = 'hidden';
-		$col = 'col-md-8';
+		$col = 'col-md-7';
 		$btn = 'btn-proses-laporan-omset';
 	}
 	?>
@@ -22,6 +22,15 @@ if ($ket=='omset' || $ket=='kasir') {
 				        <select class="mdb-select md-form" id="daterange" name="ip-daterange">
 				            <option value="harian">Harian</option>
 				            <option value="bulanan">Bulanan</option>
+				        </select>
+				    </div>
+				</div>
+				<div class="col-md-2">
+				    <div class="md-form">
+				        <select class="mdb-select md-form" id="defaultForm-typebayar" name="ip-typebayar">
+		                    <option value="" selected>Pilih Bayar</option>
+				            <option value="cash">Cash</option>
+				            <option value="debet">Debet</option>
 				        </select>
 				    </div>
 				</div>
@@ -630,6 +639,7 @@ if ($ket=='omset' || $ket=='kasir') {
 		
 		$('.btn-proses-laporan-omset').on('click',function(){
 			var daterange = $('#daterange').val();
+			var typebayar = $('#defaultForm-typebayar').val();
 
 			if (daterange=='harian') {
 
@@ -653,6 +663,7 @@ if ($ket=='omset' || $ket=='kasir') {
 		        dataType: "json",
             	data:{
             		daterange:daterange,
+            		typebayar:typebayar,
             		start:start,
             		end:end
             	},
@@ -710,7 +721,7 @@ if ($ket=='omset' || $ket=='kasir') {
 
 
 		        	$("a.export-omset").removeClass("hidden");
-			        $("a.export-omset").attr("href","../include/export_omset.php?date="+date+"&ket="+daterange);
+			        $("a.export-omset").attr("href","../include/export_omset.php?date="+date+"&ket="+daterange+"&typebayar="+typebayar);
 		        	console.log("success "+kettext);
 		        	console.log(data);
 		        }
@@ -721,6 +732,7 @@ if ($ket=='omset' || $ket=='kasir') {
 	
 		$('.btn-proses-laporan-kasir').on('click',function(){
 			var daterange = $('#daterange').val();
+			var typebayar = $('#defaultForm-typebayar').val();
 			var kasir = $('#defaultForm-kasir').val();
 
 			if (daterange=='harian') {
@@ -744,6 +756,7 @@ if ($ket=='omset' || $ket=='kasir') {
 		        dataType: "json",
             	data:{
             		daterange:daterange,
+            		typebayar:typebayar,
             		start:start,
             		end:end,
             		kasir:kasir

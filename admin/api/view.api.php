@@ -72,6 +72,13 @@ if ($func=='dasboard-omset') {
 } elseif ($func=='laporan-omset') {
 	
     
+    $typebayar = $_POST['typebayar'];
+    if ($typebayar=='') {
+        $bayartext = '';
+    } else {
+        $bayartext = "transaksi_type_bayar='".$typebayar."' and ";
+
+    }
     if ($_POST['daterange']=="harian") {
         $ket = "transaksi_tanggal"; 
 		$tgl11 = date("Y-m-j", strtotime($_POST['start']));
@@ -82,7 +89,7 @@ if ($func=='dasboard-omset') {
 	    $tgl22 = date("Y-m", strtotime($_POST['end']));
     }
 
-	$query ="SELECT transaksi_tanggal, transaksi_bulan, sum(transaksi_total) as total, sum(transaksi_diskon) as diskon from transaksi WHERE $ket BETWEEN '$tgl11' AND '$tgl22' GROUP BY $ket  ";
+	$query ="SELECT transaksi_tanggal, transaksi_bulan, sum(transaksi_total) as total, sum(transaksi_diskon) as diskon from transaksi WHERE $bayartext $ket BETWEEN '$tgl11' AND '$tgl22' GROUP BY $ket  ";
 
 }  elseif ($func=='laporan-kasir') {
 	
@@ -107,7 +114,7 @@ if ($func=='dasboard-omset') {
 	    $tgl22 = date("Y-m", strtotime($_POST['end']));
     }
 
-	$query ="SELECT transaksi_tanggal, transaksi_bulan, sum(transaksi_total) as total, sum(transaksi_diskon) as diskon, transaksi_user, id, name from transaksi, users WHERE transaksi_user=id and $text1 $ket BETWEEN '$tgl11' AND '$tgl22' GROUP BY $ket $text2 ";
+	$query ="SELECT transaksi_tanggal, transaksi_bulan, sum(transaksi_total) as total, sum(transaksi_diskon) as diskon, transaksi_user, id, name from transaksi, users WHERE transaksi_user=id and $text1 $bayartext $ket BETWEEN '$tgl11' AND '$tgl22' GROUP BY $ket $text2 ";
 
 }  elseif ($func=='laporan-menu') {
 	
@@ -248,6 +255,12 @@ if ($func=="laporan-omset" || $func=="laporan-kasir") {
 	  //$array_data[]=($ket=>$data[$ket], 'cash'=>$totalcash, 'debet'=>$totaldebet, 'online'=>$totalonline);
         if ($func=="laporan-kasir") {
 			$row_array['kasir'] = $data['name'];
+        }
+        $typebayar = $_POST['typebayar'];
+        if ($typebayar=="debet") {
+            $totalcash = 0;
+        } elseif ($typebayar=="cash") {
+            $totaldebet = 0;
         }
 		$row_array[$ket] = $data[$ket];
 	    $row_array['cash'] = $totalcash;

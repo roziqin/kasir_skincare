@@ -220,7 +220,12 @@ if($_GET['ket']=='tambahmenu'){
 	$namanonmember = $data1['member_temp_nama'];
 	$therapist = $data1['member_temp_therapist'];
 
-	$sql = "INSERT INTO transaksi (transaksi_tanggal,transaksi_bulan,transaksi_waktu,transaksi_member,transaksi_total,transaksi_diskon,transaksi_tax,transaksi_tax_service,transaksi_bayar,transaksi_type_bayar,transaksi_user,transaksi_therapist,transaksi_nama,transaksi_ket) VALUES ('$tgl','$bln','$wkt','$member','$total','$jumlahdiskon','$tax','0','$bayar','$paytype','$user','$therapist','$namanonmember','')" ;
+	$qcn= "SELECT MAX( transaksi_nota_print ) AS nota_print FROM transaksi where transaksi_type_bayar='$paytype'";
+    $rcn=mysqli_query($con,$qcn);
+    $dcn=mysqli_fetch_assoc($rcn);
+    $nota_print = $dcn['nota_print']+1;
+
+	$sql = "INSERT INTO transaksi (transaksi_nota_print,transaksi_tanggal,transaksi_bulan,transaksi_waktu,transaksi_member,transaksi_total,transaksi_diskon,transaksi_tax,transaksi_tax_service,transaksi_bayar,transaksi_type_bayar,transaksi_user,transaksi_therapist,transaksi_nama,transaksi_ket) VALUES ('$nota_print','$tgl','$bln','$wkt','$member','$total','$jumlahdiskon','$tax','0','$bayar','$paytype','$user','$therapist','$namanonmember','')" ;
 
 	mysqli_query($con,$sql);
 
